@@ -16,7 +16,7 @@
       "description": "The image is a photo, but no people are clearly visible."
     },
     {
-      "name": "Not a photo; e.g., logo or graphics",
+      "name": "NOT a photo; e.g., logo or graphics",
       "description": "The image is not produced with a camera or phone; select this option when the image looks like it was created using a computer or drawn by hand."
     }
   ]
