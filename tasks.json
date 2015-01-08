@@ -1,0 +1,23 @@
+
+{
+  "title": "Categorize Images",
+  "description": "Given an image select the category that best describes it.",
+  "options": [
+    {
+      "name": "Photo of ONE person",
+      "description": "The image is a photo and shows a single person, even if the person is not fully visible."
+    },
+    {
+      "name": "Photo of MULTIPLE people or the same person multiple times",
+      "description": "The image is a photo and shows multiple people, or multiple photos of the same person. The people don't have to be fully visible."
+    },
+    {
+      "name": "Photo WITHOUT people",
+      "description": "The image is a photo, but no people are clearly visible."
+    },
+    {
+      "name": "Not a photo; e.g., logo or graphics",
+      "description": "The image is not produced with a camera or phone; select this option when the image looks like it was created using a computer or drawn by hand."
+    }
+  ]
+}
