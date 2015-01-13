@@ -1,0 +1,1 @@
+These JSON files define annotation tasks for the IST platform.
