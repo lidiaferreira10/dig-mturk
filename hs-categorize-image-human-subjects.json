@@ -1,21 +1,25 @@
-
 {
-  "title": "Categorize Images",
-  "description": "Given an image select the category that best describes it.",
+  "title": "Categorize Image: Human Subjects",
+  "id": "hs"
+  "description": "Select the category that best describes this image:",
   "options": [
     {
+      "value": 1,
       "name": "Photo of ONE person",
       "description": "The image is a photo and shows a single person, even if the person is not fully visible."
     },
     {
+      "value": 2,
       "name": "Photo of MULTIPLE people or the same person multiple times",
       "description": "The image is a photo and shows multiple people, or multiple photos of the same person. The people don't have to be fully visible."
     },
     {
+      "value": 0,
       "name": "Photo WITHOUT people",
       "description": "The image is a photo, but no people are clearly visible."
     },
     {
+      "value": -1,
       "name": "NOT a photo; e.g., logo or graphics",
       "description": "The image is not produced with a camera or phone; select this option when the image looks like it was created using a computer or drawn by hand."
     }

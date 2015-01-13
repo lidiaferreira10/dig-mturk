@@ -1,0 +1,34 @@
+{
+  "title": "Categorize Image: Text Overlay",
+  "id": "to",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "ot",
+    "options": [
+      2,
+      4
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "Phone number",
+      "description": "The photo contains an overlay that shows a phone number."
+    },
+    {
+      "value": 2,
+      "name": "Name",
+      "description": "The photo contains an overlay with what appears to be a person name. "
+    },
+    {
+      "value": 3,
+      "name": "Name AND phone number",
+      "description": "The photo several overlays, showing both a name and a phone number. "
+    },
+    {
+      "value": 4,
+      "name": "Other",
+      "description": "None of the overlays contain a phone number of a name. "
+    }
+  ]
+}

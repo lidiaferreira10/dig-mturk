@@ -1,0 +1,25 @@
+{
+  "title": "Categorize Image: Quality",
+  "id": "iq",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "hs",
+    "options": [
+      0,
+      1,
+      2
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "Professional quality",
+      "description": "The photo looks like it was taken with a professional camera or by professional photographer."
+    },
+    {
+      "value": 2,
+      "name": "Amateur photo",
+      "description": "The photo looks like a selfie or taken by an amateur photographer."
+    }
+  ]
+}

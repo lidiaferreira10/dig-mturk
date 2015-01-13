@@ -1,0 +1,35 @@
+{
+  "title": "Categorize Image: Overlay Type",
+  "id": "ot",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "hs",
+    "options": [
+      0,
+      1,
+      2
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "No overlay",
+      "description": "The has NO overlay."
+    },
+    {
+      "value": 2,
+      "name": "Contains text overlay",
+      "description": "The photo has a text overlay, either typed or handwritten. "
+    },
+    {
+      "value": 3,
+      "name": "Contains graphics overlay",
+      "description": "The photo has a graphics overlay with no discernible text. "
+    },
+    {
+      "value": 4,
+      "name": "Contains both text and graphics overlays",
+      "description": "The photo one more more text overlays AND one ore more graphics overlays. "
+    }
+  ]
+}
