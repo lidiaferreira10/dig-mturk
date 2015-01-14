@@ -1,0 +1,38 @@
+{
+  "title": "Categorize Image: Location",
+  "id": "loc",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "hs",
+    "options": [
+      1
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "Outdoor",
+      "description": "The photo was taken outdoors."
+    },
+    {
+      "value": 2,
+      "name": "Bedroom or hotel room",
+      "description": "The photo was taken in inside in a bedroom or hotel room. "
+    },
+    {
+      "value": 3,
+      "name": "Bathroom",
+      "description": "The photo was taken in a bathroom. "
+    },
+    {
+      "value": 4,
+      "name": "Strip club",
+      "description": "The photo was taken in a strip club. "
+    },
+    {
+      "value": 5,
+      "name": "Other indoor",
+      "description": "The photo was taken in another indoor setting. "
+    }
+  ]
+}

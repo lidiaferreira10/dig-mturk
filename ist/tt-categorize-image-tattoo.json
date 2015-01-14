@@ -1,0 +1,23 @@
+{
+  "title": "Categorize Image: Tattoo",
+  "id": "tt",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "hs",
+    "options": [
+      1
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "Tattoo clearly visible",
+      "description": "The person in the photo has at least one clearly visible tattoo."
+    },
+    {
+      "value": 2,
+      "name": "No tattoo",
+      "description": "The person has no tattooes, or has a tattoo, but it is not clearly visible in the image."
+    }
+  ]
+}

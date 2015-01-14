@@ -1,0 +1,23 @@
+{
+  "title": "Categorize Image: Face visible",
+  "id": "fa",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "hs",
+    "options": [
+      1
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "Face visible",
+      "description": "The face of the person in the photo is clearly visible."
+    },
+    {
+      "value": 2,
+      "name": "Face NOT visible",
+      "description": "The face is not visible of barely visible so that identification would be difficult or impossible."
+    }
+  ]
+}

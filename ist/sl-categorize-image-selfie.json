@@ -1,0 +1,28 @@
+{
+  "title": "Categorize Image: Selfie",
+  "id": "sl",
+  "description": "Select the category that best describes this image:",
+  "source": {
+    "question": "hs",
+    "options": [
+      1
+    ]
+  },
+  "options": [
+    {
+      "value": 1,
+      "name": "Selfie",
+      "description": "A self-portrait; note that sometimes a selfie photo is taken on a mirror."
+    },
+    {
+      "value": 2,
+      "name": "NOT a selfie",
+      "description": "Photo was taken by another person."
+    },
+    {
+      "value": 3,
+      "name": "Cannot determine",
+      "description": "Cannot tell whether the photo is a selfie or not."
+    }
+  ]
+}
