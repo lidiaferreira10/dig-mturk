@@ -1,0 +1,1 @@
+select distinct value as 'eyecolor', count(1) from ads_attributes where attribute='eyes' group by value order by count(*) desc;

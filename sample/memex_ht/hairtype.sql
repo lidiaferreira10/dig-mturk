@@ -1,0 +1,1 @@
+select distinct value as 'hairtype', count(1) from ads_attributes where attribute='hairtype' group by value order by count(*) desc;

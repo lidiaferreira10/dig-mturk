@@ -1,0 +1,25 @@
+{
+  "fields": [
+    "hasBodyPart.text"
+  ],
+  "query": {
+    "span_near": {
+      "clauses": [
+        {
+          "span_term": {
+            "hasBodyPart.text": "hazel"
+          }
+        },
+        {
+          "span_term": {
+            "hasBodyPart.text": "eye"
+          }
+        }
+      ],
+      "slop": 12,
+      "in_order": false,
+      "collect_payloads": false
+    }
+  },
+  "size": "10000"
+}
