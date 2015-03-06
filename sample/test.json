@@ -1,0 +1,48 @@
+{
+  "took": 136,
+  "timed_out": false,
+  "_shards": {
+    "total": 40,
+    "successful": 40,
+    "failed": 0
+  },
+  "hits": {
+    "total": 18340,
+    "max_score": 4.5852017,
+    "hits": [
+      {
+        "_index": "dig-ht-pilot-unfiltered",
+        "_type": "WebPage",
+        "_id": "http://dig.isi.edu/ht/data/page/252ED2CF70811CF450EDFF7D87E9434E1AF30427/1402532895000/processed",
+        "_score": 4.5852017,
+        "fields": {
+          "hasBodyPart.text": [
+            "Blue eye Barbie - 20"
+          ]
+        }
+      },
+      {
+        "_index": "dig-ht-pilot-unfiltered",
+        "_type": "WebPage",
+        "_id": "http://dig.isi.edu/ht/data/page/51036D25C6024562DB4217F692354981DF489F56/1399450849000/processed",
+        "_score": 1.1452792,
+        "fields": {
+          "hasBodyPart.text": [
+            "Hey guys my name is Kat me and my friend Natili are looking for some fun just passing thru so call ASAP\n\nAll American blue eye beauty call 612-223-9989 ask for Kat My friend natili is carmel complex true freak 612-913-1919\nFYI we will b there around 5 pm"
+          ]
+        }
+      },
+      {
+        "_index": "dig-ht-pilot-unfiltered",
+        "_type": "WebPage",
+        "_id": "http://dig.isi.edu/ht/data/page/80B133B4F31B9925E7AF766720D7B43A0AE87064/1404866391000/processed",
+        "_score": 0.99214214,
+        "fields": {
+          "hasBodyPart.text": [
+            "*   h  bLonDe DREaMGiRLI*\n\n \"Amazing Experience\" \n5'2 135lbs 34c Sexy curves soft smooth skin blonde hair blue eyes simply stunning\n\nserious gentlemen onlySweet EYE-CANDY.upscale mature professional\n\nVanessa 8082238610."
+          ]
+        }
+      }
+    ]
+  }
+}

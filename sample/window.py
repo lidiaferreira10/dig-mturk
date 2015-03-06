@@ -8,42 +8,22 @@ try:
 except:
     import json
 
+import re
 import random
 import nltk
 import itertools
 import argparse
 import pprint
+from htmltoken import tokenize
 
 import util
+from util import echo
 
 SEED = 20150304
 random.seed(SEED)
 
 def truth(*args):
     return True
-
-from HTMLParser import HTMLParser
-
-class HTMLTextExtractor(HTMLParser):
-
-    def __init__(self):
-        self.buffer = []
-        # this works only for new-style class
-        # super(HTMLShedder,self).__init__()
-        HTMLParser.__init__(self)
-    def handle_data(self, data):
-        if data:
-            self.buffer.append(data)
-    # def handle_endtag(self,tag):
-    #     if tag == "br" or tag in blockLevelElements:
-    #         self.buffer.append(" ")
-        
-def extract_text(html):
-    parser = HTMLTextExtractor()
-    parser.feed(html)
-    output = " ".join(parser.buffer)
-    parser.close()
-    return output
 
 """{
   "took": 136,
@@ -74,6 +54,10 @@ def genwords(text):
         for tok in nltk.word_tokenize(sentence):
             yield tok
 
+def gentokens(text):
+    for tok in tokenize(text):
+        yield tok    
+
 def containsEye(w):
     try:
         i = w.lower().index("eye")
@@ -90,13 +74,40 @@ def contains(t):
             return False
     return inner
 
-def sample(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genwords, ahead=5, behind=5, limit=5):
+def isValidFileArg(parser, arg):
+    if not os.path.exists(arg):
+        parser.error("The file %s does not exist!" % arg)
+    else:
+        # return open(arg, 'r')  # return an open file handle
+        return arg
+
+def toFn(expr):
+    if re.match(r"""^[a-zA-Z0-9_]+$""", expr):
+        # simple token: global function
+        return globals()[expr]
+    else:
+        m = re.match(r"""^([a-zA-Z0-9_]+)\((.*)\)$""", expr)
+        if m:
+            return globals()[m.group(1)](m.group(2))
+        else:
+            raise ValueError("Bad function spec %s" % expr)
+
+seen = {}
+
+@echo
+def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genwords, ahead=5, behind=5, limit=5, seen=seen):
     output = []
     with open(elsjson, 'r') as f:
         input = json.load(f)
     for hit in input["hits"]["hits"]:
+        docId = hit["_id"]
         for payload in hit["fields"]["hasBodyPart.text"]:
+            if seen.get(payload, False):
+                # already seen this one
+                continue
             payload = textConditioner(payload) if textConditioner else payload
+            print "=================================================================="
+            print payload
             if random.random() > ratio:
                 # we are interested in this instance
                 words = [word for word in generator(payload)]
@@ -105,33 +116,27 @@ def sample(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, genera
                         # we found it
                         start = max(i-behind, 0)
                         end = min(i+ahead, len(words))
-                        output.append(words[start:end])
+                        output.append([docId, words[start:end]])
                         if limit:
                             limit -= 1
                             if limit <= 0:
                                 return output
     return output
 
-from util import echo
-
-def is_valid_file(parser, arg):
-    if not os.path.exists(arg):
-        parser.error("The file %s does not exist!" % arg)
-    else:
-        # return open(arg, 'r')  # return an open file handle
-        return arg
-
 AHEAD=5
 BEHIND=5
 RATIO=0.5
 MATCHER="containsEye"
+GENERATOR="genwords"
+
 def main(argv=None):
     '''this is called if run from command line'''
     parser = argparse.ArgumentParser()
-    parser.add_argument("elsjson", help='input json file', type=lambda x: is_valid_file(parser, x))
+    parser.add_argument("elsjson", help='input json file', type=lambda x: isValidFileArg(parser, x))
     parser.add_argument('-r','--ratio', required=False, help='ratio of accepts', default=RATIO, type=float)
     parser.add_argument('-m','--matcher', required=False, default=MATCHER, type=str)
     parser.add_argument('-t','--textConditioner', required=False, default=None, type=str)
+    parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
     parser.add_argument('-a','--ahead','--after', required=False, default=AHEAD, type=int)
     parser.add_argument('-b','--behind','--before', required=False, default=BEHIND, type=int)
     parser.add_argument('-l','--limit', required=False, default=None, type=int)
@@ -139,12 +144,15 @@ def main(argv=None):
 
     elsjson = args.elsjson
     ratio = args.ratio
-    matcher = globals()[args.matcher]
+    # matcher = globals()[args.matcher]
+    matcher = toFn(args.matcher)
     textConditioner = globals()[args.textConditioner] if args.textConditioner else None
+    generator = globals()[args.generator]
     ahead = args.ahead
     behind = args.behind
     limit = args.limit
-    s = sample(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, ahead=ahead, behind=behind, limit=limit)
+    print [elsjson, ratio, matcher, textConditioner, generator, ahead, behind, limit]
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit)
     pprint.pprint(s)
 
 # call main() if this is run as standalone
