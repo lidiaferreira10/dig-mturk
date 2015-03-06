@@ -14,6 +14,7 @@ import nltk
 import itertools
 import argparse
 import pprint
+import hashlib
 from htmltoken import tokenize
 
 import util
@@ -131,8 +132,8 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                         # we found it
                         start = max(i-behind, 0)
                         end = min(i+ahead, len(words))
-                        output.append({"_id": docId, 
-                                       "_index": docIndex,
+                        output.append({"X-indexId": docId, 
+                                       "X-indexName": docIndex,
                                        "X-field": field,
                                        "X-matchAnchor": matcherName,
                                        "X-textConditioner": textConditionerName,
@@ -141,6 +142,7 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                                        "X-tokenStart": start,
                                        "X-tokenEnd": end,
                                        "X-elasticsearchJsonPathname": elsjson,
+                                       "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
                                        "tokens": words[start:end],
                                        "markup": " ".join(["<span>%s</span>" % word for word in words])
                                        })
