@@ -1,0 +1,30 @@
+[
+  {
+    "instructions_html": "",
+    "autoapproval": "",
+    "assignment_duration": "",
+    "hit_lifetime": "",
+    "qualifications": [
+      
+    ],
+    "description": "",
+    "title": "",
+    "keywords": "",
+    "num_assignments": "",
+    "reward": "",
+    "hit_sentences": [
+      {
+        "id": "1",
+        "sentence": "A \"Hello, world!\" program has become the traditional first program that many people learn."
+      }
+    ],
+    "categories": [
+      {
+        "label": "Person"
+      },
+      {
+        "label": "Organization"
+      }
+    ]
+  }
+]
