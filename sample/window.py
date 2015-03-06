@@ -92,14 +92,29 @@ def toFn(expr):
         else:
             raise ValueError("Bad function spec %s" % expr)
 
+def interpretFnSpec(s):
+    if isinstance(s, str):
+        fnName = s
+        fn = toFn(s)
+    else:
+        fnName = None
+        fn = s
+    return (fn, fnName)
+
 seen = {}
 
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, field="hasBodyPart.text", seen=seen):
+
+    matcher, matcherName = interpretFnSpec(matcher)
+    textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
+    generator, generatorName = interpretFnSpec(generator)
+
     output = []
     with open(elsjson, 'r') as f:
         input = json.load(f)
     for hit in input["hits"]["hits"]:
         docId = hit["_id"]
+        docIndex = hit["_index"]
         for payload in hit["fields"][field]:
             if seen.get(payload, False):
                 # already seen this one
@@ -114,7 +129,15 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                         start = max(i-behind, 0)
                         end = min(i+ahead, len(words))
                         output.append({"_id": docId, 
+                                       "_index": docIndex,
                                        "X-field": field,
+                                       "X-matchAnchor": matcherName,
+                                       "X-textConditioner": textConditionerName,
+                                       "X-generator": generatorName,
+                                       "X-window": ahead+behind+1,
+                                       "X-tokenStart": start,
+                                       "X-tokenEnd": end,
+                                       "X-elasticsearchJsonPathname": elsjson,
                                        "tokens": words[start:end]})
                         if limit:
                             limit -= 1
@@ -127,6 +150,7 @@ BEHIND=5
 RATIO=0.5
 MATCHER="containsEye"
 GENERATOR="genwords"
+TEXTCONDITIONER=None
 
 def main(argv=None):
     '''this is called if run from command line'''
@@ -134,7 +158,7 @@ def main(argv=None):
     parser.add_argument("elsjson", help='input json file', type=lambda x: isValidFileArg(parser, x))
     parser.add_argument('-r','--ratio', required=False, help='ratio of accepts', default=RATIO, type=float)
     parser.add_argument('-m','--matcher', required=False, default=MATCHER, type=str)
-    parser.add_argument('-t','--textConditioner', required=False, default=None, type=str)
+    parser.add_argument('-t','--textConditioner', required=False, default=TEXTCONDITIONER, type=str)
     parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
     parser.add_argument('-a','--ahead','--after', required=False, default=AHEAD, type=int)
     parser.add_argument('-b','--behind','--before', required=False, default=BEHIND, type=int)
@@ -143,16 +167,14 @@ def main(argv=None):
 
     elsjson = args.elsjson
     ratio = args.ratio
-    # matcher = globals()[args.matcher]
-    matcher = toFn(args.matcher)
-    textConditioner = globals()[args.textConditioner] if args.textConditioner else None
-    generator = globals()[args.generator]
+    matcher = args.matcher
+    textConditioner = args.textConditioner if args.textConditioner else None
+    generator = args.generator
     ahead = args.ahead
     behind = args.behind
     limit = args.limit
-    print [elsjson, ratio, matcher, textConditioner, generator, ahead, behind, limit]
     s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit)
-    pprint.pprint(s)
+    json.dump(s, sys.stdout, indent=4, sort_keys=True)
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
