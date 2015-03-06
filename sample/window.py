@@ -94,20 +94,17 @@ def toFn(expr):
 
 seen = {}
 
-@echo
-def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genwords, ahead=5, behind=5, limit=5, seen=seen):
+def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, field="hasBodyPart.text", seen=seen):
     output = []
     with open(elsjson, 'r') as f:
         input = json.load(f)
     for hit in input["hits"]["hits"]:
         docId = hit["_id"]
-        for payload in hit["fields"]["hasBodyPart.text"]:
+        for payload in hit["fields"][field]:
             if seen.get(payload, False):
                 # already seen this one
                 continue
             payload = textConditioner(payload) if textConditioner else payload
-            print "=================================================================="
-            print payload
             if random.random() > ratio:
                 # we are interested in this instance
                 words = [word for word in generator(payload)]
@@ -116,7 +113,9 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                         # we found it
                         start = max(i-behind, 0)
                         end = min(i+ahead, len(words))
-                        output.append([docId, words[start:end]])
+                        output.append({"_id": docId, 
+                                       "X-field": field,
+                                       "tokens": words[start:end]})
                         if limit:
                             limit -= 1
                             if limit <= 0:
