@@ -103,7 +103,7 @@ def interpretFnSpec(s):
 
 seen = {}
 
-def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, field="hasBodyPart.text", seen=seen):
+def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, field="hasBodyPart.text", shuffle=True, seen=seen):
 
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
@@ -112,7 +112,10 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
     output = []
     with open(elsjson, 'r') as f:
         input = json.load(f)
-    for hit in input["hits"]["hits"]:
+    hits = input["hits"]["hits"]
+    if shuffle:
+        random.shuffle(hits)
+    for hit in hits:
         docId = hit["_id"]
         docIndex = hit["_index"]
         for payload in hit["fields"][field]:
@@ -134,11 +137,13 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                                        "X-matchAnchor": matcherName,
                                        "X-textConditioner": textConditionerName,
                                        "X-generator": generatorName,
-                                       "X-window": ahead+behind+1,
+                                       "X-reqWindowWidth": ahead+behind+1,
                                        "X-tokenStart": start,
                                        "X-tokenEnd": end,
                                        "X-elasticsearchJsonPathname": elsjson,
-                                       "tokens": words[start:end]})
+                                       "tokens": words[start:end],
+                                       "markup": " ".join(["<span>%s</span>" % word for word in words])
+                                       })
                         if limit:
                             limit -= 1
                             if limit <= 0:
