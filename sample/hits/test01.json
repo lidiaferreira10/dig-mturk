@@ -1,7 +1,5 @@
 [
   {
-    "instructions_html": "<div class=\"alert alert-info\" role=\"alert\">For each example, click on the individual words to indicate all words which indicate the eye color of the <em>subject of the example.  Please 
-Pick the eye color",
     "instructions_html": " <div class=\"alert alert-info\" role=\"alert\"> For each sentence below do one of the following:<ul> <li> If the sentence contains text that describes the eye color of the subject(s) of the sentence, highlight the text and map it to corresponding category by clicking on the \"Eye Color\" box below.</li></ul><ul><li>Each mention of eye color in a sentence is differentiated by a different highlight color.</li>  <li> User can delete/modify a created tag.</li></ul> <li>If a sentence does not contain any enity, check \" No entity found in sentence\".</li> </ul> </div>",
     "autoapproval": "129600",
     "assignment_duration": "3600",
@@ -15,7 +13,7 @@ Pick the eye color",
       }
     ],
     "description": "Find mentions of eye color in text",
-    "title": "Find eye color"
+    "title": "Find eye color",
     "keywords": "classification, annotation, categorization, markup, natural language, identification",
     "num_assignments": "3",
     "reward": "0.05",
