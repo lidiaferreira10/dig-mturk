@@ -15,6 +15,7 @@ import itertools
 import argparse
 import pprint
 import hashlib
+import uuid
 from htmltoken import tokenize
 
 import util
@@ -102,24 +103,69 @@ def interpretFnSpec(s):
         fn = s
     return (fn, fnName)
 
-seen = {}
+"""categories      {{
+        "label": "Person"
+      }},
+      {{
+        "label": "Organization"
+      }}
+"""
 
-def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, field="hasBodyPart.text", shuffle=True, seen=seen):
+"""sentences
+      {{
+        "id": "1",
+        "sentence": "A \"Hello, world!\" program has become the traditional first program that many people learn."
+      }}
+"""
+
+FORMAT = """=[
+  {{
+    "instructions_html": "{instructions_html}",
+    "autoapproval": "",
+    "assignment_duration": "",
+    "hit_lifetime": "",
+    "qualifications": [{qualifications}],
+    "description": "{description}",
+    "title": "{title}",
+    "keywords": "{keywords}",
+    "num_assignments": "",
+    "reward": "",
+    "hit_sentences": [{sentences}],
+    "categories": [{categories}]
+  }}
+]"""
+
+def generateSentencesJson(jobname, output):
+    sentences = []
+    for d in output:
+        sentences.append({"id": d["id"],
+                          "sentence": " ".join(d["tokens"])})
+    return json.dumps(sentences)
+
+seen = {}
+def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
+            field="hasBodyPart.text", shuffle=True, seen=seen):
 
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
     generator, generatorName = interpretFnSpec(generator)
+    if format:
+        with open(format, 'r') as f:
+            format = f.read()
+    if not jobname:
+        jobname = str(uuid.uuid4())
 
     output = []
     with open(elsjson, 'r') as f:
         input = json.load(f)
-    hits = input["hits"]["hits"]
+    ehits = input["hits"]["hits"]
     if shuffle:
-        random.shuffle(hits)
-    for hit in hits:
-        docId = hit["_id"]
-        docIndex = hit["_index"]
-        for payload in hit["fields"][field]:
+        random.shuffle(ehits)
+    uid = None
+    for ehit in ehits:
+        docId = ehit["_id"]
+        docIndex = ehit["_index"]
+        for payload in ehit["fields"][field]:
             if seen.get(payload, False):
                 # already seen this one
                 continue
@@ -143,14 +189,21 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                                        "X-tokenEnd": end,
                                        "X-elasticsearchJsonPathname": elsjson,
                                        "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
-                                       "tokens": words[start:end],
-                                       "markup": " ".join(["<span>%s</span>" % word for word in words])
+                                       "tokens": words[start:end]
+                                       # "markup": " ".join(["<span>%s</span>" % word for word in words])
                                        })
                         if limit:
                             limit -= 1
                             if limit <= 0:
                                 return output
-    return output
+    if write:
+        data = generateSentencesJson(jobname, output)
+        outfile = 'hits/%s.json' % jobname
+        with open(outfile, 'w') as f:
+            f.write(format.format(sentences=data))
+        return outfile
+    else:
+        return output
 
 AHEAD=5
 BEHIND=5
@@ -170,6 +223,9 @@ def main(argv=None):
     parser.add_argument('-a','--ahead','--after', required=False, default=AHEAD, type=int)
     parser.add_argument('-b','--behind','--before', required=False, default=BEHIND, type=int)
     parser.add_argument('-l','--limit', required=False, default=None, type=int)
+    parser.add_argument('-w','--write', required=False, action='store_true')
+    parser.add_argument('-f','--format', required=False, help='format template', type=lambda x: isValidFileArg(parser, x))
+    parser.add_argument('-j','--jobname', required=False, help='format template', type=str, default=None)
     args=parser.parse_args()
 
     elsjson = args.elsjson
@@ -180,8 +236,11 @@ def main(argv=None):
     ahead = args.ahead
     behind = args.behind
     limit = args.limit
-    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit)
-    json.dump(s, sys.stdout, indent=4, sort_keys=True)
+    write = args.write
+    format = args.format
+    jobname = args.jobname
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname)
+    # json.dump(s, sys.stdout, indent=4, sort_keys=True)
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
