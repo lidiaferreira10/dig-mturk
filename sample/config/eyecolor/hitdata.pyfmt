@@ -1,0 +1,20 @@
+[
+  {{
+    "instructions_html": "Pick the eye color",
+    "autoapproval": "",
+    "assignment_duration": "",
+    "hit_lifetime": "",
+    "qualifications": [
+      
+    ],
+    "description": "Pick the eye color description",
+    "title": "Pick the eye color title",
+    "keywords": "classification, annotation, categorization, markup, natural language",
+    "num_assignments": "",
+    "reward": "",
+    "hit_sentences": [{sentences}],
+    "categories": [{{
+        "label": "Eye color"
+      }},
+  }}
+]
