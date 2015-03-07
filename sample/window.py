@@ -209,7 +209,7 @@ AHEAD=5
 BEHIND=5
 RATIO=0.5
 MATCHER="containsEye"
-GENERATOR="genwords"
+GENERATOR="gentokens"
 TEXTCONDITIONER=None
 
 def main(argv=None):
