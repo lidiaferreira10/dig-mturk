@@ -1,0 +1,20 @@
+[
+  {
+    "instructions_html": "Pick the eye color",
+    "autoapproval": "",
+    "assignment_duration": "",
+    "hit_lifetime": "",
+    "qualifications": [
+      
+    ],
+    "description": "Pick the eye color description",
+    "title": "Pick the eye color title",
+    "keywords": "classification, annotation, categorization, markup, natural language",
+    "num_assignments": "",
+    "reward": "",
+    "hit_sentences": [[{"id": "0c2fa3fffba38c73894991e9d72547758e6f4f0b", "sentence": "5 ' 7 thick light skinned blue eye . end of discussion <br/> 9105502784 ."}, {"id": "26f82456a73a6005788ec976065aaf52997cb95e", "sentence": "135lbs 34c Sexy curves soft smooth skin blonde hair blue eyes simply stunning serious gentlemen onlySweet EYE - CANDY ."}, {"id": "687e764f713b7ef142037aace91752d793789335", "sentence": "skin blonde hair blue eyes simply stunning serious gentlemen onlySweet EYE - CANDY . upscale mature professional Vanessa 8082238610 ."}, {"id": "06b03a13170f2837b2b7769bca055e92f31044ba", "sentence": "fun just passing thru so call ASAP All American blue eye beauty call 612 - 223 - 9989 ask for"}, {"id": "97e06fae39a1399e3b980d1c85106dd3129a7e96", "sentence": "Blue eye Barbie - 20"}]],
+    "categories": [{
+        "label": "Eye color"
+      },
+  }
+]
