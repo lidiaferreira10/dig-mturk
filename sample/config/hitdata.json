@@ -1,21 +1,63 @@
 [
   {
-    "instructions_html": "",
-    "autoapproval": "",
-    "assignment_duration": "",
-    "hit_lifetime": "",
+    "instructions_html": " <div class=\"alert alert-info\" role=\"alert\"> For each sentence below do one of the following:<ul> <li> If the sentence contains text that belongs to one of the categories, highlight the text and map it to corresponding category.</li> <ul> <li>The categories to be identified are Person, Organization and Location. </li><li>Tags in a sentence are differentiated by color code.</li>  <li> User can delete/modify a created tag.</li></ul> <li>If a sentence do not contain any enity, check \" No entity found in sentence\".</li> </ul> </div>",
+    "autoapproval": "129600",
+    "assignment_duration": "3600",
+    "hit_lifetime": "3000",
     "qualifications": [
-      
+      {
+        "id": "",
+        "comparator": "",
+        "value": "",
+        "private": ""
+      }
     ],
-    "description": "",
-    "title": "",
-    "keywords": "",
-    "num_assignments": "",
-    "reward": "",
+    "description": "Classify words in the sentences below.",
+    "title": "Name Entity Recognition",
+    "keywords": "classification, categorization, person, organization, location, name entity recognition",
+    "num_assignments": "3",
+    "reward": "0.05",
     "hit_sentences": [
       {
-        "id": "1",
-        "sentence": "A \"Hello, world!\" program has become the traditional first program that many people learn."
+        "id": "sent1",
+        "sentence": "Your results have been submitted to Aisoftware Research and will be approved or rejected shortly."
+      },
+	  {
+        "id": "sent2",
+        "sentence": "Your results have been submitted to Aisoftware Research."
+      }
+    ],
+    "categories": [
+      {
+        "label": "Person"
+      },
+      {
+        "label": "Organization"
+      }
+    ]
+  },
+   {
+    "instructions_html": " <div class=\"alert alert-info\" role=\"alert\"> For each sentence below do one of the following:<ul> <li> If the sentence contains text that belongs to one of the categories, highlight the text and map it to corresponding category.</li> <ul> <li>The categories to be identified are Person, Organization and Location. </li><li>Tags in a sentence are differentiated by color code.</li>  <li> User can delete/modify a created tag.</li></ul> <li>If a sentence do not contain any enity, check \" No entity found in sentence\".</li> </ul> </div>",
+    "autoapproval": "129600",
+    "assignment_duration": "3600",
+    "hit_lifetime": "3000",
+    "qualifications": [
+      {
+        "id": "",
+        "comparator": "",
+        "value": "",
+        "private": ""
+      }
+    ],
+    "description": "Classify words in the sentences below.",
+    "title": "Name Entity Recognition",
+    "keywords": "classification, categorization, person, organization, location, name entity recognition",
+    "num_assignments": "1",
+    "reward": "0.06",
+    "hit_sentences": [
+	  {
+        "id": "sent2",
+        "sentence": "The categories to be identified are Person, Organization and Location."
       }
     ],
     "categories": [
