@@ -1,0 +1,36 @@
+Assumptions:
+1. Map all html tags to single distinguished token ("[?]" herein).  Do
+not render to annotator, but show distinguished token instead.  Also
+pass distinguished token to CRF in sequence.
+2. Trying to learn each color separately
+3. o=out of vocab, B=brown hair, M=markup
+
+	I have brown hair and weigh 100 pounds
+A.	o o    B     B    o   o     o   o
+B.	o o    B     o    o   o     o   o
+
+	My hair is dark brown and my eyes are light brown
+A.	o  B	o  B	B     o	  o  o	  o   o	    o
+B.	o  o	o  o	B     o	  o  o	  o   o	    o
+C.	o  o	o  B	B     o	  o  o	  o   o	    o
+
+	Hair Color : brown <br/> Eye Color : brown
+	Hair Color : brown [?]   Eye Color : brown
+A.	B   B	   B B	   o	 o   o	   o o
+B.	o   o	   o B	   o	 o   o	   o o
+
+	<i> <b> Hair Color </b> : <tt> brown </tt> </i> <br/>
+	[?] [?] Hair Color [?]  : [?]  brown [?]   [?]	[?]
+A.	o   o	B    B	   B	B B    B     o	   o	o
+B.	o   o	o    o	   o	o o    B     o	   o	o
+C	M   M	o    o	   M	o M    B     M	   M	M
+
+	My long chestnut tresses complement my deep brown eyes
+A.	o  o	B	 B	 o	    o  o    o	  o
+B.	o  o	B	 o	 o	    o  o    o	  o
+
+
+	I have brown eyes and brown hair ; she has brown hair and brown eyes
+A.	o o    o     o	  o   B1    B1	 o o   o   B2	 B2   o	  o	o
+B.	o o    o     o	  o   B1    o	 o o   o   B2	 o    o	  o	o
+ 
