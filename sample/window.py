@@ -16,7 +16,7 @@ import argparse
 import pprint
 import hashlib
 import uuid
-from htmltoken import tokenize
+from htmltoken import tokenize, bucketize
 
 import util
 from util import echo
@@ -58,7 +58,11 @@ def genwords(text):
 
 def gentokens(text):
     for tok in tokenize(text):
-        yield tok    
+        yield tok
+
+def genbucketized(text):
+    for tok in tokenize(text, interpret=bucketize):
+        yield tok
 
 def containsEye(w):
     try:
