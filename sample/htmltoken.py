@@ -6,6 +6,8 @@ import argparse
 import pprint
 from HTMLParser import HTMLParser
 
+from util import identity
+
 class HTMLTokenizer(HTMLParser):
 
     def __init__(self):
@@ -43,12 +45,20 @@ DATA = ["this is regular text",
         "&#123; &#xA4; &#xa4; &gt;"
         ]
 
-def tokenize(document):
+def bucketize(x, bucketName='__HTMLMARKUP__'):
+    try:
+        if x[0] in '<':
+            return bucketName
+    except:
+        pass
+    return x
+
+def tokenize(document, interpret=identity):
     tokenizer = HTMLTokenizer()
     tokenizer.feed(document)
     tokenized = tokenizer.buffer
     tokenizer.close()
-    return tokenized
+    return [interpret(t) for t in tokenized]
 
 def sample():
     """Reuses tokenizer"""
