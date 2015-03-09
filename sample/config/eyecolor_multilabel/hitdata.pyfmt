@@ -22,6 +22,7 @@
                    {{"label": "Green Eyes"}},
                    {{"label": "Hazel Eyes"}},
                    {{"label": "Gray Eyes"}},
+                   {{"label": "Amber Eyes"}},
                    {{"label": "Other Eye Color"}},
                    {{"label": "No Eye Color Found"}}
     ]
