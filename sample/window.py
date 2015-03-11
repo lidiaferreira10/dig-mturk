@@ -18,11 +18,22 @@ import hashlib
 import uuid
 from htmltoken import tokenize, bucketize
 
+import boto
+from boto.s3.key import Key
+from boto.s3.connection import S3Connection
+AISOFTWARERESEARCH_ACCESS_KEY = "AKIAJXVHBPREW3VJBR3Q"
+AISOFTWARERESEARCH_SECRET_KEY = "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"
+BUCKETNAME = 'aisoftwareresearch'
+
+import StringIO
+
 import util
 from util import echo
 
 SEED = 20150304
 random.seed(SEED)
+
+
 
 def truth(*args):
     return True
@@ -63,6 +74,12 @@ def gentokens(text):
 def genbucketized(text):
     for tok in tokenize(text, interpret=bucketize):
         yield tok
+
+# from htmltoken import HTMLTokenizer
+# htok = HTMLTokenizer()
+# doc = 'this is a short document <b>!</b>'
+# htok.mytokenize(doc)
+# exit()
 
 def containsEye(w):
     try:
@@ -147,8 +164,9 @@ def generateSentencesJson(jobname, output):
     return json.dumps(sentences)
 
 seen = {}
+@echo
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
-            field="hasBodyPart.text", shuffle=True, seen=seen):
+            field="hasBodyPart.text", shuffle=True, seen=seen, cloud=False):
 
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
@@ -166,46 +184,61 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
     if shuffle:
         random.shuffle(ehits)
     uid = None
-    for ehit in ehits:
-        docId = ehit["_id"]
-        docIndex = ehit["_index"]
-        for payload in ehit["fields"][field]:
-            if seen.get(payload, False):
-                # already seen this one
-                continue
-            payload = textConditioner(payload) if textConditioner else payload
-            if random.random() > ratio:
-                # we are interested in this instance
-                words = [word for word in generator(payload)]
-                for (word, i) in itertools.izip(words, itertools.count()):
-                    if matcher(word):
-                        # we found it
-                        start = max(i-behind, 0)
-                        end = min(i+ahead, len(words))
-                        output.append({"X-indexId": docId, 
-                                       "X-indexName": docIndex,
-                                       "X-field": field,
-                                       "X-matchAnchor": matcherName,
-                                       "X-textConditioner": textConditionerName,
-                                       "X-generator": generatorName,
-                                       "X-reqWindowWidth": ahead+behind+1,
-                                       "X-tokenStart": start,
-                                       "X-tokenEnd": end,
-                                       "X-elasticsearchJsonPathname": elsjson,
-                                       "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
-                                       "tokens": words[start:end]
-                                       # "markup": " ".join(["<span>%s</span>" % word for word in words])
-                                       })
-                        if limit:
-                            limit -= 1
-                            if limit <= 0:
-                                return output
+
+    def nested(limit):
+        for ehit in ehits:
+            docId = ehit["_id"]
+            docIndex = ehit["_index"]
+            for payload in ehit["fields"][field]:
+                if seen.get(payload, False):
+                    # already seen this one
+                    continue
+                payload = textConditioner(payload) if textConditioner else payload
+                if random.random() > ratio:
+                    # we are interested in this instance
+                    words = [word for word in generator(payload)]
+                    for (word, i) in itertools.izip(words, itertools.count()):
+                        if matcher(word):
+                            # we found it
+                            start = max(i-behind, 0)
+                            end = min(i+ahead, len(words))
+                            output.append({"X-indexId": docId, 
+                                           "X-indexName": docIndex,
+                                           "X-field": field,
+                                           "X-matchAnchor": matcherName,
+                                           "X-textConditioner": textConditionerName,
+                                           "X-generator": generatorName,
+                                           "X-reqWindowWidth": ahead+behind+1,
+                                           "X-tokenStart": start,
+                                           "X-tokenEnd": end,
+                                           "X-elasticsearchJsonPathname": elsjson,
+                                           "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
+                                           "tokens": words[start:end]
+                                           # "markup": " ".join(["<span>%s</span>" % word for word in words])
+                                           })
+                            if limit:
+                                limit -= 1
+                                if limit <= 0:
+                                    return output
+    nested(limit)
     if write:
         data = generateSentencesJson(jobname, output)
-        outfile = 'hits/%s.json' % jobname
-        with open(outfile, 'w') as f:
-            f.write(format.format(sentences=data))
-        return outfile
+        outfile = 'config/%s.json' % jobname
+        sio = StringIO.StringIO()
+        sio.write(format.format(sentences=data))
+        if cloud:
+            conn = S3Connection(AISOFTWARERESEARCH_ACCESS_KEY, AISOFTWARERESEARCH_SECRET_KEY)
+            c = boto.connect_s3()
+            b = c.get_bucket(BUCKETNAME)
+            keyName = 'ner/%s/%s' % (jobname, outfile)
+            k = b.new_key(keyName)
+            k.set_contents_from_string(sio.getvalue())
+            k.set_canned_acl('public-read')
+            return "https://s3-us-west-2.amazonaws.com/aisoftwareresearch/%s" % keyName
+        else:
+            with open(outfile, 'w') as f:
+                f.write(sio.getvalue())
+            return outfile
     else:
         return output
 
@@ -229,7 +262,8 @@ def main(argv=None):
     parser.add_argument('-l','--limit', required=False, default=None, type=int)
     parser.add_argument('-w','--write', required=False, action='store_true')
     parser.add_argument('-f','--format', required=False, help='format template', type=lambda x: isValidFileArg(parser, x))
-    parser.add_argument('-j','--jobname', required=False, help='format template', type=str, default=None)
+    parser.add_argument('-j','--jobname', required=False, help='jobname', type=str, default=None)
+    parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
     args=parser.parse_args()
 
     elsjson = args.elsjson
@@ -243,7 +277,8 @@ def main(argv=None):
     write = args.write
     format = args.format
     jobname = args.jobname
-    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname)
+    cloud = args.cloud
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud)
     # json.dump(s, sys.stdout, indent=4, sort_keys=True)
 
 # call main() if this is run as standalone
