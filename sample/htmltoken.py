@@ -39,6 +39,27 @@ class HTMLTokenizer(HTMLParser):
     def handle_decl(data):
         pass
 
+#     def myidentity(self, token):
+#         return token
+
+#     def myescape(self, token):
+#         print [self, token]
+#         try:
+#             token = str(token)
+#             if token.startswith('<'):
+#                 return self.escape(token)
+#         except:
+#             pass
+#         return token
+
+#     def mytokenize(self, document, myinterpret=myidentity):
+#         tokenizer = HTMLTokenizer()
+#         tokenizer.feed(document)
+#         tokenized = tokenizer.buffer
+#         tokenizer.close()
+#         return [myinterpret(t) for t in tokenized]
+
+
 DATA = ["this is regular text",
         "<br/>text with<br/>breaks",
         """<a href="bobo"><b>bold<i>bold, italic<tt>bold italic tt</tt>more bi</i>more bold</b>just text</a>and more text""",
