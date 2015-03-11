@@ -22,6 +22,7 @@ import boto
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
 BUCKETNAME = 'aisoftwareresearch'
+PROFILE_NAME = 'aisoftwareresearch'
 
 import StringIO
 import cgi
@@ -224,8 +225,7 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         sio = StringIO.StringIO()
         sio.write(format.format(sentences=data))
         if cloud:
-            conn = S3Connection(AISOFTWARERESEARCH_ACCESS_KEY, AISOFTWARERESEARCH_SECRET_KEY)
-            c = boto.connect_s3()
+            c = boto.connect_s3(profile_name=PROFILE_NAME)
             b = c.get_bucket(BUCKETNAME)
             keyName = 'ner/%s/%s' % (jobname, outfile)
             k = b.new_key(keyName)
