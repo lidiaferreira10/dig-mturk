@@ -26,6 +26,7 @@ AISOFTWARERESEARCH_SECRET_KEY = "oLqLcfW7T1oUPFdp0ATEeaMR5hzsnxLZl7egUcOK"
 BUCKETNAME = 'aisoftwareresearch'
 
 import StringIO
+import cgi
 
 import util
 from util import echo
@@ -75,11 +76,9 @@ def genbucketized(text):
     for tok in tokenize(text, interpret=bucketize):
         yield tok
 
-# from htmltoken import HTMLTokenizer
-# htok = HTMLTokenizer()
-# doc = 'this is a short document <b>!</b>'
-# htok.mytokenize(doc)
-# exit()
+def genescaped(text):
+    for tok in tokenize(text, interpret=cgi.escape):
+        yield tok
 
 def containsEye(w):
     try:
@@ -165,7 +164,7 @@ def generateSentencesJson(jobname, output):
 
 seen = {}
 @echo
-def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=gentokens, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
+def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
             field="hasBodyPart.text", shuffle=True, seen=seen, cloud=False):
 
     matcher, matcherName = interpretFnSpec(matcher)
@@ -246,7 +245,7 @@ AHEAD=5
 BEHIND=5
 RATIO=0.5
 MATCHER="containsEye"
-GENERATOR="gentokens"
+GENERATOR="genescaped"
 TEXTCONDITIONER=None
 
 def main(argv=None):
