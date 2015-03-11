@@ -21,8 +21,6 @@ from htmltoken import tokenize, bucketize
 import boto
 from boto.s3.key import Key
 from boto.s3.connection import S3Connection
-AISOFTWARERESEARCH_ACCESS_KEY = "AKIAJXVHBPREW3VJBR3Q"
-AISOFTWARERESEARCH_SECRET_KEY = "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"
 BUCKETNAME = 'aisoftwareresearch'
 
 import StringIO
