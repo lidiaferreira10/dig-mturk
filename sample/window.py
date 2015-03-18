@@ -169,11 +169,10 @@ MATCHER="containsEye"
 GENERATOR="genescaped"
 TEXTCONDITIONER=None
 CHECK=lambda x: None
-VALIDATE=False
 
 seen = {}
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
-            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK, validate=VALIDATE):
+            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK):
 
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
@@ -248,11 +247,11 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         sio = StringIO.StringIO()
         sio.write(format.format(sentences=data))
         jdata = sio.getvalue()
-        if validate:
-            try:
-                json.loads(jdata)
-            except:
-                print >> sys.stderr, "Invalid JSON"
+        # Validate the JSON
+        try:
+            json.loads(jdata)
+        except:
+            print >> sys.stderr, "Invalid JSON"
         if cloud:
             c = boto.connect_s3(profile_name=PROFILE_NAME)
             b = c.get_bucket(BUCKETNAME)
@@ -285,7 +284,6 @@ def main(argv=None):
     parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
     parser.add_argument('-e','--field', required=False, help='field', type=str, default="hasBodyPart.text.english")
     parser.add_argument('-x','--check', required=False, help='check', type=str, default=CHECK)
-    parser.add_argument('-y','--validate', required=False, help='validate', action='store_true')
     args=parser.parse_args()
 
     elsjson = args.elsjson
@@ -302,9 +300,7 @@ def main(argv=None):
     cloud = args.cloud
     field = args.field
     check = args.check
-    validate = args.validate
-    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud, field=field, check=check, validate=validate)
-    # json.dump(s, sys.stdout, indent=4, sort_keys=True)
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud, field=field, check=check)
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
