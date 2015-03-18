@@ -161,10 +161,18 @@ def generateSentencesJson(jobname, output):
                           "sentence": " ".join(d["tokens"])})
     return json.dumps(sentences)
 
+
+AHEAD=5
+BEHIND=5
+RATIO=0.5
+MATCHER="containsEye"
+GENERATOR="genescaped"
+TEXTCONDITIONER=None
+CHECK=lambda x: None
+
 seen = {}
-@echo
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
-            field="hasBodyPart.text", shuffle=True, seen=seen, cloud=False):
+            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK):
 
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
@@ -174,6 +182,10 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
             format = f.read()
     if not jobname:
         jobname = str(uuid.uuid4())
+    if shuffle==None:
+        # unspecified, so default
+        # pass shuffle=False if you are sure you want to turn if off
+        shuffle = ratio>0
 
     output = []
     with open(elsjson, 'r') as f:
@@ -187,37 +199,47 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         for ehit in ehits:
             docId = ehit["_id"]
             docIndex = ehit["_index"]
-            for payload in ehit["fields"][field]:
-                if seen.get(payload, False):
-                    # already seen this one
-                    continue
-                payload = textConditioner(payload) if textConditioner else payload
-                if random.random() > ratio:
-                    # we are interested in this instance
-                    words = [word for word in generator(payload)]
-                    for (word, i) in itertools.izip(words, itertools.count()):
-                        if matcher(word):
-                            # we found it
-                            start = max(i-behind, 0)
-                            end = min(i+ahead, len(words))
-                            output.append({"X-indexId": docId, 
-                                           "X-indexName": docIndex,
-                                           "X-field": field,
-                                           "X-matchAnchor": matcherName,
-                                           "X-textConditioner": textConditionerName,
-                                           "X-generator": generatorName,
-                                           "X-reqWindowWidth": ahead+behind+1,
-                                           "X-tokenStart": start,
-                                           "X-tokenEnd": end,
-                                           "X-elasticsearchJsonPathname": elsjson,
-                                           "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
-                                           "tokens": words[start:end]
-                                           # "markup": " ".join(["<span>%s</span>" % word for word in words])
-                                           })
-                            if limit:
-                                limit -= 1
-                                if limit <= 0:
-                                    return output
+            fields = ehit.get("fields")
+            payloads = fields and fields.get(field, [])
+            if payloads:
+                for payload in ehit["fields"][field]:
+                    if seen.get(payload, False):
+                        # already seen this one
+                        continue
+                    payload = textConditioner(payload) if textConditioner else payload
+                    problem = check(payload)
+                    if problem:
+                        continue
+                    if random.random() > ratio:
+                        print "processing"
+                        # we are interested in this instance
+                        words = [word for word in generator(payload)]
+                        for (word, i) in itertools.izip(words, itertools.count()):
+                            if matcher(word):
+                                # we found it
+                                start = max(i-behind, 0)
+                                end = min(i+ahead, len(words))
+                                output.append({"X-indexId": docId, 
+                                               "X-indexName": docIndex,
+                                               "X-field": field,
+                                               "X-matchAnchor": matcherName,
+                                               "X-textConditioner": textConditionerName,
+                                               "X-generator": generatorName,
+                                               "X-reqWindowWidth": ahead+behind+1,
+                                               "X-tokenStart": start,
+                                               "X-tokenEnd": end,
+                                               "X-elasticsearchJsonPathname": elsjson,
+                                               "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
+                                               "tokens": words[start:end]
+                                               # "markup": " ".join(["<span>%s</span>" % word for word in words])
+                                               })
+                                if limit:
+                                    limit -= 1
+                                    if limit <= 0:
+                                        return output
+            else:
+                print >> sys.stderr, "broken row [%s] %r" % (problem, ehit)
+
     nested(limit)
     if write:
         data = generateSentencesJson(jobname, output)
@@ -239,13 +261,6 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
     else:
         return output
 
-AHEAD=5
-BEHIND=5
-RATIO=0.5
-MATCHER="containsEye"
-GENERATOR="genescaped"
-TEXTCONDITIONER=None
-
 def main(argv=None):
     '''this is called if run from command line'''
     parser = argparse.ArgumentParser()
@@ -261,6 +276,8 @@ def main(argv=None):
     parser.add_argument('-f','--format', required=False, help='format template', type=lambda x: isValidFileArg(parser, x))
     parser.add_argument('-j','--jobname', required=False, help='jobname', type=str, default=None)
     parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
+    parser.add_argument('-e','--field', required=False, help='field', type=str, default="hasBodyPart.text.english")
+    parser.add_argument('-x','--check', required=False, help='check', type=str, default=CHECK)
     args=parser.parse_args()
 
     elsjson = args.elsjson
@@ -275,7 +292,9 @@ def main(argv=None):
     format = args.format
     jobname = args.jobname
     cloud = args.cloud
-    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud)
+    field = args.field
+    check = args.check
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud, field=field, check=check)
     # json.dump(s, sys.stdout, indent=4, sort_keys=True)
 
 # call main() if this is run as standalone
