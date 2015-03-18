@@ -95,6 +95,9 @@ def contains(t):
             return False
     return inner
 
+def truth(t):
+    return True
+
 def isValidFileArg(parser, arg):
     if not os.path.exists(arg):
         parser.error("The file %s does not exist!" % arg)
@@ -170,6 +173,21 @@ GENERATOR="genescaped"
 TEXTCONDITIONER=None
 CHECK=lambda x: None
 
+def generateMatchContexts(words, behind, ahead, matcher):
+    if ahead and behind:
+        # multiple matches
+        for (word, i) in itertools.izip(words, itertools.count()):
+            if matcher(word):
+                # we found it
+                start = max(i-behind, 0)
+                end = min(i+ahead, len(words))
+                yield (start, end)
+    elif len(words)>0 and matcher(words[0]):
+        # single match of whole thing
+        yield (0, len(words))
+    else:
+        return
+
 seen = {}
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
             field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK):
@@ -211,32 +229,29 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                     if problem:
                         continue
                     if random.random() > ratio:
-                        print "processing"
+                        print "processing %s" % docId
                         # we are interested in this instance
                         words = [word for word in generator(payload)]
-                        for (word, i) in itertools.izip(words, itertools.count()):
-                            if matcher(word):
-                                # we found it
-                                start = max(i-behind, 0)
-                                end = min(i+ahead, len(words))
-                                output.append({"X-indexId": docId, 
-                                               "X-indexName": docIndex,
-                                               "X-field": field,
-                                               "X-matchAnchor": matcherName,
-                                               "X-textConditioner": textConditionerName,
-                                               "X-generator": generatorName,
-                                               "X-reqWindowWidth": ahead+behind+1,
-                                               "X-tokenStart": start,
-                                               "X-tokenEnd": end,
-                                               "X-elasticsearchJsonPathname": elsjson,
-                                               "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
-                                               "tokens": words[start:end]
-                                               # "markup": " ".join(["<span>%s</span>" % word for word in words])
-                                               })
-                                if limit:
-                                    limit -= 1
-                                    if limit <= 0:
-                                        return output
+                        # all matches or just one match:
+                        for (start, end) in generateMatchContexts(words, behind, ahead, matcher):
+                            output.append({"X-indexId": docId, 
+                                           "X-indexName": docIndex,
+                                           "X-field": field,
+                                           "X-matchAnchor": matcherName,
+                                           "X-textConditioner": textConditionerName,
+                                           "X-generator": generatorName,
+                                           "X-reqWindowWidth": (end-start)+1,
+                                           "X-tokenStart": start,
+                                           "X-tokenEnd": end,
+                                           "X-elasticsearchJsonPathname": elsjson,
+                                           "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
+                                           "tokens": words[start:end]
+                                           # "markup": " ".join(["<span>%s</span>" % word for word in words])
+                                           })
+                            if limit:
+                                limit -= 1
+                                if limit <= 0:
+                                    return output
             else:
                 print >> sys.stderr, "broken row [%s] %r" % (problem, ehit)
 
@@ -250,8 +265,8 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         # Validate the JSON
         try:
             json.loads(jdata)
-        except:
-            print >> sys.stderr, "Invalid JSON"
+        except Exception as e:
+            print >> sys.stderr, "Invalid JSON [%r]" % e
         if cloud:
             c = boto.connect_s3(profile_name=PROFILE_NAME)
             b = c.get_bucket(BUCKETNAME)
@@ -300,7 +315,8 @@ def main(argv=None):
     cloud = args.cloud
     field = args.field
     check = args.check
-    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud, field=field, check=check)
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, 
+                behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud, field=field, check=check)
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
