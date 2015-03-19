@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.json.Json;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -63,12 +65,11 @@ public class HTMLpage {
 		JSONParser parser = new JSONParser();
 		String category = new String(), instructions, title;
 		Map<String, String> sentences = new HashMap<String, String>();
-		String filename = "", scratch_categories = "";
+		String filename = "";
+		JSONArray scratch_categories;
 
 		try {
 			s3client.setEndpoint("s3-us-west-2.amazonaws.com");
-			System.out.println(bucketName + "      fdfsdfsdfsd        "
-					+ JSONkey);
 			S3Object object = s3client.getObject(new GetObjectRequest(
 					bucketName, JSONkey));
 			InputStream objectData = object.getObjectContent();
@@ -82,8 +83,7 @@ public class HTMLpage {
 				instructions = (String) jsonObject.get("instructions_html");
 				title = (String) jsonObject.get("title");
 				JSONArray categories = (JSONArray) jsonObject.get("categories");
-				scratch_categories = jsonObject.get("scratch_categories")
-						.toString();
+				scratch_categories = (JSONArray) jsonObject.get("scratch_categories");
 				Iterator<?> categoryIter = categories.iterator();
 				while (categoryIter.hasNext()) {
 					JSONObject innerObj = (JSONObject) categoryIter.next();
@@ -168,7 +168,7 @@ public class HTMLpage {
 
 	public void generateHTML(String title, String instructions,
 			String categories, Map<String, String> sentences, String filename,
-			String scratch_categories) {
+			JSONArray scratch_categories) {
 		int linenum = 1;
 		try {
 			OutputStream htmlfile = new FileOutputStream(new File(
@@ -229,15 +229,20 @@ public class HTMLpage {
 	 * HTML mark up for the panel
 	 */
 	public String createPanel(int linenum, String sentence,
-			String scratch_categories) {
+			 JSONArray scratch_categories) {
 
 		String panelHTML = "<div class=\"panel panel-primary\" name=\"parent_container\">";
 		panelHTML += "<div class=\"panel-body\" id=\"container_" + linenum
 				+ "\">	<div class=\"sentence\" id=\"sentence_" + linenum
 				+ "\"> " + sentence + "</div> </div>";
-		if (scratch_categories.length() > 0)
+		Iterator<?> categoryIter = scratch_categories.iterator();
+		while (categoryIter.hasNext()) {
+			JSONObject innerObj = (JSONObject) categoryIter.next();
 			panelHTML += "<div class=\"checkbox custom_checkbox\"><label> <input type=\"checkbox\">"
-					+ scratch_categories + "</label> </div></div>";
+					+innerObj.get("label") + "</label> </div>";
+		}
+		
+		panelHTML += "</div>";
 		return panelHTML;
 	}
 
