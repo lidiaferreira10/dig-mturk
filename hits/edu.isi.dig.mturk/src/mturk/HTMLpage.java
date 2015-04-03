@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.json.Json;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -83,7 +81,8 @@ public class HTMLpage {
 				instructions = (String) jsonObject.get("instructions_html");
 				title = (String) jsonObject.get("title");
 				JSONArray categories = (JSONArray) jsonObject.get("categories");
-				scratch_categories = (JSONArray) jsonObject.get("scratch_categories");
+				scratch_categories = (JSONArray) jsonObject
+						.get("scratch_categories");
 				Iterator<?> categoryIter = categories.iterator();
 				while (categoryIter.hasNext()) {
 					JSONObject innerObj = (JSONObject) categoryIter.next();
@@ -209,7 +208,7 @@ public class HTMLpage {
 				@SuppressWarnings("rawtypes")
 				Map.Entry pair = (Map.Entry) sentIter.next();
 				printhtml.println(createPanel(linenum, pair.getValue()
-						.toString(), scratch_categories));
+						.toString(), categories, scratch_categories));
 				linenum++;
 			}
 			printhtml.println(htmlfooter);
@@ -228,20 +227,30 @@ public class HTMLpage {
 	 * panel. It usually contains "no entity present" Output: String containing
 	 * HTML mark up for the panel
 	 */
-	public String createPanel(int linenum, String sentence,
-			 JSONArray scratch_categories) {
+	public String createPanel(int linenum, String sentence, String category,
+			JSONArray scratch_categories) {
 
 		String panelHTML = "<div class=\"panel panel-primary\" name=\"parent_container\">";
 		panelHTML += "<div class=\"panel-body\" id=\"container_" + linenum
 				+ "\">	<div class=\"sentence\" id=\"sentence_" + linenum
 				+ "\"> " + sentence + "</div> </div>";
+		/* create a dummy tag*/
+		String[] categories = category.split(",");
+		panelHTML += "<div class=\"row sample_tag\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Please select text first.\">"
+				+ "<div class=\"col-xs-1\"></div><div class=\"col-xs-2\"><span class=\"glyphicon glyphicon-triangle-right\"></span></div>"
+				+ "<div class=\"col-xs-1\"></div><div name=\"radio_container\" class=\"col-xs-7\"><div class=\"row\">";
+		for (int i = 0; i < categories.length; i++) {
+			panelHTML += "<div class=\"col-xs-3\"><label class=\"radio-inline\"><input type=\"radio\" name=\"sample\" value=\"\" disabled>"+ categories[i]+"</label></div>";
+		}
+		panelHTML += "</div></div><div class=\"col-xs-1\"><button class=\"deleteBtn glyphicon glyphicon-remove\" name=\"deleteTag\" disabled></button></div></div>";
+		
 		Iterator<?> categoryIter = scratch_categories.iterator();
 		while (categoryIter.hasNext()) {
 			JSONObject innerObj = (JSONObject) categoryIter.next();
 			panelHTML += "<div class=\"checkbox custom_checkbox\"><label> <input type=\"checkbox\">"
-					+innerObj.get("label") + "</label> </div>";
+					+ innerObj.get("label") + "</label> </div>";
 		}
-		
+
 		panelHTML += "</div>";
 		return panelHTML;
 	}
