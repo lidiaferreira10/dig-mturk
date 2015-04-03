@@ -189,8 +189,10 @@ def generateMatchContexts(words, behind, ahead, matcher):
         return
 
 seen = {}
-def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, limit=5, write=False, format=None, jobname=None,
-            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK):
+def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, 
+            limit=5, write=False, format=None, jobname=None,
+            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK,
+            verbose=False):
 
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
@@ -218,7 +220,12 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
             docId = ehit["_id"]
             docIndex = ehit["_index"]
             fields = ehit.get("fields")
+            if verbose:
+                print >> sys.stderr, "Ehit: %r" % (ehit)
             payloads = fields and fields.get(field, [])
+            if verbose:
+                print >> sys.stderr, "Payloads for field %r: %r" % (field, payloads)
+            problem = None
             if payloads:
                 for payload in ehit["fields"][field]:
                     if seen.get(payload, False):
@@ -227,9 +234,11 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                     payload = textConditioner(payload) if textConditioner else payload
                     problem = check(payload)
                     if problem:
+                        print >> sys.stderr, "broken row [%s] %r" % (problem, ehit)                  
                         continue
                     if random.random() > ratio:
-                        print "processing %s" % docId
+                        if verbose:
+                            print >> sys.stderr, "processing %s" % docId
                         # we are interested in this instance
                         words = [word for word in generator(payload)]
                         # all matches or just one match:
@@ -253,7 +262,8 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                                 if limit <= 0:
                                     return output
             else:
-                print >> sys.stderr, "broken row [%s] %r" % (problem, ehit)
+                if verbose:
+                    print >> sys.stderr, "No payloads for ehit %r" % (ehit)
 
     nested(limit)
     if write:
@@ -299,6 +309,7 @@ def main(argv=None):
     parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
     parser.add_argument('-e','--field', required=False, help='field', type=str, default="hasBodyPart.text.english")
     parser.add_argument('-x','--check', required=False, help='check', type=str, default=CHECK)
+    parser.add_argument('-v','--verbose', required=False, help='verbose', action='store_true')
     args=parser.parse_args()
 
     elsjson = args.elsjson
@@ -315,8 +326,10 @@ def main(argv=None):
     cloud = args.cloud
     field = args.field
     check = args.check
-    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, ahead=ahead, 
-                behind=behind, limit=limit, write=write, format=format, jobname=jobname, cloud=cloud, field=field, check=check)
+    verbose = args.verbose
+    s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, 
+                ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, 
+                cloud=cloud, field=field, check=check, verbose=verbose)
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
