@@ -164,14 +164,55 @@ def generateSentencesJson(jobname, output):
                           "sentence": " ".join(d["tokens"])})
     return json.dumps(sentences)
 
+### CHECK functions
+### return false value (conventionally, None) if check passes
+### return an error indicator if fails
 
-AHEAD=5
-BEHIND=5
+def longEnough(s, minimum=50):
+    try:
+        if isinstance(s, (str, unicode)):
+            l = len(s)
+            if l>=minimum:
+                return None
+            else:
+                return "longEnough: %s<%s" % (l, minimum)
+    except:
+        pass
+    return "longEnough: general failure"
+
+def onlySlightlyUnicode(s, threshold=0.20):
+    try:
+        if isinstance(s, (str, unicode)):
+            l = len(s)
+            k = sum([1 if ord(c) >= 256 else 0 for c in s])
+            ratio = k/float(l)
+            # print "%r / %r => %r" % (k, l, ratio)
+            if l>0 and (ratio <= threshold):
+                return None
+            else:
+                return "onlySlightlyUnicode: %r/%r > %r" % (k, l, threshold)
+    except:
+        pass
+    return "onlySlightlyUnicode: general failure"
+
+def standardCheck(s):
+    # negative polarity, returns first failure case
+    return longEnough(s) or onlySlightlyUnicode(s)
+
+def intOrNone(thing):
+    if thing==None or thing=='None':
+        return None
+    else:
+        return int(thing)
+
+AHEAD=None
+BEHIND=None
 RATIO=0.5
-MATCHER="containsEye"
+# MATCHER="containsEye"
+MATCHER=lambda x: True
 GENERATOR="genescaped"
 TEXTCONDITIONER=None
-CHECK=lambda x: None
+CHECK=standardCheck
 
 def generateMatchContexts(words, behind, ahead, matcher):
     if ahead and behind:
@@ -197,6 +238,7 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
     matcher, matcherName = interpretFnSpec(matcher)
     textConditioner, textConditionerName = interpretFnSpec(textConditioner if textConditioner else None)
     generator, generatorName = interpretFnSpec(generator)
+    check, checkName = interpretFnSpec(check)
     if format:
         with open(format, 'r') as f:
             format = f.read()
@@ -234,7 +276,8 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                     payload = textConditioner(payload) if textConditioner else payload
                     problem = check(payload)
                     if problem:
-                        print >> sys.stderr, "broken row [%s] %r" % (problem, ehit)                  
+                        if verbose:
+                            print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
                         continue
                     if random.random() > ratio:
                         if verbose:
@@ -300,8 +343,8 @@ def main(argv=None):
     parser.add_argument('-m','--matcher', required=False, default=MATCHER, type=str)
     parser.add_argument('-t','--textConditioner', required=False, default=TEXTCONDITIONER, type=str)
     parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
-    parser.add_argument('-a','--ahead','--after', required=False, default=AHEAD, type=int)
-    parser.add_argument('-b','--behind','--before', required=False, default=BEHIND, type=int)
+    parser.add_argument('-a','--ahead','--after', required=False, default=AHEAD, type=intOrNone)
+    parser.add_argument('-b','--behind','--before', required=False, default=BEHIND, type=intOrNone)
     parser.add_argument('-l','--limit', required=False, default=None, type=int)
     parser.add_argument('-w','--write', required=False, action='store_true')
     parser.add_argument('-f','--format', required=False, help='format template', type=lambda x: isValidFileArg(parser, x))
