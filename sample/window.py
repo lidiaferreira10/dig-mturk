@@ -213,6 +213,7 @@ MATCHER=lambda x: True
 GENERATOR="genescaped"
 TEXTCONDITIONER=None
 CHECK=standardCheck
+SKIP=None
 
 def generateMatchContexts(words, behind, ahead, matcher):
     if ahead and behind:
@@ -232,7 +233,7 @@ def generateMatchContexts(words, behind, ahead, matcher):
 seen = {}
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, 
             limit=5, write=False, format=None, jobname=None,
-            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK,
+            field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK, skip=SKIP, 
             verbose=False):
 
     matcher, matcherName = interpretFnSpec(matcher)
@@ -286,6 +287,10 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                         words = [word for word in generator(payload)]
                         # all matches or just one match:
                         for (start, end) in generateMatchContexts(words, behind, ahead, matcher):
+                            if skip:
+                                skip -=1
+                                if skip > 0:
+                                    continue
                             output.append({"X-indexId": docId, 
                                            "X-indexName": docIndex,
                                            "X-field": field,
@@ -315,6 +320,10 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         sio = StringIO.StringIO()
         sio.write(format.format(sentences=data))
         jdata = sio.getvalue()
+        # Dump the intermediate (post-substitution) JSON
+        if verbose:
+            with open("/tmp/jdata.json", 'w') as f:
+                print >> f, jdata
         # Validate the JSON
         try:
             json.loads(jdata)
@@ -352,6 +361,7 @@ def main(argv=None):
     parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
     parser.add_argument('-e','--field', required=False, help='field', type=str, default="hasBodyPart.text.english")
     parser.add_argument('-x','--check', required=False, help='check', type=str, default=CHECK)
+    parser.add_argument('-s','--skip', required=False, help='skip', type=str, default=SKIP)
     parser.add_argument('-v','--verbose', required=False, help='verbose', action='store_true')
     args=parser.parse_args()
 
@@ -369,10 +379,11 @@ def main(argv=None):
     cloud = args.cloud
     field = args.field
     check = args.check
+    skip = None if args.skip==0 else args.skip
     verbose = args.verbose
     s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, 
                 ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, 
-                cloud=cloud, field=field, check=check, verbose=verbose)
+                cloud=cloud, field=field, check=check, skip=skip, verbose=verbose)
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
