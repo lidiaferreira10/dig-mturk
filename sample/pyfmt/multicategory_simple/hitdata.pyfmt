@@ -1,0 +1,31 @@
+[
+  {{"instructions_html": 
+
+  "<div class=\"instructions\">\n<p>For each text fragment below, annotate each instance of the following categories:\n<ul>\n<li>EYE: eye color</li>\n<li>HAIR: hair color, length, and/or style</li>\n<li>PERSON: personal name or alias</li>\n<li>COMPANY: company or business name</li>\n<li>ETHNIC: race, ethnicity, nationality, and/or skin tone</li>\n</ul>\n</p>\n<p>To annotate, first highlight by clicking/dragging the word or words which best detail the instance; then specify below the category for the instance.  Each group of highlighted words will use a different background color.</p>\n<p>Examples:<p/>\n<div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\n<h4 class=\"panel-title\">\n<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\n<span class=\"glyphicon glyphicon-triangle-right\"></span> Example #1 - Eye color\n</a>\n</h4>\n</div>\n<div id=\"collapseOne\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\n<div class=\"panel-body\">\n<br/>Given this text fragment\n<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/before1.JPG\" alt=\"Eye color example before annotating\">\n<br/>You would click on \"blue eyes\" and then select \"EYE\" below<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/after1.JPG\" alt=\"Eye color example after annotating\">\n</div>\n</div>\n</div>\n</div>\n\n<div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\n<h4 class=\"panel-title\">\n<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\n<span class=\"glyphicon glyphicon-triangle-right\"></span> Example #2 - Name and hair\n</a>\n</h4>\n</div>\n<div id=\"collapseOne\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\n<div class=\"panel-body\">\n<br/>Given this text fragment\n<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/before2.JPG\" alt=\"Name/hair example before annotating\">\n<br/>You would click on \"blue eyes\" and then select \"EYE\" below<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/after2.JPG\" alt=\"Name/hair example after annotating\">\n</div>\n</div>\n</div>\n</div>\n\n<div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\n<h4 class=\"panel-title\">\n<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\n<span class=\"glyphicon glyphicon-triangle-right\"></span> Example #3 - No annotations\n</a>\n</h4>\n</div>\n<div id=\"collapseOne\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\n<div class=\"panel-body\">\n<br/>Given this text fragment\n<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/before3.JPG\" alt=\"No annotation example before annotating\">\n<br/>You would click on \"blue eyes\" and then select \"EYE\" below<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/after3.JPG\" alt=\"No annotation example after annotating\">\n</div>\n</div>\n</div>\n</div>\n\n<div class=\"panel-group\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">\n<div class=\"panel panel-default\">\n<div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">\n<h4 class=\"panel-title\">\n<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\n<span class=\"glyphicon glyphicon-triangle-right\"></span> Example #4 - Ethnicity\n</a>\n</h4>\n</div>\n<div id=\"collapseOne\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"headingOne\">\n<div class=\"panel-body\">\n<br/>Given this text fragment\n<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/before4.JPG\" alt=\"Ethnicity example before annotating\">\n<br/>You would click on \"blue eyes\" and then select \"EYE\" below<br/>\n<img src=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/after4.JPG\" alt=\"Ethnicity example after annotating\">\n</div>\n</div>\n</div>\n</div>\n",
+    "autoapproval": "129600",
+    "assignment_duration": "3600",
+    "hit_lifetime": "3000",
+    "qualifications": [
+      {{
+        "id": "",
+        "comparator": "",
+        "value": "",
+        "private": ""
+      }}
+    ],
+    "description": "Annotate eyes, hair, names, ethnicity in free text",
+    "title": "Annotate eyes, hair, names, ethnicity in free text",
+    "keywords": "classification, annotation, categorization, markup, natural language, identification",
+    "num_assignments": "3",
+    "reward": "0.05",
+    "hit_sentences": {sentences},
+    "categories": [{{"label": "Eye color"}},
+{{"label": "Hair type"}},
+{{"label": "Person name"}},
+{{"label": "Company name"}},
+{{"label": "Eye color"}},
+{{"label": "Ethnicity/Origin"}}],
+    "scratch_categories": [{{"label": "No annotations"}}]
+  }}
+]
+
