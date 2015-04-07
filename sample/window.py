@@ -26,6 +26,7 @@ PROFILE_NAME = 'aisoftwareresearch'
 
 import StringIO
 import cgi
+import tempfile
 
 import util
 from util import echo
@@ -323,7 +324,8 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         jdata = sio.getvalue()
         # Dump the intermediate (post-substitution) JSON
         if verbose:
-            with open("/tmp/jdata.json", 'w') as f:
+            jfile = os.path.join(tempfile.gettempdir(), "jdata.json")
+            with open(jfile, 'w') as f:
                 print >> f, jdata
         # Validate the JSON
         try:
