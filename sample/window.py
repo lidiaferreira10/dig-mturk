@@ -287,6 +287,7 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                         words = [word for word in generator(payload)]
                         # all matches or just one match:
                         for (start, end) in generateMatchContexts(words, behind, ahead, matcher):
+                            skip = None
                             if skip:
                                 skip -=1
                                 if skip > 0:
@@ -361,7 +362,7 @@ def main(argv=None):
     parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
     parser.add_argument('-e','--field', required=False, help='field', type=str, default="hasBodyPart.text.english")
     parser.add_argument('-x','--check', required=False, help='check', type=str, default=CHECK)
-    parser.add_argument('-s','--skip', required=False, help='skip', type=str, default=SKIP)
+    parser.add_argument('-s','--skip', required=False, help='skip', type=int, default=SKIP)
     parser.add_argument('-v','--verbose', required=False, help='verbose', action='store_true')
     args=parser.parse_args()
 
