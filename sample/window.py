@@ -231,6 +231,8 @@ def generateMatchContexts(words, behind, ahead, matcher):
     else:
         return
 
+USEDOCID = True
+
 seen = {}
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, 
             limit=5, write=False, format=None, jobname=None,
@@ -303,7 +305,7 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
                                            "X-tokenStart": start,
                                            "X-tokenEnd": end,
                                            "X-elasticsearchJsonPathname": elsjson,
-                                           "id": hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
+                                           "id": docId if USEDOCID else hashlib.sha1("%s-%s-%s" % (docId, start, end)).hexdigest(),
                                            "tokens": words[start:end]
                                            # "markup": " ".join(["<span>%s</span>" % word for word in words])
                                            })
