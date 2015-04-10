@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,7 +24,6 @@ import com.amazonaws.mturk.addon.HITDataCSVWriter;
 import com.amazonaws.mturk.addon.HITDataOutput;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.S3ResponseMetadata;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -44,6 +42,7 @@ public class hitFiles {
 	private String bucketName = "";
 	private String hitsbucketName = "";
 	private static String mturkURL = "";
+	private static String propFilename = "";
 	private AmazonS3 s3client;
 
 	public static void main(String[] args) {
@@ -53,12 +52,14 @@ public class hitFiles {
 		 */
 		if (args[0].equals("-live")) {
 			mturkURL = "https://www.mturk.com/mturk/externalSubmit";
+			propFilename = "mturk_live.properties";
 		} else {
 			mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
+			propFilename = "mturk_sandbox.properties";
 		}
 		hitFiles hitFiles = new hitFiles(args[1]);
-		deployHits deployHits = new deployHits(args[1]);
-		
+		deployHits deployHits = new deployHits(propFilename, args[1]);
+
 		hitFiles.getFolders(args[1]);
 		if (deployHits.hasEnoughFund()) {
 			deployHits.getFolders();
@@ -205,7 +206,7 @@ public class hitFiles {
 		metadata.setContentLength(0);
 		/* Create empty content */
 		InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
-		
+
 		try {
 			if (!hasHitsFolder(folderName)) {
 				System.err.println("creating hits");
@@ -221,20 +222,22 @@ public class hitFiles {
 			System.err.println(e.getMessage());
 		}
 	}
-	/* check if S3 contains hits folder for this bucket*/
+
+	/* check if S3 contains hits folder for this bucket */
 	public boolean hasHitsFolder(String folderName) {
 		boolean hasHitsFolder = false;
 		try {
-			
+
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
-			.withBucketName("aisoftwareresearch").withPrefix("ner/" + folderName + "/hits");
+					.withBucketName("aisoftwareresearch").withPrefix(
+							"ner/" + folderName + "/hits");
 			hasHitsFolder = true;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 		return hasHitsFolder;
 	}
-	
+
 	public void generateHTML(String title, String instructions,
 			String categories, Map<String, String> sentences, String filename,
 			JSONArray scratch_categories) {
@@ -254,7 +257,7 @@ public class hitFiles {
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css\">";
 			htmlheader += "</head><body categories= \"" + categories + "\">";
 			htmlheader += "<div class=\"container\"><div class=\"\">";
-			
+
 			htmlheader += "<div class=\"page-header\">	<h1>" + title
 					+ "</h1>	</div>";
 			htmlheader += instructions;
@@ -305,16 +308,16 @@ public class hitFiles {
 	 * panel. It usually contains "no entity present" Output: String containing
 	 * HTML mark up for the panel
 	 */
-	public String createPanel(int linenum, String elasticSearchID, String sentence,
-			String category, JSONArray scratch_categories) {
+	public String createPanel(int linenum, String elasticSearchID,
+			String sentence, String category, JSONArray scratch_categories) {
 
 		String panelHTML = "<div class=\"panel panel-primary\" name=\"parent_container\">";
 		panelHTML += "<div class=\"panel-heading\"><h1 class=\"panel-title\">Sentence "
 				+ linenum + "</h1></div>";
 		panelHTML += "<div class=\"panel-body\" id=\"container_" + linenum
 				+ "\">	<div class=\"sentence\"  elastic-search-id= \""
-				+ elasticSearchID + "\" id=\"sentence_" + linenum + "\"> " + sentence
-				+ "</div> </div>";
+				+ elasticSearchID + "\" id=\"sentence_" + linenum + "\"> "
+				+ sentence + "</div> </div>";
 		/* panel footer - shld list all the categories */
 		String[] categories = category.split(",");
 		/*
@@ -335,7 +338,12 @@ public class hitFiles {
 		Iterator<?> categoryIter = scratch_categories.iterator();
 		while (categoryIter.hasNext()) {
 			JSONObject innerObj = (JSONObject) categoryIter.next();
-			panelHTML += "<div class=\"checkbox custom_checkbox\"><label> <input type=\"checkbox\" name= \""+ elasticSearchID+"checkbox\" value=\" "+ elasticSearchID+ "\t" +"no annotations\">"
+			panelHTML += "<div class=\"checkbox custom_checkbox\"><label> <input type=\"checkbox\" name= \""
+					+ elasticSearchID
+					+ "checkbox\" value=\" "
+					+ elasticSearchID
+					+ "\t"
+					+ "no annotations\">"
 					+ innerObj.get("label") + "</label> </div>";
 		}
 		panelHTML += "<div class=\"panel-footer\">Markup occurences of";
@@ -524,8 +532,9 @@ public class hitFiles {
 		String uploadFileName = "src\\mturk\\ner." + fileType;
 		try {
 			File file = new File(uploadFileName);
-			s3client.putObject(new PutObjectRequest(hitsbucketName, keyName, file));
-			System.out.println("uploaded:: " + fileType);
+			s3client.putObject(new PutObjectRequest(hitsbucketName, keyName,
+					file));
+			/* System.out.println("uploaded:: " + fileType); */
 		} catch (AmazonServiceException ase) {
 			System.out.println("Error Message:    " + ase.getMessage());
 		} catch (AmazonClientException ace) {

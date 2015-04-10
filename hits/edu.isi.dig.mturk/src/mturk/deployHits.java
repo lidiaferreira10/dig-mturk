@@ -33,9 +33,8 @@ public class deployHits {
 	private String bucketName = "", prefixKey = "";
 	private AmazonS3 s3client;
 
-	public deployHits(String bucketName) {
-		service = new RequesterService(new PropertiesClientConfig(
-				"mturk.properties"));
+	public deployHits(String propFileName, String bucketName) {
+		service = new RequesterService(new PropertiesClientConfig(propFileName));
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
 		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
@@ -44,8 +43,10 @@ public class deployHits {
 
 	public boolean hasEnoughFund() {
 		double balance = service.getAccountBalance();
-		System.out.println("Got account balance: "
-				+ RequesterService.formatCurrency(balance));
+		/*
+		 * System.out.println("Got account balance: " +
+		 * RequesterService.formatCurrency(balance));
+		 */
 		return balance > 0;
 	}
 
@@ -93,7 +94,7 @@ public class deployHits {
 			}
 
 		} catch (Exception e) {
-			System.err.println( e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
