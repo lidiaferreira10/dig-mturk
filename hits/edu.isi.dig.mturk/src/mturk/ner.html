@@ -1,3 +1,296 @@
-<html><head><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><script src = "https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.js"> </script><script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"> </script><link rel="stylesheet" type="text/css" href="https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css"><link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"></head><body categories= "Blue Eyes,Brown Eyes,Green Eyes,Hazel Eyes,Gray Eyes,Amber Eyes,Other Eye Color"><form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit"><input type="hidden" id="assignmentId" name="assignmentId" value=""><div class="page-header">	<h1>Find eye color</h1>	</div> <div class="alert alert-info" role="alert"> For each text fragment below do one of the following:<ul> <li> If the fragment contains text that describes the eye color of the subject(s) of the fragment, highlight the text and then map it to the best corresponding category by clicking on the "Eye Color" box below.</li><li>When highlighting, be sure to include both the color word(s) and the word(s) indicating the eyes and any intervening words as well, but avoid any other descriptive words.  For example, given <tt>my green eyes</tt> you would hightlight <tt>my <span style="background-color: greenyellow">green</span> <span style="background-color: greenyellow">eyes</span>.  Given <tt>large round peepers of deepest brown</tt>, you would highlight<tt>large round </tt><span style="background-color: pink">peepers</span> <span style="background-color: pink">of</span> <span style="background-color: pink">deepest</span> <span style="background-color: pink">brown</span>.  Given <tt>Eye Color : HAZEL</tt>, you would highlight <span style="background-color: khaki">Eye</span> <span style="background-color: khaki">Color</span> <span style="background-color: khaki">:</span> <span style="background-color: khaki">HAZEL</span></li><li>Each mention of eye color in a fragment is differentiated by a different highlight color.</li>  <li> User can delete/modify a created tag.</li> <li>Use the best label, even if it is misspelled, abbreviated or expressed in an unusual way.  If none of the supplied eye colors works, for example <tt>orange eyes</tt>, select the category <b>Other Eye Color</b>.</li></ul> <ul><li>If a fragment does not contain any mention of eye color, select <b>No Eye Color Found</b>.</li> </ul> </div>
-<div class="panel panel-primary" name="parent_container"><div class="panel-body" id="container_1">	<div class="sentence" id="sentence_1"> 7 thick light skinned blue eye . end of discussion</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox">[{"label":"No Eye Color Found"}]</label> </div></div>
-<div class="btn_wrapper">	<button name='submit' class="submitBtn btn btn-primary"> Submit</button>	</div><div class="modal fade" id="modal_box">	<div class="modal-dialog">	<div class="modal-content"><div class="modal-header alert alert-danger modal_title_custom">	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>	<h4 class="modal-title">Invalid Submission</h4></div><div class="modal-body" id="modal-body-text">	<p> The reasons for invalid submission are <li> Every sentence should have either no entity checked or should have atleast one identified entity. </li>  <li> Each highlighted entity should be categorized.</li> </p>	</div>	<div class="modal-footer">	<button type="button" class="btn btn-default" data-dismiss="modal">OK</button></div> </div> </div> </div></form> </body></html>
+<html><head> <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">   <meta name="viewport" content="width=device-width, initial-scale=1"><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><script src = "https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.js"> </script><script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"> </script> <link rel="stylesheet" type="text/css" href="https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/bootstrap_assets.css"><link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" href="https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css"></head><body categories= "Eye color,Hair type,Person name,Company name,Ethnicity/Origin"><div class="container"><div class=""><div class="page-header">	<h1>Annotate Each Sentence</h1>	</div><div class=""><h2>Instructions</h2>
+<div class="lead">
+<p class="lead">Your task is to mark up each of <b>Sentence 1</b> to <b>Sentence 10</b> so that they look like the following <b>Example Sentence</b>. The categories to mark up appear below the sentence.</p>        
+<ul>
+<li>First select a word by clicking on it, or select multiple words by dragging over them
+<li>Then click on the appropriate radio button to specify what it is
+<li>If you select something by mistake, click on the red <small><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button></small>
+<li>If there is nothing to mark up, select <em>No Annotations</em>
+<li>Mark up all occurences of the categories
+</ul>
+</div>
+</div>
+
+
+<!-- Instructions -->
+
+<div class="bs-callout bs-callout-warning">
+<div class="panel panel-warning">
+  <div class="panel-heading"><h1 class="panel-title">Example Sentence</h1>
+  </div>
+  <div class="panel-body">
+   <p class="text-muted">Lorem <span class="highlight_8">blue</span> <s>eyes</s> ipsum dolor, <s>beautiful</s> <span class="highlight_9">long brown hair with curls</span> te graece <s>my name is</s> <span class="highlight_10">Mary</span> utroque <s>I work for</s> <span class="highlight_11">Walmart</span> nusquam mea, <s>I am a</s> <span class="highlight_12">Latino</span>, <span class="highlight_6">Japanese</span> and <span class="highlight_5">Hungarian</span> mix mei. Odio nostrud posidonium. </p>
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_8">blue</span>
+  </div>
+
+  <div class="col-xs-2 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1" checked="checked">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_9">long brown hair with curls</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1" checked="checked">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_10">Mary</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1" checked="checked">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_11">Walmart</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1" checked="checked">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_12">Latino</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1" checked="checked">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_6">Japanese</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1" checked="checked">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_5">Hungarian</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1" checked="checked">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+
+<div class="top-buffer row">
+<div class="col-xs-11 col-md-12 checkbox">
+  <label class="radio-inline">
+  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  </label>
+</div>
+</div> <!-- row -->
+
+
+</div> <!--panel body-->
+
+<div class="panel-footer">Markup occurences of  
+<span class="text-primary">Eye color</span>, 
+<span class="text-primary">Hair type</span>, 
+<span class="text-primary">Person name</span>, 
+<span class="text-primary">Company name</span> or
+<span class="text-primary">Ethnicity/Origin</span>
+</div>
+
+</div><!--panel-->
+</div>
+
+
+<div class="lead">
+A few things to keep in mind:
+<ul>
+<li>Highlight only the words that contain the categories, the examples above show examples of words that you should <b>not</b> annotate <s>like this</s>
+<li>Some sentences may contain multiple occurrences of the same category, mark them all
+</ul>
+</div>
+
+<!-- end Instructions -->
+
+<form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit"><input type="hidden" id="assignmentId" name="assignmentId" value=""><h2>Mark Up the Following Sentences</h2>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 1</h1></div><div class="panel-body" id="container_1">	<div class="sentence"  elastic-search-id= "18ae5af71197bd27f0fdc12cae0457782f4b151a" id="sentence_1"> IF U DON ' T C ALL MY 8 PICs go to HOT PHOTO STUDIO , com PHOTO MODEL PAY FOR STUDIO TIME YOU DON ' T HAVE TO TIP NO UP - SELLING . NO TRICKS you know what you really want . VISIT ME ONCE , AND YOU WILL BE BACK . HAZEL &amp; ICIS ( 561 ) 275 6146 ( 754 ) 779 4716 . &lt;a href="/more.php?article=142"&gt; Me and my friends are on Adult Finder &lt;/a&gt; so you can find us all on there if you want . . . inme_mouth &lt;br/&gt; &lt;br/&gt;</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "18ae5af71197bd27f0fdc12cae0457782f4b151acheckbox" value=" 18ae5af71197bd27f0fdc12cae0457782f4b151a	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 2</h1></div><div class="panel-body" id="container_2">	<div class="sentence"  elastic-search-id= "03af7c73623a5d99d5ead365d52126b01c89bee2" id="sentence_2"> Job Description : Check out this opportunity for CDL - A Drivers ! Quickway Transportation is hiring now ! Join us and you ll enjoy : Excellent Home Time 5 - 6 Day Work Week High Weekly Averages Scheduled Time Off Paid Holidays and Personal Days All Miles Paid . Loaded and Empty Excellent Benefits Package Paid Vacation 401k Retirement Plan 100 % free with Employee Stock Ownership Plan Palletized Dedicated Freight Call today ! 877 - - www . quickwaycarriers . com Pay : Driver Pay : 35 cpm loaded and empty , ave load 800 + miles . Average 3000 miles per week . Stop Pay : if load has 2 or more stops , $ 25 / stop Orientation : paid $ 20 . 00 per hour for 8 hours ( computer ) paid $ 13 . 00 per hour for 3 runs with trainer A quick look at Quickway Carriers : With more than forty years in the business , Quickway Carriers can offer professional drivers a stable and dependable career home . Many of the nation s largest retailers and food manufacturers rely on us to keep their shelves stocked and their inventories at optimum levels . As an employee - owned company , we stay focused on the long run for our customers and our employees . In short , we are built to last . Ready to start a BETTER DRIVING JOB ? APPLY NOW ! ! &lt;p&gt; Source : &lt;a rel="nofollow" target="_blank" href="http://www.juju.com/jad/00000000fte95t?partnerid=af0e5911314cbc501beebaca7889739d&amp;exported=True&amp;channel=staticfile&amp;hosted_timestamp=0042a345f27ac5dcd975852617a67a1d3abd960dd71927e4cb1ca9798407eb16"&gt; http : / / www . juju . com / jad / 00000000fte95t ? partnerid = af0e5911314cbc501beebaca7889739d &amp;amp; exported = True &amp;amp; channel = staticfile &amp;amp; hosted_timestamp = 0042a345f27ac5dcd975852617a67a1d3abd960dd71927e4cb1ca9798407eb16 &lt;/a&gt; &lt;/p&gt;</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "03af7c73623a5d99d5ead365d52126b01c89bee2checkbox" value=" 03af7c73623a5d99d5ead365d52126b01c89bee2	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 3</h1></div><div class="panel-body" id="container_3">	<div class="sentence"  elastic-search-id= "6ddb8733ded45bb2e7797b15d4cb26f675d8ffe9" id="sentence_3"> At ACTIVE Network , we are building solutions for all types of activity organizations helping them automate , simplify and grow their businesses . Our cloud technology powers business events and conferences , community programs , parks departments , local attractions , faith - based organizations , sports events , and outdoor activities . We deliver technology that changes the way the world gets active . Responsibilities But ACTIVE is more than a technology company . It sa company of passionate people that live to be ACTIVE . We are inspired by our customers . We are fueled by challenge . As a member of the ACTIVE team , you must embrace our exciting work </div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "6ddb8733ded45bb2e7797b15d4cb26f675d8ffe9checkbox" value=" 6ddb8733ded45bb2e7797b15d4cb26f675d8ffe9	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 4</h1></div><div class="panel-body" id="container_4">	<div class="sentence"  elastic-search-id= "320769865692f001f2743afc70f0cf9350160259" id="sentence_4"> Hello Gentlemen Unwind , And Experience Satisfaction At It ' s Best . Sweet , Curvy , Easy Going . I Can Guarantee You Will Love Every Minute You Spend With Me . My Name Is SHAREE 831 - 775 - 9324 Calls Only Please . Actual Recent Pics . . . No Bait And Switch { Im eVen HoTTeR in person . } Be RESPECTFUL &amp; DISCREET . Explicit Talk &amp; Call Will END . 831 - 775 - 9324</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "320769865692f001f2743afc70f0cf9350160259checkbox" value=" 320769865692f001f2743afc70f0cf9350160259	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 5</h1></div><div class="panel-body" id="container_5">	<div class="sentence"  elastic-search-id= "1d08ea7f2593948d252d01589b5f892248675295" id="sentence_5"> Was satisfied last time , home alone on Monday and feeling horny &lt;br&gt; &lt;br&gt; I enjoy all things sexual , but particularly love anal sex . It just gets me off every time . &lt;br&gt; Love dressing up as well aha ; ) &lt;br&gt; &lt;br&gt; I can accommodate so looking for someone in area to come sort me out = pp &lt;br&gt; &lt;br&gt; Has to be safe plz be clean an no one over 40 sorryyyyy x &lt;br&gt; &lt;br&gt; Reply with a pics asap . x</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "1d08ea7f2593948d252d01589b5f892248675295checkbox" value=" 1d08ea7f2593948d252d01589b5f892248675295	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 6</h1></div><div class="panel-body" id="container_6">	<div class="sentence"  elastic-search-id= "22e8d54ebdc2a3b2d236f6aaa5bbae9eefc0a84f" id="sentence_6"> Hi Guys Kourtney is the name and pleasure is the game My services are available to men who desire the best in Companionship . I guarantee 100 % geniune quality time . Come relax with one of the best providers in texas . I have a friendly demeanor and enjoy the idea of a hard - workn man . EVERYTHING is 100 % SAFE NO GAMES gentlemen ONLY call when readY MY PHONE DOES NOT SEND PICS . pics are 100 % real &amp;recent; NO BLACK MEN . Private Condo Kourtney ( ( ( 773 ) ) ) - - 732 . . . 6306 . &lt;a href="/more.php?article=142"&gt; Me and my friends are on Adult Finder &lt;/a&gt; so you can find us all on there if you want . . . smooth_thigh &lt;br/&gt; &lt;br/&gt;</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "22e8d54ebdc2a3b2d236f6aaa5bbae9eefc0a84fcheckbox" value=" 22e8d54ebdc2a3b2d236f6aaa5bbae9eefc0a84f	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 7</h1></div><div class="panel-body" id="container_7">	<div class="sentence"  elastic-search-id= "7ae9027d8de74670c60d17b4bab7c2bd031d86bb" id="sentence_7"> Hi guys , Sexy Blonde MONTANA here . Im new in town looking to have some fun . I am young , gorgeous , talented , sexy , and fun to be around . Definetely a change from what you go home to . I love what we do and you will never be rushed . You will always leave happy and with a big smile &lt;br&gt; PICS ARE 100 % REAL &lt;br&gt; $ 60 $ pecials incalls hr 150 / half hr 100 outcalls rates vary Blonde Goddess Montana - 954 549 3033 No illicit talk &lt;br&gt; NO TEXTS PLEASE &lt;br&gt; Very private and discreet location</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "7ae9027d8de74670c60d17b4bab7c2bd031d86bbcheckbox" value=" 7ae9027d8de74670c60d17b4bab7c2bd031d86bb	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 8</h1></div><div class="panel-body" id="container_8">	<div class="sentence"  elastic-search-id= "684cee85950d5b466bd089c3cc796555f63dae23" id="sentence_8"> Hello , I ' m Alyssa , before you proceed to call me , &amp;gt; INDEPENDENT &amp;gt; UPSCALE &amp;gt; Upcoming College Student &amp;gt; Long Hair Brunette &amp;gt; Always Clean &amp;gt; Real Pics 5 " 7 . . 128lb Nice curves with amazing round bootyyDisclaimer : Money exchanged is for my time and companionship services only . Anything else that may or may not occur is a matter of personal choice between two consenting adults of legal age 514 - 663 - 4277 No BLockeD CALLDUO AvAil . I offer video / photo also , ask me on my profile before calling . . . &lt;a href="/more.php?article=108&amp;p=1"&gt; Adult Finder &lt;/a&gt; &lt;br/&gt; &lt;br/&gt;</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "684cee85950d5b466bd089c3cc796555f63dae23checkbox" value=" 684cee85950d5b466bd089c3cc796555f63dae23	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 9</h1></div><div class="panel-body" id="container_9">	<div class="sentence"  elastic-search-id= "3de58666a757c3aec9974e8f9e983fa035fbc544" id="sentence_9"> • ★ • ItS PlAy TiMe BoYs • ★ • Come indulge yourself in this sweet exotic little treat . &lt;br&gt; Hello gentlemen . My names NATASHA I ' m BRAND NEW to the city &amp; ready to play &amp; always satisfy ! I ' m a perfect 10 exotic treat ❤ ️ &lt;br&gt; 5 ' 3 120 lbs 34B - 27 - 36 green eyes black hair &lt;br&gt; ★ 100 % SWEET ★ UNRUSHED ★ VERY DISCREET CLEAN AND 100 % REAL PICS ♥ Something this SWEET and STUNNING can be EXTREMELY SATISFYING . . . call / text : ( &lt;b&gt; 778 ) 386 - 9137 &lt;/b&gt; ( Till 1 am ) no blocked or unknown numbers ASK FOR NATASHA xo</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "3de58666a757c3aec9974e8f9e983fa035fbc544checkbox" value=" 3de58666a757c3aec9974e8f9e983fa035fbc544	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="panel panel-primary" name="parent_container"><div class="panel-heading"><h1 class="panel-title">Sentence 10</h1></div><div class="panel-body" id="container_10">	<div class="sentence"  elastic-search-id= "13685a95c4c58b3587b82ac1ea9830da9cd46c63" id="sentence_10"> Stop wasting yourhard - earned $ $ $ onfakeads . Spend your night with me , Cherish : 100 % realexotic , young , bubbly , &amp; playful Filipina . I ' m new to bako and inneedfor a gentlemen to welcome me to the area . I ' ll give you anun - forgettableexperience you will forever cherish . &lt;br/&gt; No texts / blocked calls &lt;br/&gt; Allie ( 510 ) 287 - 6298 Call 510 - 287 - 6298</div> </div><div class="checkbox custom_checkbox"><label> <input type="checkbox" name= "13685a95c4c58b3587b82ac1ea9830da9cd46c63checkbox" value=" 13685a95c4c58b3587b82ac1ea9830da9cd46c63	no annotations">No annotations</label> </div><div class="panel-footer">Markup occurences of <span class="text-primary">Eye color</span>, <span class="text-primary">Hair type</span>, <span class="text-primary">Person name</span>, <span class="text-primary">Company name</span>, <span class="text-primary">Ethnicity/Origin</span>, </div> </div>
+<div class="btn_wrapper">	<button name='submit' class="submitBtn btn btn-primary"> Submit</button>	</div><div class="modal fade" id="modal_box">	<div class="modal-dialog">	<div class="modal-content"><div class="modal-header alert alert-danger modal_title_custom">	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>	<h4 class="modal-title">Please complete annotations</h4></div><div class="modal-body" id="modal-body-text"></div>	<div class="modal-footer">	<button type="button" class="btn btn-default" data-dismiss="modal">OK</button></div> </div> </div> </div></form> </div> </div></body></html>

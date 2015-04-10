@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -26,7 +25,7 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
-public class nerHit {
+public class deployHits {
 
 	// Defining the locations of the input files
 	private RequesterService service;
@@ -34,11 +33,11 @@ public class nerHit {
 	private String bucketName = "", prefixKey = "";
 	private AmazonS3 s3client;
 
-	public nerHit(String bucketName) {
+	public deployHits(String bucketName) {
 		service = new RequesterService(new PropertiesClientConfig(
 				"mturk.properties"));
-		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
-		this.prefixKey = "ner/" + bucketName;
+		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
+		this.prefixKey = "ner/" + bucketName + "/hits";
 		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
 	}
@@ -69,13 +68,11 @@ public class nerHit {
 				for (S3ObjectSummary objectSummary : objectListing
 						.getObjectSummaries()) {
 					String key = objectSummary.getKey();
-					System.out.println(key);
 					if (!key.equalsIgnoreCase(prefixKey)) {
 						key = key.substring((prefixKey + "/").length());
 
 						if (key.indexOf('/') > -1) {
 							String[] keyParts = key.split("/");
-							System.out.println(keyParts.length);
 							if (keyParts.length == 1) {
 								folderNames.add(keyParts[0]);
 							}
@@ -88,7 +85,6 @@ public class nerHit {
 			Iterator<String> folderIter = folderNames.iterator();
 			while (folderIter.hasNext()) {
 				String currFileName = folderIter.next();
-				System.out.println(currFileName);
 				inputFile = currFileName + "/" + currFileName + ".input";
 				questionFile = currFileName + "/" + currFileName + ".question";
 				propertiesFile = currFileName + "/" + currFileName
@@ -97,7 +93,7 @@ public class nerHit {
 			}
 
 		} catch (Exception e) {
-			System.err.println("hereee" + e.getMessage());
+			System.err.println( e.getMessage());
 		}
 	}
 
@@ -154,23 +150,11 @@ public class nerHit {
 
 			HIT[] hits = null;
 
-			System.out.println("--[Loading HITs]----------");
-			Date startTime = new Date();
-			System.out.println("  Start time: " + startTime);
 			HITDataOutput success = new HITDataCSVWriter(
 					"src/mturk/success.success");
 			HITDataOutput failure = new HITDataCSVWriter(
 					"src/mturk/fail.failure");
-			System.out.println("files done");
 			hits = service.createHITs(input, props, question, success, failure);
-
-			System.out.println("--[End Loading HITs]----------");
-			Date endTime = new Date();
-			System.out.println("  End time: " + endTime);
-			System.out.println("--[Done Loading HITs]----------");
-			System.out.println("  Total load time: "
-					+ (endTime.getTime() - startTime.getTime()) / 1000
-					+ " seconds.");
 
 			if (hits == null) {
 				throw new Exception("Could not create HITs");
