@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Pedro Template</title>
+
+    <!-- Bootstrap -->
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://getbootstrap.com/assets/css/docs.min.css">
+    <link rel="stylesheet" type="text/css" href="https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+<style type="text/css">
+.top-buffer { margin-top:8px; }
+</style>  
+
+  </head>
+  <body>
+
+
+<!-- ##begin## -->
+<div class="container">
+
+<div class="">
+<h1>Annotate Each Sentence</h1>
+
+<h2>Instructions</h2>
+<div class="lead">
+<p class="lead">Your task is to mark up each of <b>Sentence 1</b> to <b>Sentence 10</b> so that they look like the following <b>Example Sentence</b>. The categories to mark up appear below the sentence.</p>        
+<ul>
+<li>First select a word by clicking on it, or select multiple words by dragging over them
+<li>As words are selected, they appear below with a set of radio button choices
+<li>Click on the appropriate radio button to specify what words are
+<li>If you select something by mistake, click on the red <small><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button></small>
+<li>If there is nothing to mark up, select <em>No Annotations</em>
+<li>Mark up all occurences of the categories
+</ul>
+</div>
+</div>
+
+
+<!-- Instructions -->
+
+<div class="bs-callout bs-callout-warning">
+<div class="panel panel-warning">
+  <div class="panel-heading"><h1 class="panel-title">Example Sentence</h1>
+  </div>
+  <div class="panel-body">
+   <p class="text-muted">Lorem <span class="highlight_8">blue</span> <s>eyes</s> ipsum dolor, <s>beautiful</s> <span class="highlight_9">long brown hair with curls</span> te graece <s>my name is</s> <span class="highlight_10">Mary</span> utroque <s>I work for</s> <span class="highlight_11">Walmart</span> nusquam mea, <s>I am a</s> <span class="highlight_12">Latino</span>, <span class="highlight_6">Japanese</span> and <span class="highlight_5">Hungarian</span> mix mei. Odio nostrud <span class="highlight_4">brown</span> <s>eyes</s> posidonium. </p>
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_8">blue</span>
+  </div>
+
+  <div class="col-xs-2 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1" checked="checked">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_9">long brown hair with curls</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1" checked="checked">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_10">Mary</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1" checked="checked">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_11">Walmart</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1" checked="checked">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_12">Latino</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions5" id="inlineRadio1" value="option1" checked="checked">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_6">Japanese</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio1" value="option1" checked="checked">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_5">Hungarian</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio1" value="option1" checked="checked">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+<!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_4">brown</span>
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1" checked="checked">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+
+
+<div class="top-buffer row">
+<div class="col-xs-11 col-md-12 checkbox">
+  <label class="radio-inline">
+  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  </label>
+</div>
+</div> <!-- row -->
+
+
+</div> <!--panel body-->
+
+<div class="panel-footer">Markup occurences of  
+<span class="text-danger">Eye color</span>, 
+<span class="text-danger">Hair type</span>, 
+<span class="text-danger">Person name</span>, 
+<span class="text-danger">Company name</span> or
+<span class="text-danger">Ethnicity/Origin</span>
+</div>
+
+</div><!--panel-->
+</div>
+
+
+<div class="lead">
+A few things to keep in mind:
+<ul>
+<li>Highlight only the words that contain the categories, the examples above show examples of words that you should <b>not</b> annotate <s>like this</s>
+<li>Some sentences may contain multiple occurrences of the same category, mark them all
+</ul>
+</div>
+
+<!-- end Instructions -->
+<h2>Mark Up the Following Sentences</h2>
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading"><h1 class="panel-title">Sentence 1</h1>
+  </div>
+  <div class="panel-body">
+   <p class="">I ' m an exotic companion , who you ' ll love spending some quality time with . &lt;br/&gt; I have gorgeous features with great assets and friendly demeanor that I know you ' ll love . If Your Looking for someone who is special STOP . " clicking " you ' ve found her . Justyce 5python window.py -r 0 -l 10 -w -f pyfmt/multicategory_pilot/hitdata.pyfmt -j instructions16 -e 'hasBodyPart.text.english' feature/instructions/instructions.json ' 7 , 135 lbs B36 - 26 - 36 Curves in all right places blue eyes ( ) 100 % independent ( ) 100 % PROFESSIONAL &lt;br/&gt; No Games . &lt;br/&gt; No Drama . &lt;br/&gt; 100 % Real Pic . &lt;br/&gt; call or text me @ 289 - 828 - 4194 . &amp;nbsp; Call &lt;u&gt; 289 - 828 - 4194 &lt;/u&gt; .</p>
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span>selected text
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+<div class="top-buffer row">
+  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span>selected text
+  </div>
+
+  <div class="col-xs-9 col-md-8">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Hair type
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Person name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Company name
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Ethnicity/Origin
+  </label>
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+
+<div class="top-buffer row">
+<div class="col-xs-11 col-md-12 checkbox">
+  <label class="radio-inline">
+  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  </label>
+</div>
+</div> <!-- row -->
+
+
+</div> <!--panel body-->
+
+<div class="panel-footer">Markup occurences of 
+<span class="text-danger">Eye color</span>, 
+<span class="text-danger">Hair type</span>, 
+<span class="text-danger">Person name</span>, 
+<span class="text-danger">Company name</span> or 
+<span class="text-danger">Ethnicity/Origin</span>
+</div>
+
+</div><!--panel-->
+
+
+
+<!-- End instructions -->
+
+<!-- ##end## -->
+
+<div class="panel panel-primary">
+  <div class="panel-heading"><h1 class="panel-title">Sentence 1</h1>
+  </div>
+  <div class="panel-body">
+   <p class="">I ' m an exotic companion , who you ' ll love spending some quality time with . &lt;br/&gt; I have gorgeous features with great assets and friendly demeanor that I know you ' ll love . If Your Looking for someone who is special STOP . " clicking " you ' ve found her . Justyce 5 ' 7 , 135 lbs B36 - 26 - 36 Curves in all right places blue eyes ( ) 100 % independent ( ) 100 % PROFESSIONAL &lt;br/&gt; No Games . &lt;br/&gt; No Drama . &lt;br/&gt; 100 % Real Pic . &lt;br/&gt; call or text me @ 289 - 828 - 4194 . &amp;nbsp; Call &lt;u&gt; 289 - 828 - 4194 &lt;/u&gt; .</p>
+
+
+<div class="top-buffer row">
+</div> <!-- row -->
+
+<div class="top-buffer row">
+<div class="col-xs-11 col-md-12 checkbox">
+  <label class="radio-inline">
+  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  </label>
+</div>
+</div> <!-- row -->
+
+
+</div> <!--panel body-->
+
+<div class="panel-footer">Markup occurences of  
+<span class="text-danger">Eye color</span>, 
+<span class="text-danger">Hair type</span>, 
+<span class="text-danger">Person name</span>, 
+<span class="text-danger">Company name</span>, 
+<span class="text-danger">Ethnicity/Origin</span>
+</div>
+
+</div><!--panel-->
+
+
+
+
+
+
+
+
+
+</div>
+
+    </div><!-- /.container -->
+
+
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
