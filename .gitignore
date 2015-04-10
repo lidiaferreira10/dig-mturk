@@ -3,3 +3,6 @@ datasets/*/x-*
 
 *~
 *.pyc
+
+sample/feature/*
+sample/config/*
