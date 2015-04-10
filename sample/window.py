@@ -232,10 +232,13 @@ def generateMatchContexts(words, behind, ahead, matcher):
         return
 
 USEDOCID = True
+BEGIN_COMMENT = """<!-- ##begin## -->"""
+END_COMMENT = """<!-- ##end## -->"""
 
 seen = {}
+@echo
 def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, generator=genescaped, ahead=5, behind=5, 
-            limit=5, write=False, format=None, jobname=None,
+            limit=5, write=False, format=None, instructions=None, jobname=None,
             field="hasBodyPart.text", shuffle=None, seen=seen, cloud=False, check=CHECK, skip=SKIP, 
             verbose=False):
 
@@ -246,6 +249,12 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
     if format:
         with open(format, 'r') as f:
             format = f.read()
+    if instructions:
+        with open(instructions, 'r') as f:
+            instructions = f.read()
+            p1 = instructions.index(BEGIN_COMMENT)
+            p2 = instructions.index(END_COMMENT)+len(END_COMMENT)
+            instructions = json.dumps(instructions[p1:p2])
     if not jobname:
         jobname = str(uuid.uuid4())
     if shuffle==None:
@@ -322,7 +331,7 @@ def windows(elsjson, ratio=0.9, matcher=containsEye, textConditioner=None, gener
         data = generateSentencesJson(jobname, output)
         outfile = 'config/%s.json' % jobname
         sio = StringIO.StringIO()
-        sio.write(format.format(sentences=data))
+        sio.write(format.format(sentences=data,instructions=instructions))
         jdata = sio.getvalue()
         # Dump the intermediate (post-substitution) JSON
         if verbose:
@@ -380,6 +389,7 @@ def main(argv=None):
     limit = args.limit
     write = args.write
     format = args.format
+    instructions = '/Users/philpot/Documents/project/dig-mturk/sample/pyfmt/embed/page.html'
     jobname = args.jobname
     cloud = args.cloud
     field = args.field
@@ -387,7 +397,8 @@ def main(argv=None):
     skip = None if args.skip==0 else args.skip
     verbose = args.verbose
     s = windows(elsjson, ratio=ratio, matcher=matcher, textConditioner=textConditioner, generator=generator, 
-                ahead=ahead, behind=behind, limit=limit, write=write, format=format, jobname=jobname, 
+                ahead=ahead, behind=behind, limit=limit, write=write, format=format, instructions=instructions,
+                jobname=jobname, 
                 cloud=cloud, field=field, check=check, skip=skip, verbose=verbose)
 
 # call main() if this is run as standalone
