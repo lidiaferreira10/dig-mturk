@@ -199,9 +199,22 @@ def onlySlightlyUnicode(s, threshold=0.20):
         pass
     return "onlySlightlyUnicode: general failure"
 
+@echo
+def shortEnough(s, maximum=600):
+    try:
+        if isinstance(s, (str, unicode)):
+            l = len(s)
+            if l<=maximum:
+                return None
+            else:
+                return "shortEnough: %s<%s" % (l, maximum)
+    except:
+        pass
+    return "shortEnough: general failure"
+
 def standardCheck(s):
     # negative polarity, returns first failure case
-    return longEnough(s) or onlySlightlyUnicode(s)
+    return longEnough(s) or onlySlightlyUnicode(s) or shortEnough(s)
 
 def intOrNone(thing):
     if thing==None or thing=='None':
@@ -261,7 +274,7 @@ def create_hit_configs(elsjson, generator=genescaped,
 
     def publish_hit(experiment, hitCount, records):
         if write:
-            data = generateSentencesJson(experiment, output)
+            data = generateSentencesJson(experiment, records)
             outpath = 'config/%s__%04d.json' % (experiment, hitCount)
             sio = StringIO.StringIO()
             sio.write(format.format(sentences=data,instructions=instructions))
@@ -293,7 +306,7 @@ def create_hit_configs(elsjson, generator=genescaped,
                 return outpath
         else:
             print >> sys.stderr, "Would write %s %s with %s records" % (experiment, hitCount, len(records))
-            return output
+            return records
 
 
     # we want to generate HITCOUNT files
@@ -374,11 +387,8 @@ def main(argv=None):
     hitcount = args.hitcount
     write = args.write
     format = args.format
-    instructions = '/Users/philpot/Documents/project/dig-mturk/sample/pyfmt/embed/page.html'
-    print >> sys.stderr, "format %r instructions %r" % (format, instructions)
     (dirpath, _) = os.path.split(format)
     instructions = os.path.join(dirpath, 'page.html')
-    print >> sys.stderr, "format %r instructions %r" % (format, instructions)
     experiment = args.experiment
     cloud = args.cloud
     field = args.field
