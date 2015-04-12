@@ -12,6 +12,31 @@
 # drop/stub matcher
 # get rid of USEDOCID
 
+"""Typical usage:
+python create_hit_configs.py -f pyfmt/embed/hitdata.pyfmt feature/embed/embed.json
+
+common arguments:
+-j/--experiment: experiment name (default auto-generated)
+-w/--write: write output
+-c/--cloud: write to S3
+
+less common arguments:
+-k/--hitcount: number of hits to create (default 10)
+-l/--hitsize: number of sentences per hit (default 10)
+-x/--check: filter function(s); can supply multiple times
+
+rare arguments:
+-f/--field: elastic search path (default hasBodyPart.text.english)
+-g/--generator: iterator to generate tokens from text content
+
+obsolete(?) arguments:
+-s/--skip: skip the first K arguments
+
+utility arguments:
+-h/--help: help
+-v/--verbose: verbose debug output
+"""
+
 import sys, os
 try:
     import simplejson as json
@@ -289,7 +314,6 @@ def create_hit_configs(elsjson,
     with open(elsjson, 'r') as f:
         input = json.load(f)
     ehits = input["hits"]["hits"]
-    uid = None
 
     def publish_hit(experiment, hitCount, records):
         outpath = 'config/%s__%04d.json' % (experiment, hitCount)
@@ -406,12 +430,13 @@ def main(argv=None):
                         type=int, default=HITSIZE)
     parser.add_argument('-w','--write', required=False, action='store_true', help='write hit files')
     parser.add_argument('-c','--cloud', required=False, action='store_true', help='write destination is S3; ignored unless -w/--write supplied')
-    parser.add_argument('-e','--field', required=False, help='elasticsearch path expression to extract content string',
-                        type=str, default="hasBodyPart.text.english")
     parser.add_argument('-x','--check', help='filter function(s)', required=False, default=[], action='append')
 
-    parser.add_argument('-s','--skip', required=False, help='skip', type=int, default=SKIP)
+    parser.add_argument('-e','--field', required=False, help='elasticsearch path expression to extract content string',
+                        type=str, default="hasBodyPart.text.english")
+
     parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
+    parser.add_argument('-s','--skip', required=False, help='skip', type=int, default=SKIP)
     parser.add_argument('-v','--verbose', required=False, help='verbose', action='store_true')
     args=parser.parse_args()
 
@@ -429,11 +454,14 @@ def main(argv=None):
     check = args.check or CHECK
     skip = None if args.skip==0 else args.skip
     verbose = args.verbose
-    s = create_hit_configs(elsjson, experiment=experiment, generator=generator, 
+    s = create_hit_configs(elsjson, experiment=experiment, 
+                           hitsize=hitsize, hitcount=hitcount,
                            write=write, cloud=cloud, 
                            format=format, instructions=instructions,
-                           field=field, check=check, hitsize=hitsize, hitcount=hitcount, skip=skip, 
+                           field=field, generator=generator, check=check, skip=skip, 
                            verbose=verbose)
+    if s:
+        print s
 
 # call main() if this is run as standalone
 if __name__ == "__main__":
