@@ -19,7 +19,6 @@ except:
     import json
 
 import re
-import random
 import nltk
 import itertools
 import argparse
@@ -27,10 +26,9 @@ import uuid
 from htmltoken import tokenize, bucketize
 
 import boto
-from boto.s3.key import Key
-from boto.s3.connection import S3Connection
 BUCKETNAME = 'aisoftwareresearch'
 PROFILE_NAME = 'aisoftwareresearch'
+ZONENAME='s3-us-west-2.amazonaws.com'
 
 import StringIO
 import cgi
@@ -39,8 +37,41 @@ import tempfile
 import util
 from util import echo, ensureDirectoriesExist
 
-def truth(*args):
-    return True
+### argparse/main argument validation and canonicalization
+
+def isValidFileArg(parser, arg):
+    """ensure arg (string) is an existing, readable input file"""
+    if not os.path.exists(arg):
+        parser.error("The file %s does not exist!" % arg)
+    else:
+        # return open(arg, 'r')  # return an open file handle
+        return arg
+
+def toFn(expr):
+    """Convert string expression like F into the global function F; F(abc) becomes the (presumably functional) value of F("abc") (note: quotes inputs)"""
+    if re.match(r"""^[a-zA-Z0-9_]+$""", expr):
+        # simple token: global function
+        return globals()[expr]
+    else:
+        m = re.match(r"""^([a-zA-Z0-9_]+)\((.*)\)$""", expr)
+        if m:
+            return globals()[m.group(1)](m.group(2))
+        else:
+            raise ValueError("Bad function spec %s" % expr)
+
+def interpretFnSpec(s):
+    """Ensures s is either a function or a string representation of form which evaluates to function;
+returns pair: function, function name"""
+    if isinstance(s, str):
+        fnName = s
+        fn = toFn(s)
+    else:
+        fnName = None
+        fn = s
+    return (fn, fnName)
+
+
+### Example of an elasticsearch query result
 
 """{
   "took": 136,
@@ -66,31 +97,36 @@ def truth(*args):
         }
       },"""
 
+### GENERATOR functions
+### given an ad content string, yield as series of strings
+
 def genwords(text):
+    """Rely on NLTK trained word and sentence tokenizers only"""
     for sentence in nltk.sent_tokenize(text):
         for tok in nltk.word_tokenize(sentence):
             yield tok
 
 def gentokens(text):
+    """All tokens in TEXT with no escaping/encoding"""
     for tok in tokenize(text):
         yield tok
 
 def genbucketized(text):
+    """All tokens in text, with all HTML tags mapped to a single bucket meta-token"""
     for tok in tokenize(text, interpret=bucketize):
         yield tok
 
+# default GENERATOR function
 def genescaped(text):
+    """All tokens in TEXT with any odd characters (such as <>&) encoded using HTML escaping"""
     for tok in tokenize(text, interpret=cgi.escape):
         yield tok
 
-def containsEye(w):
-    try:
-        i = w.lower().index("eye")
-        return True
-    except:
-        return False
+### MATCHER functions
+### given an ad content string, examine content (keywords, etc.) to decide whether or not to use it
 
 def contains(t):
+    """For use as MATCHER function template"""
     def inner(s):
         try:
             i = s.lower().index(t)
@@ -99,35 +135,75 @@ def contains(t):
             return False
     return inner
 
-def truth(t):
+def containsEye(w):
+    """For use as MATCHER function"""
+    try:
+        i = w.lower().index("eye")
+        return True
+    except:
+        return False
+
+# default MATCHER function
+def truth(*args):
+    """Can be used as MATCHER function"""
     return True
 
-def isValidFileArg(parser, arg):
-    if not os.path.exists(arg):
-        parser.error("The file %s does not exist!" % arg)
-    else:
-        # return open(arg, 'r')  # return an open file handle
-        return arg
+### CHECK functions
+### given an ad content string, ensure it is appropriate for turker annotation
+### return false value (conventionally, None) if check passes
+### return an error indicator if fails
+### TODO: signal exception rather than use error indicator
 
-def toFn(expr):
-    if re.match(r"""^[a-zA-Z0-9_]+$""", expr):
-        # simple token: global function
-        return globals()[expr]
-    else:
-        m = re.match(r"""^([a-zA-Z0-9_]+)\((.*)\)$""", expr)
-        if m:
-            return globals()[m.group(1)](m.group(2))
-        else:
-            raise ValueError("Bad function spec %s" % expr)
+def longEnough(s, minimum=50):
+    """Reject string S if shorter than MININUM (default: 50) characters"""
+    try:
+        if isinstance(s, (str, unicode)):
+            l = len(s)
+            if l>=minimum:
+                return None
+            else:
+                return "longEnough: %s<%s" % (l, minimum)
+    except:
+        pass
+    return "longEnough: general failure"
 
-def interpretFnSpec(s):
-    if isinstance(s, str):
-        fnName = s
-        fn = toFn(s)
-    else:
-        fnName = None
-        fn = s
-    return (fn, fnName)
+def onlySlightlyUnicode(s, threshold=0.20):
+    """Reject string S if THRESHOLD (default 20%) or more of characters are beyond 1st code page (i.e. not in latin-1)"""
+    try:
+        if isinstance(s, (str, unicode)):
+            l = len(s)
+            k = sum([1 if ord(c) >= 256 else 0 for c in s])
+            ratio = k/float(l)
+            # print "%r / %r => %r" % (k, l, ratio)
+            if l>0 and (ratio <= threshold):
+                return None
+            else:
+                return "onlySlightlyUnicode: %r/%r > %r" % (k, l, threshold)
+    except:
+        pass
+    return "onlySlightlyUnicode: general failure"
+
+def shortEnough(s, maximum=600):
+    """Reject string S if longer than MAXIMUM (default: 600) characters"""
+    try:
+        if isinstance(s, (str, unicode)):
+            l = len(s)
+            if l<=maximum:
+                return None
+            else:
+                return "shortEnough: %s<%s" % (l, maximum)
+    except:
+        pass
+    return "shortEnough: general failure"
+
+# default CHECK function
+def standardCheck(s):
+    # negative polarity, returns first failure case
+    return longEnough(s) or onlySlightlyUnicode(s) or shortEnough(s)
+
+
+
+
 
 """categories      {{
         "label": "Person"
@@ -161,74 +237,20 @@ FORMAT = """=[
   }}
 ]"""
 
-def generateSentencesJson(experiment, output):
+def formatSentenceJson(experiment, output):
     sentences = []
     for d in output:
         sentences.append({"id": d["id"],
                           "sentence": " ".join(d["tokens"])})
-    return json.dumps(sentences)
+    return json.dumps(sentences, indent=4)
 
-### CHECK functions
-### return false value (conventionally, None) if check passes
-### return an error indicator if fails
-
-def longEnough(s, minimum=50):
-    try:
-        if isinstance(s, (str, unicode)):
-            l = len(s)
-            if l>=minimum:
-                return None
-            else:
-                return "longEnough: %s<%s" % (l, minimum)
-    except:
-        pass
-    return "longEnough: general failure"
-
-def onlySlightlyUnicode(s, threshold=0.20):
-    try:
-        if isinstance(s, (str, unicode)):
-            l = len(s)
-            k = sum([1 if ord(c) >= 256 else 0 for c in s])
-            ratio = k/float(l)
-            # print "%r / %r => %r" % (k, l, ratio)
-            if l>0 and (ratio <= threshold):
-                return None
-            else:
-                return "onlySlightlyUnicode: %r/%r > %r" % (k, l, threshold)
-    except:
-        pass
-    return "onlySlightlyUnicode: general failure"
-
-@echo
-def shortEnough(s, maximum=600):
-    try:
-        if isinstance(s, (str, unicode)):
-            l = len(s)
-            if l<=maximum:
-                return None
-            else:
-                return "shortEnough: %s<%s" % (l, maximum)
-    except:
-        pass
-    return "shortEnough: general failure"
-
-def standardCheck(s):
-    # negative polarity, returns first failure case
-    return longEnough(s) or onlySlightlyUnicode(s) or shortEnough(s)
-
-def intOrNone(thing):
-    if thing==None or thing=='None':
-        return None
-    else:
-        return int(thing)
-
-# MATCHER="containsEye"
-MATCHER=lambda x: True
+MATCHER="truth"
 GENERATOR="genescaped"
 CHECK=standardCheck
 SKIP=None
 
 def generateMatchContexts(words, behind, ahead, matcher=MATCHER):
+    """With BEHIND, AHEAD, MATCHER: Can be used to generate multiple contexts within a single document"""
     if ahead and behind:
         # multiple matches
         for (word, i) in itertools.izip(words, itertools.count()):
@@ -247,13 +269,17 @@ BEGIN_COMMENT = """<!-- ##begin## -->"""
 END_COMMENT = """<!-- ##end## -->"""
 
 seen = {}
-def create_hit_configs(elsjson, generator=genescaped,
+def create_hit_configs(elsjson,
                        limit=10, hitcount=10, write=False, format=None, instructions=None, experiment=None,
-                       field="hasBodyPart.text", seen=seen, cloud=False, check=CHECK, skip=SKIP, 
+                       generator=GENERATOR,
+                       matcher=MATCHER,
+                       check=CHECK,
+                       field="hasBodyPart.text", seen=seen, cloud=False, skip=SKIP, 
                        verbose=False):
 
     generator, generatorName = interpretFnSpec(generator)
     check, checkName = interpretFnSpec(check)
+    matcher, matcherName = interpretFnSpec(matcher)
     if format:
         with open(format, 'r') as f:
             format = f.read()
@@ -274,7 +300,7 @@ def create_hit_configs(elsjson, generator=genescaped,
 
     def publish_hit(experiment, hitCount, records):
         if write:
-            data = generateSentencesJson(experiment, records)
+            data = formatSentenceJson(experiment, records)
             outpath = 'config/%s__%04d.json' % (experiment, hitCount)
             sio = StringIO.StringIO()
             sio.write(format.format(sentences=data,instructions=instructions))
@@ -297,7 +323,7 @@ def create_hit_configs(elsjson, generator=genescaped,
                 k = b.new_key(keyName)
                 k.set_contents_from_string(jdata)
                 k.set_canned_acl('public-read')
-                return "https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner/%s" % experiment
+                return "https://%s/%s/%s" % (ZONENAME, BUCKETNAME, expName)
             else:
                 outfile = os.path.join(tempfile.gettempdir(), outpath)
                 ensureDirectoriesExist(outfile)
@@ -316,7 +342,6 @@ def create_hit_configs(elsjson, generator=genescaped,
         hitNum = 0
         while hitNum < hitcount:
             output = []
-            sentenceNum = 0
             while len(output)<limit:
                 ehit = ehits.pop(0)
                 docId = ehit["_id"]
@@ -343,7 +368,7 @@ def create_hit_configs(elsjson, generator=genescaped,
                         # we are interested in this instance
                         words = [word for word in generator(payload)]
                         # all matches or just one match:
-                        for (start, end) in generateMatchContexts(words, None, None, MATCHER):
+                        for (start, end) in generateMatchContexts(words, None, None, matcher):
                             output.append({"X-indexId": docId, 
                                            "X-indexName": docIndex,
                                            "X-field": field,
