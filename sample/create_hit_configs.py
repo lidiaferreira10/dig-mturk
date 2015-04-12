@@ -156,7 +156,8 @@ MATCHER="truth"
 ### return an error indicator if fails
 ### TODO: signal exception rather than use error indicator
 
-def longEnough(s, minimum=50):
+@echo
+def _longEnough(s, minimum=50):
     """Reject string S if shorter than MININUM (default: 50) characters"""
     try:
         if isinstance(s, (str, unicode)):
@@ -169,7 +170,10 @@ def longEnough(s, minimum=50):
         pass
     return "longEnough: general failure"
 
-def onlySlightlyUnicode(s, threshold=0.20):
+def longEnough(minimum):
+    return lambda s: _longEnough(s, minimum=int(minimum))
+
+def _onlySlightlyUnicode(s, threshold=0.20):
     """Reject string S if THRESHOLD (default 20%) or more of characters are beyond 1st code page (i.e. not in latin-1)"""
     try:
         if isinstance(s, (str, unicode)):
@@ -185,7 +189,11 @@ def onlySlightlyUnicode(s, threshold=0.20):
         pass
     return "onlySlightlyUnicode: general failure"
 
-def shortEnough(s, maximum=600):
+def onlySlightlyUnicode(threshold):
+    return lambda s: _onlySlightlyUnicode(s, threshold=float(threshold))
+
+@echo
+def _shortEnough(s, maximum=600):
     """Reject string S if longer than MAXIMUM (default: 600) characters"""
     try:
         if isinstance(s, (str, unicode)):
@@ -198,22 +206,28 @@ def shortEnough(s, maximum=600):
         pass
     return "shortEnough: general failure"
 
+def shortEnough(maximum):
+    return lambda s: _shortEnough(s, maximum=int(maximum))
+
 # default CHECK function
 def standardCheck(s):
     # negative polarity, returns first failure case
-    return longEnough(s) or onlySlightlyUnicode(s) or shortEnough(s)
-CHECK=standardCheck
+    return _longEnough(s) or _onlySlightlyUnicode(s) or _shortEnough(s)
+CHECK=["standardCheck"]
 
-def formatSentenceJson(experiment, output):
-    
+### Used to insert selected sentences into JSON template
+def renderSentenceJson(experiment, sentenceRecords):
+    """SENTENCERECORDS is a sequence of dicts, each one detailing a sentence for annotation.  Extract and format as JSON the relevant information for MTurk"""
     sentences = []
-    for d in output:
+    for d in sentenceRecords:
         sentences.append({"id": d["id"],
                           "sentence": " ".join(d["tokens"])})
     return json.dumps(sentences, indent=4)
 
+### Used to select (potentially multiple) fragments from a single ad content text string
 def generateMatchContexts(words, behind, ahead, matcher=MATCHER):
-    """With BEHIND, AHEAD, MATCHER: Can be used to generate multiple contexts within a single document"""
+    """With BEHIND, AHEAD, MATCHER: Can be used to generate multiple contexts within a single document;
+Without BEHIND, AHEAD, MATCHER: just yield the input as one sentence context """
     if ahead and behind:
         # multiple matches
         for (word, i) in itertools.izip(words, itertools.count()):
@@ -226,6 +240,7 @@ def generateMatchContexts(words, behind, ahead, matcher=MATCHER):
         # single match of whole thing
         yield (0, len(words))
     else:
+        # TODO: raise?
         return
 
 BEGIN_COMMENT = """<!-- ##begin## -->"""
@@ -238,15 +253,23 @@ HITSIZE=10
 seen = {}
 @echo
 def create_hit_configs(elsjson,
-                       hitsize=HITSIZE, hitcount=HITCOUNT, write=False, format=None, instructions=None, experiment=None,
+                       hitsize=HITSIZE, hitcount=HITCOUNT, format=None, instructions=None, experiment=None,
                        generator=GENERATOR,
                        matcher=MATCHER,
                        check=CHECK,
-                       field="hasBodyPart.text", seen=seen, cloud=False, skip=SKIP, 
+                       write=False, cloud=False,
+                       field="hasBodyPart.text", 
+                       seen=seen, skip=SKIP, 
                        verbose=False):
 
     generator, generatorName = interpretFnSpec(generator)
-    check, checkName = interpretFnSpec(check)
+    print check
+    interpretedChecks = []
+    for c in check:
+        cfn, cfnName = interpretFnSpec(c)
+        interpretedChecks.append(cfn)
+    check = interpretedChecks
+    print check
     matcher, matcherName = interpretFnSpec(matcher)
     if format:
         with open(format, 'r') as f:
@@ -268,7 +291,7 @@ def create_hit_configs(elsjson,
 
     def publish_hit(experiment, hitCount, records):
         if write:
-            data = formatSentenceJson(experiment, records)
+            data = renderSentenceJson(experiment, records)
             outpath = 'config/%s__%04d.json' % (experiment, hitCount)
             sio = StringIO.StringIO()
             sio.write(format.format(sentences=data,instructions=instructions))
@@ -302,6 +325,14 @@ def create_hit_configs(elsjson,
             print >> sys.stderr, "Would write %s %s with %s records" % (experiment, hitCount, len(records))
             return records
 
+    @echo
+    def applyChecks(payload, checks):
+        for check in checks:
+            problem = check(payload)
+            if problem:
+                if verbose:
+                    print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
+                return problem
 
     # we want to generate HITCOUNT files
     # each with HITSIZE
@@ -326,7 +357,7 @@ def create_hit_configs(elsjson,
                         if seen.get(payload, False):
                             # already seen this one
                             continue
-                        problem = check(payload)
+                        problem = applyChecks(payload, check)
                         if problem:
                             if verbose:
                                 print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
@@ -361,16 +392,22 @@ def main(argv=None):
     '''this is called if run from command line'''
     parser = argparse.ArgumentParser()
     parser.add_argument("elsjson", help='input json file', type=lambda x: isValidFileArg(parser, x))
-    parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
-    parser.add_argument('-l','--hitsize', required=False, default=HITSIZE, type=int)
-    parser.add_argument('-k','--hitcount', required=False, default=HITCOUNT, type=int)
-    parser.add_argument('-w','--write', required=False, action='store_true')
-    parser.add_argument('-f','--format', required=False, help='format template', type=lambda x: isValidFileArg(parser, x))
-    parser.add_argument('-j','--experiment', required=False, help='experiment', type=str, default=None)
-    parser.add_argument('-c','--cloud', required=False, help='cloud', action='store_true')
-    parser.add_argument('-e','--field', required=False, help='field', type=str, default="hasBodyPart.text.english")
-    parser.add_argument('-x','--check', required=False, help='check', type=str, default=CHECK)
+    parser.add_argument('-j','--experiment', required=False, help='experiment name; if not supplied, generate random UUID4', 
+                        type=str, default=None)
+    parser.add_argument('-f','--format', required=True, help='format template file: must exist', 
+                        type=lambda x: isValidFileArg(parser, x))
+    parser.add_argument('-k','--hitcount', required=False, help='number of hits to generate',
+                        type=int, default=HITCOUNT)
+    parser.add_argument('-l','--hitsize', required=False, help='number of sentences per hit',
+                        type=int, default=HITSIZE)
+    parser.add_argument('-w','--write', required=False, action='store_true', help='write hit files')
+    parser.add_argument('-c','--cloud', required=False, action='store_true', help='write destination is S3; ignored unless -w/--write supplied')
+    parser.add_argument('-e','--field', required=False, help='elasticsearch path expression to extract content string',
+                        type=str, default="hasBodyPart.text.english")
+    parser.add_argument('-x','--check', help='filter function(s)', required=False, default=[], action='append')
+
     parser.add_argument('-s','--skip', required=False, help='skip', type=int, default=SKIP)
+    parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
     parser.add_argument('-v','--verbose', required=False, help='verbose', action='store_true')
     args=parser.parse_args()
 
@@ -385,7 +422,7 @@ def main(argv=None):
     experiment = args.experiment
     cloud = args.cloud
     field = args.field
-    check = args.check
+    check = args.check or CHECK
     skip = None if args.skip==0 else args.skip
     verbose = args.verbose
     s = create_hit_configs(elsjson, experiment=experiment, generator=generator, 
@@ -397,3 +434,4 @@ def main(argv=None):
 # call main() if this is run as standalone
 if __name__ == "__main__":
     sys.exit(main())
+
