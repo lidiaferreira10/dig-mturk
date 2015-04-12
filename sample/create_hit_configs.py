@@ -156,7 +156,6 @@ MATCHER="truth"
 ### return an error indicator if fails
 ### TODO: signal exception rather than use error indicator
 
-@echo
 def _longEnough(s, minimum=50):
     """Reject string S if shorter than MININUM (default: 50) characters"""
     try:
@@ -192,8 +191,7 @@ def _onlySlightlyUnicode(s, threshold=0.20):
 def onlySlightlyUnicode(threshold):
     return lambda s: _onlySlightlyUnicode(s, threshold=float(threshold))
 
-@echo
-def _shortEnough(s, maximum=600):
+def _shortEnough(s, maximum=1000):
     """Reject string S if longer than MAXIMUM (default: 600) characters"""
     try:
         if isinstance(s, (str, unicode)):
@@ -251,9 +249,9 @@ HITCOUNT=10
 HITSIZE=10
 
 seen = {}
-@echo
 def create_hit_configs(elsjson,
-                       hitsize=HITSIZE, hitcount=HITCOUNT, format=None, instructions=None, experiment=None,
+                       experiment=None, format=None, instructions=None, 
+                       hitsize=HITSIZE, hitcount=HITCOUNT, 
                        generator=GENERATOR,
                        matcher=MATCHER,
                        check=CHECK,
@@ -262,37 +260,41 @@ def create_hit_configs(elsjson,
                        seen=seen, skip=SKIP, 
                        verbose=False):
 
+    # instantiate functions for all functional arguments
     generator, generatorName = interpretFnSpec(generator)
-    print check
     interpretedChecks = []
     for c in check:
         cfn, cfnName = interpretFnSpec(c)
         interpretedChecks.append(cfn)
     check = interpretedChecks
-    print check
     matcher, matcherName = interpretFnSpec(matcher)
+    # verify format/instructions inputs
     if format:
         with open(format, 'r') as f:
             format = f.read()
+    else:
+        raise ValueError("-f/--format missing")
     if instructions:
         with open(instructions, 'r') as f:
             instructions = f.read()
             p1 = instructions.index(BEGIN_COMMENT)
             p2 = instructions.index(END_COMMENT)+len(END_COMMENT)
             instructions = json.dumps(instructions[p1:p2])
+    else:
+        print >> sys.stderr, "No instructions page.html file found"
+        instructions = ""
     if not experiment:
         experiment = str(uuid.uuid4())
 
-    output = []
     with open(elsjson, 'r') as f:
         input = json.load(f)
     ehits = input["hits"]["hits"]
     uid = None
 
     def publish_hit(experiment, hitCount, records):
+        outpath = 'config/%s__%04d.json' % (experiment, hitCount)
         if write:
             data = renderSentenceJson(experiment, records)
-            outpath = 'config/%s__%04d.json' % (experiment, hitCount)
             sio = StringIO.StringIO()
             sio.write(format.format(sentences=data,instructions=instructions))
             jdata = sio.getvalue()
@@ -322,16 +324,13 @@ def create_hit_configs(elsjson,
                     f.write(jdata)
                 return outpath
         else:
-            print >> sys.stderr, "Would write %s %s with %s records" % (experiment, hitCount, len(records))
+            print >> sys.stderr, "Would write hit %s with %s sentences" % (outpath, len(records))
             return records
 
-    @echo
     def applyChecks(payload, checks):
         for check in checks:
             problem = check(payload)
             if problem:
-                if verbose:
-                    print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
                 return problem
 
     # we want to generate HITCOUNT files
@@ -340,51 +339,56 @@ def create_hit_configs(elsjson,
     def nested(hitcount, hitsize):
         hitNum = 0
         while hitNum < hitcount:
-            output = []
-            while len(output)<hitsize:
-                ehit = ehits.pop(0)
-                docId = ehit["_id"]
-                docIndex = ehit["_index"]
-                fields = ehit.get("fields")
-                if verbose:
-                    print >> sys.stderr, "Ehit: %r" % (ehit)
-                payloads = fields and fields.get(field, [])
-                if verbose:
-                    print >> sys.stderr, "Payloads for field %r: %r" % (field, payloads)
-                problem = None
-                if payloads:
-                    for payload in ehit["fields"][field]:
-                        if seen.get(payload, False):
-                            # already seen this one
-                            continue
-                        problem = applyChecks(payload, check)
-                        if problem:
-                            if verbose:
-                                print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
-                            continue
-                        if verbose:
-                            print >> sys.stderr, "processing %s" % docId
-                        # we are interested in this instance
-                        words = [word for word in generator(payload)]
-                        # all matches or just one match:
-                        for (start, end) in generateMatchContexts(words, None, None, matcher):
-                            output.append({"X-indexId": docId, 
-                                           "X-indexName": docIndex,
-                                           "X-field": field,
-                                           "X-generator": generatorName,
-                                           "X-reqWindowWidth": (end-start)+1,
-                                           "X-tokenStart": start,
-                                           "X-tokenEnd": end,
-                                           "X-elasticsearchJsonPathname": elsjson,
-                                           "id": docId,
-                                           "tokens": words[start:end]
-                                           })
-                else:
+            hitRecords = []
+            while len(hitRecords)<hitsize:
+                try:
+                    ehit = ehits.pop(0)
+                    docId = ehit["_id"]
+                    docIndex = ehit["_index"]
+                    fields = ehit.get("fields")
                     if verbose:
-                        print >> sys.stderr, "No payloads for ehit %r" % (ehit)
+                        print >> sys.stderr, "Ehit: %r" % (ehit)
+                    payloads = fields and fields.get(field, [])
+                    if verbose:
+                        print >> sys.stderr, "Payloads for field %r: %r" % (field, payloads)
+                    problem = None
+                    if payloads:
+                        for payload in ehit["fields"][field]:
+                            if seen.get(payload, False):
+                                # already seen this one
+                                continue
+                            problem = applyChecks(payload, check)
+                            if problem:
+                                if verbose:
+                                    print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
+                                continue
+                            if verbose:
+                                print >> sys.stderr, "processing %s" % docId
+                            # we are interested in this instance
+                            words = [word for word in generator(payload)]
+                            # all matches or just one match:
+                            for (start, end) in generateMatchContexts(words, None, None, matcher):
+                                hitRecords.append({"X-indexId": docId, 
+                                                   "X-indexName": docIndex,
+                                                   "X-field": field,
+                                                   "X-generator": generatorName,
+                                                   "X-reqWindowWidth": (end-start)+1,
+                                                   "X-tokenStart": start,
+                                                   "X-tokenEnd": end,
+                                                   "X-elasticsearchJsonPathname": elsjson,
+                                                   "id": docId,
+                                                   "tokens": words[start:end]
+                                                   })
+                    else:
+                        if verbose:
+                            print >> sys.stderr, "No payloads for ehit %r" % (ehit)
+                except IndexError as ie:
+                    outpath = 'config/%s__%04d.json' % (experiment, hitNum)
+                    print >> sys.stderr, "Ran out of ES data from %s while working on hit %s, sentence %s" % (elsjson, outpath, len(hitRecords))
+                    raise ie
             # this hit is fully populated
-            publish_hit(experiment, hitNum, output)
-            output = []
+            publish_hit(experiment, hitNum, hitRecords)
+            hitRecords = []
             hitNum += 1
     nested(hitcount, hitsize)
 
