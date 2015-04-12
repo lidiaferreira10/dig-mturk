@@ -121,6 +121,7 @@ def genescaped(text):
     """All tokens in TEXT with any odd characters (such as <>&) encoded using HTML escaping"""
     for tok in tokenize(text, interpret=cgi.escape):
         yield tok
+GENERATOR="genescaped"
 
 ### MATCHER functions
 ### given an ad content string, examine content (keywords, etc.) to decide whether or not to use it
@@ -147,6 +148,7 @@ def containsEye(w):
 def truth(*args):
     """Can be used as MATCHER function"""
     return True
+MATCHER="truth"
 
 ### CHECK functions
 ### given an ad content string, ensure it is appropriate for turker annotation
@@ -200,54 +202,15 @@ def shortEnough(s, maximum=600):
 def standardCheck(s):
     # negative polarity, returns first failure case
     return longEnough(s) or onlySlightlyUnicode(s) or shortEnough(s)
-
-
-
-
-
-"""categories      {{
-        "label": "Person"
-      }},
-      {{
-        "label": "Organization"
-      }}
-"""
-
-"""sentences
-      {{
-        "id": "1",
-        "sentence": "A \"Hello, world!\" program has become the traditional first program that many people learn."
-      }}
-"""
-
-FORMAT = """=[
-  {{
-    "instructions_html": "{instructions_html}",
-    "autoapproval": "",
-    "assignment_duration": "",
-    "hit_lifetime": "",
-    "qualifications": [{qualifications}],
-    "description": "{description}",
-    "title": "{title}",
-    "keywords": "{keywords}",
-    "num_assignments": "",
-    "reward": "",
-    "hit_sentences": [{sentences}],
-    "categories": [{categories}]
-  }}
-]"""
+CHECK=standardCheck
 
 def formatSentenceJson(experiment, output):
+    
     sentences = []
     for d in output:
         sentences.append({"id": d["id"],
                           "sentence": " ".join(d["tokens"])})
     return json.dumps(sentences, indent=4)
-
-MATCHER="truth"
-GENERATOR="genescaped"
-CHECK=standardCheck
-SKIP=None
 
 def generateMatchContexts(words, behind, ahead, matcher=MATCHER):
     """With BEHIND, AHEAD, MATCHER: Can be used to generate multiple contexts within a single document"""
@@ -268,9 +231,14 @@ def generateMatchContexts(words, behind, ahead, matcher=MATCHER):
 BEGIN_COMMENT = """<!-- ##begin## -->"""
 END_COMMENT = """<!-- ##end## -->"""
 
+SKIP=None
+HITCOUNT=10
+HITSIZE=10
+
 seen = {}
+@echo
 def create_hit_configs(elsjson,
-                       limit=10, hitcount=10, write=False, format=None, instructions=None, experiment=None,
+                       hitsize=HITSIZE, hitcount=HITCOUNT, write=False, format=None, instructions=None, experiment=None,
                        generator=GENERATOR,
                        matcher=MATCHER,
                        check=CHECK,
@@ -336,13 +304,13 @@ def create_hit_configs(elsjson,
 
 
     # we want to generate HITCOUNT files
-    # each with LIMIT
+    # each with HITSIZE
 
-    def nested(hitcount, limit):
+    def nested(hitcount, hitsize):
         hitNum = 0
         while hitNum < hitcount:
             output = []
-            while len(output)<limit:
+            while len(output)<hitsize:
                 ehit = ehits.pop(0)
                 docId = ehit["_id"]
                 docIndex = ehit["_index"]
@@ -387,15 +355,15 @@ def create_hit_configs(elsjson,
             publish_hit(experiment, hitNum, output)
             output = []
             hitNum += 1
-    nested(hitcount, limit)
+    nested(hitcount, hitsize)
 
 def main(argv=None):
     '''this is called if run from command line'''
     parser = argparse.ArgumentParser()
     parser.add_argument("elsjson", help='input json file', type=lambda x: isValidFileArg(parser, x))
     parser.add_argument('-g','--generator', required=False, default=GENERATOR, type=str)
-    parser.add_argument('-l','--limit', required=False, default=None, type=int)
-    parser.add_argument('-k','--hitcount', required=False, default=None, type=int)
+    parser.add_argument('-l','--hitsize', required=False, default=HITSIZE, type=int)
+    parser.add_argument('-k','--hitcount', required=False, default=HITCOUNT, type=int)
     parser.add_argument('-w','--write', required=False, action='store_true')
     parser.add_argument('-f','--format', required=False, help='format template', type=lambda x: isValidFileArg(parser, x))
     parser.add_argument('-j','--experiment', required=False, help='experiment', type=str, default=None)
@@ -408,7 +376,7 @@ def main(argv=None):
 
     elsjson = args.elsjson
     generator = args.generator
-    limit = args.limit
+    hitsize = args.hitsize
     hitcount = args.hitcount
     write = args.write
     format = args.format
@@ -423,7 +391,7 @@ def main(argv=None):
     s = create_hit_configs(elsjson, experiment=experiment, generator=generator, 
                            write=write, cloud=cloud, 
                            format=format, instructions=instructions,
-                           field=field, check=check, limit=limit, hitcount=hitcount, skip=skip, 
+                           field=field, check=check, hitsize=hitsize, hitcount=hitcount, skip=skip, 
                            verbose=verbose)
 
 # call main() if this is run as standalone
