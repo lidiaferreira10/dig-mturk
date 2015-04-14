@@ -52,7 +52,7 @@ from htmltoken import tokenize, bucketize
 
 import boto
 BUCKETNAME = 'aisoftwareresearch'
-PROFILE_NAME = 'aisoftwareresearch'
+PROFILE_NAME = 'aisoftwareresearch_philpot'
 ZONENAME='s3-us-west-2.amazonaws.com'
 
 import StringIO
