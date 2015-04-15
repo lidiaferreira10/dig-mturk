@@ -1,7 +1,7 @@
 package mturk;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.HITDataBuffer;
-import com.amazonaws.mturk.addon.HITDataCSVWriter;
 import com.amazonaws.mturk.addon.HITDataInput;
 import com.amazonaws.mturk.addon.HITDataOutput;
 import com.amazonaws.mturk.addon.HITProperties;
@@ -25,6 +24,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -152,17 +152,23 @@ public class deployHits {
 
 			HIT[] hits = null;
 
-			HITDataOutput success = new HITDataCSVWriter(
-					"src/mturk/ner.success");
-			HITDataOutput failure = new HITDataCSVWriter(
-					"src/mturk/ner.failure");
-			System.out.println("createhits");
+			HITDataOutput success = new HITDataBuffer();
+			HITDataOutput failure = new HITDataBuffer();
 			hits = service.createHITs(input, props, question, success, failure);
-			System.out.println("created");
+			
 			if (hits == null) {
 				throw new Exception("Could not create HITs");
 			} else {
-				uploadFile(folderName, "success");
+				String fileContent = "HITId" + "\t" + "HITTypeId" + "\n";
+				int numOfRows = ((HITDataBuffer) success).getNumRows();
+				for (int i = 0; i < numOfRows; i++) {
+					String[] currRow = ((HITDataBuffer) success).getRowValues(i);
+					for (String val: currRow) {
+						fileContent += val + "\t";
+					}
+					fileContent += "\n";
+				}
+				uploadFile(folderName, "success", fileContent);
 				/*uploadFile(folderName, "failure");*/
 			}
 
@@ -175,12 +181,17 @@ public class deployHits {
 	 * upload file to S3. Each file is put inside a folder. Folder Name is the
 	 * folder from where the hit files were read
 	 */
-	public void uploadFile(String filename, String fileType) {
+	public void uploadFile(String filename, String fileType, String fileContent) {
 		String keyName = filename + "/" + filename + "." + fileType;
-		String uploadFileName = "src\\mturk\\ner." + fileType;
+
 		try {
-			File file = new File(uploadFileName);
-			s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
+			InputStream inputStream = new ByteArrayInputStream(
+					fileContent.getBytes());
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.setContentLength(fileContent.length());
+			PutObjectRequest request = new PutObjectRequest(bucketName,
+					keyName, inputStream, metadata);
+			s3client.putObject(request);
 		} catch (AmazonServiceException ase) {
 			System.out.println("Error Message:    " + ase.getMessage());
 		} catch (AmazonClientException ace) {

@@ -224,6 +224,7 @@ public class hitFiles {
 		boolean hasHitsFolder = false;
 		try {
 
+			@SuppressWarnings("unused")
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
 					.withBucketName("aisoftwareresearch").withPrefix(
 							"ner/" + folderName + "/hits");
@@ -508,7 +509,6 @@ public class hitFiles {
 	public void uploadFile(String filename, String fileType, String fileContent) {
 		String keyName = filename + "/" + filename + "." + fileType;
 		try {
-			System.out.println(fileType);
 			InputStream inputStream = new ByteArrayInputStream(
 					fileContent.getBytes());
 			ObjectMetadata metadata = new ObjectMetadata();
@@ -517,10 +517,11 @@ public class hitFiles {
 			 * memory and could result in out of memory errors.
 			 */
 			metadata.setContentLength(fileContent.length());
+			if (fileType.equalsIgnoreCase("html"))
+				metadata.setContentType("text/html");
 			PutObjectRequest request = new PutObjectRequest(hitsbucketName,
 					keyName, inputStream, metadata);
 			s3client.putObject(request);
-			System.out.println("uploaded");
 		} catch (AmazonServiceException ase) {
 			System.out.println("Error Message:    " + ase.getMessage());
 		} catch (AmazonClientException ace) {

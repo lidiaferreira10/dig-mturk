@@ -2,28 +2,16 @@ package mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-
-import org.apache.axis.encoding.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.BatchItemCallback;
 import com.amazonaws.mturk.addon.HITDataBuffer;
-import com.amazonaws.mturk.addon.HITDataCSVReader;
 import com.amazonaws.mturk.addon.HITDataInput;
 import com.amazonaws.mturk.addon.HITResults;
 import com.amazonaws.mturk.requester.Assignment;
@@ -31,7 +19,6 @@ import com.amazonaws.mturk.service.axis.RequesterService;
 import com.amazonaws.mturk.util.PropertiesClientConfig;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -58,7 +45,6 @@ public class hitResults {
 	public void getAllHits() {
 		ArrayList<String> hitIds = new ArrayList<String>();
 		ArrayList<String> folderNames = new ArrayList<String>();
-		BufferedReader br = null;
 		String line, cvsSplitBy = "\t";
 		String mainBucket = "aisoftwareresearch";
 		try {
@@ -102,8 +88,9 @@ public class hitResults {
 				while ((line = in_reader.readLine()) != null) {
 					String[] content = line.split(cvsSplitBy);
 					content[0] = content[0].replace("\"", "");
-					if (!content[0].equalsIgnoreCase("hitid")) {
+					if (!content[0].equalsIgnoreCase("hitid") && !hitIds.contains(content[0]) && content[0].length() > 0) {
 						hitIds.add(content[0]);
+						//System.out.println("inn" + content[0]);
 					}
 				}
 			}
@@ -122,14 +109,12 @@ public class hitResults {
 			} else {
 				Iterator<String> iterator = hitIds.iterator();
 				while (iterator.hasNext()) {
+					String Id  = iterator.next();
 					assignment = service
-							.getAllSubmittedAssignmentsForHIT(iterator.next()
-									.toString());
+							.getAllSubmittedAssignmentsForHIT(Id);
 					if (assignment == null) {
 						throw new Exception("No assignments found");
 					} else {
-						System.out.println("Number of assignments --- "
-								+ assignment.length);
 						String[] assignmentIds = new String[assignment.length];
 						String[] requesterFeedback = new String[assignment.length];
 						for (int j = 0; j < assignment.length; j++) {
@@ -137,8 +122,7 @@ public class hitResults {
 							assignmentIds[j] = assignment[j].getAssignmentId()
 									.toString();
 						}
-						System.out
-								.println("approving all assignments for current hit");
+
 						service.approveAssignments(assignmentIds,
 								requesterFeedback, defaultFeedback,
 								new BatchItemCallback() {
@@ -146,12 +130,12 @@ public class hitResults {
 											Object itemId, boolean succeeded,
 											Object result,
 											Exception itemException) {
-										System.out.println("approved result");
+										/*System.out.println("approved result");
 										System.out.println("Item id ---"
 												+ itemId);
 										System.out.println("success bool ---"
 												+ succeeded);
-										System.out.println(result);
+										System.out.println(result);*/
 									}
 								});
 
@@ -204,33 +188,27 @@ public class hitResults {
 				HITDataBuffer input_buffer = new HITDataBuffer();
 				S3Object in_object = s3client.getObject(new GetObjectRequest(
 						bucketName, successFile));
-				System.out.println(in_object.getRedirectLocation());
 				InputStream in_objectData = in_object.getObjectContent();
 				BufferedReader in_reader = new BufferedReader(
 						new InputStreamReader(in_objectData));
 				while ((content = in_reader.readLine()) != null) {
 					input_buffer.writeLine(content.split("\t"));
 				}
-				HITDataInput input = new HITDataCSVReader(
-						"src\\mturk\\ner.success");
-				// in_object.close();
-				// in_objectData.close();
-				// in_reader.close();
+				HITDataInput input = input_buffer;
+				 in_object.close();
+				in_objectData.close();
+				 in_reader.close();
 				/* Reset the content for each success file */
 				fileContent = "";
 				service.getResults(input, new BatchItemCallback() {
 					public void processItemResult(Object itemId,
 							boolean succeeded, Object result,
 							Exception itemException) {
-						// System.out.println(result);
 						HITResults hitresult = (HITResults) result;
-						// System.out.println(hitresult);
 						Assignment resultassignments[] = hitresult
 								.getAssignments();
-						// System.out.println("here");
 						Map<String, String> assignmap, hitmap, resultmap;
 						resultmap = new HashMap<String, String>();
-						// System.out.println(resultassignments.length);
 						for (int j = 0; j < resultassignments.length; j++) {
 
 							hitmap = hitresult.getHITResults();
@@ -260,18 +238,22 @@ public class hitResults {
 						}
 					}
 				});
-				String keyName = currFileName + "/" + currFileName + ".tsv";
-				InputStream inputStream = new ByteArrayInputStream(
-						fileContent.getBytes());
-				ObjectMetadata metadata = new ObjectMetadata();
-				/*
-				 * Set content length. Else stream contents will be buffered in
-				 * memory and could result in out of memory errors.
-				 */
-				metadata.setContentLength(fileContent.length());
-				PutObjectRequest request = new PutObjectRequest(bucketName,
-						keyName, inputStream, metadata);
-				s3client.putObject(request);
+				if (fileContent.length() > 0) {
+					String keyName = currFileName + "/" + currFileName + ".tsv";
+					InputStream inputStream = new ByteArrayInputStream(
+							fileContent.getBytes());
+					ObjectMetadata metadata = new ObjectMetadata();
+					/*
+					 * Set content length. Else stream contents will be buffered in
+					 * memory and could result in out of memory errors.
+					 */
+					metadata.setContentLength(fileContent.length());
+					//sSystem.out.println("wrote to   :  " + bucketName + "\t" + keyName);
+					PutObjectRequest request = new PutObjectRequest(bucketName,
+							keyName, inputStream, metadata);
+					s3client.putObject(request);
+				}
+				
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
