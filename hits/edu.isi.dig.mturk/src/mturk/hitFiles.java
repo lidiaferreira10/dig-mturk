@@ -2,12 +2,8 @@ package mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,8 +16,6 @@ import org.json.simple.parser.JSONParser;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.mturk.addon.HITDataCSVWriter;
-import com.amazonaws.mturk.addon.HITDataOutput;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
@@ -34,13 +28,12 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 public class hitFiles {
 
-	private PrintStream printhtml;
 	/*
 	 * bucketName: path where all files all stored in s3. AWS Credentials :
 	 * access tokens acquired from AWS
 	 */
 	private String bucketName = "";
-	private String hitsbucketName = "";
+	String hitsbucketName = "";
 	private static String mturkURL = "";
 	private static String propFilename = "";
 	private AmazonS3 s3client;
@@ -71,6 +64,9 @@ public class hitFiles {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
 		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+	}
+
+	public hitFiles() {
 	}
 
 	/* Fetch all config JSONs inside the given s3 bucket */
@@ -242,10 +238,8 @@ public class hitFiles {
 			String categories, Map<String, String> sentences, String filename,
 			JSONArray scratch_categories) {
 		int linenum = 1;
+		String fileContent = "";
 		try {
-			OutputStream htmlfile = new FileOutputStream(new File(
-					"src/mturk/ner.html"));
-			PrintStream printhtml = new PrintStream(htmlfile);
 
 			String htmlheader = "<html><head>";
 			htmlheader += " <meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
@@ -280,22 +274,21 @@ public class hitFiles {
 			htmlfooter += "</div> </div> </div> </div>";
 			htmlfooter += "</form> </div> </div></body></html>";
 
-			printhtml.println(htmlheader);
+			fileContent += htmlheader;
 
 			Iterator<?> sentIter = sentences.entrySet().iterator();
 			while (sentIter.hasNext()) {
 				@SuppressWarnings("rawtypes")
 				Map.Entry pair = (Map.Entry) sentIter.next();
 
-				printhtml.println(createPanel(linenum,
+				fileContent += createPanel(linenum,
 						pair.getKey().toString(), pair.getValue().toString(),
-						categories, scratch_categories));
+						categories, scratch_categories);
 				linenum++;
 			}
-			printhtml.println(htmlfooter);
-			printhtml.close();
-			htmlfile.close();
-			uploadFile(filename, "html");
+			fileContent += htmlfooter;
+
+			uploadFile(filename, "html", fileContent);
 		} catch (Exception e) {
 			System.err.println("HTML " + e.getLocalizedMessage());
 		}
@@ -343,7 +336,10 @@ public class hitFiles {
 					+ "checkbox\" value=\" "
 					+ elasticSearchID
 					+ "\t"
-					+ "no annotations\">"
+					+ "0"
+					+ "\t"
+					+ "no annotations"
+					+ "\n\">"
 					+ innerObj.get("label") + "</label> </div>";
 		}
 		panelHTML += "<div class=\"panel-footer\">Markup occurences of";
@@ -363,27 +359,17 @@ public class hitFiles {
 	 * JSON content. Used to uniquely identify data in each hit.
 	 */
 	public void createInputFile(Map<String, String> sentences, String filename) {
-
-		int size = sentences.size();
-		char separator = '\\';
-		String[] annotations = new String[size];
-		int linenum = 0;
+		String fileContent = "";
 		try {
-
-			String inputFile = "src/mturk/ner.input";
-			HITDataOutput inputEditor = new HITDataCSVWriter(inputFile,
-					separator, false, false);
 			@SuppressWarnings("rawtypes")
 			Iterator sentIter = sentences.entrySet().iterator();
 			while (sentIter.hasNext()) {
 				@SuppressWarnings("rawtypes")
 				Map.Entry pair = (Map.Entry) sentIter.next();
-				annotations[linenum] = pair.getKey().toString();
-				linenum++;
+				fileContent += pair.getKey().toString() + "\t";
 			}
-			inputEditor.setFieldNames(annotations);
-			inputEditor.setFieldNames(annotations);
-			uploadFile(filename, "input");
+			fileContent += "\n" + fileContent;
+			uploadFile(filename, "input", fileContent);
 		} catch (Exception e) {
 			System.err.println("input file" + e.getLocalizedMessage());
 		}
@@ -397,27 +383,25 @@ public class hitFiles {
 	 */
 	public void createPropertiesFile(JSONObject jsonObject, String filename,
 			Map<String, String> sentences) {
-
+		String eol = System.getProperty("line.separator");
+			String fileContent = "";
 		try {
-			OutputStream propFile = new FileOutputStream(new File(
-					"src/mturk/ner.properties"));
-			PrintStream printhtml = new PrintStream(propFile);
+
 			if (jsonObject.get("title").toString().length() > 0)
-				printhtml
-						.println("title:" + jsonObject.get("title").toString());
+				fileContent += "title:" + jsonObject.get("title").toString() + eol;
 			if (jsonObject.get("description").toString().length() > 0)
-				printhtml.println("description:"
-						+ jsonObject.get("description").toString());
+				fileContent +="description:"
+						+ jsonObject.get("description").toString()+ eol;
 			if (jsonObject.get("keywords").toString().length() > 0)
-				printhtml.println("keywords:"
-						+ jsonObject.get("keywords").toString());
+				fileContent +="keywords:"
+						+ jsonObject.get("keywords").toString()+ eol;
 			if (jsonObject.get("reward").toString().length() > 0)
-				printhtml.println("reward:"
-						+ Float.valueOf(jsonObject.get("reward").toString()));
+				fileContent += "reward:"
+						+ Float.valueOf(jsonObject.get("reward").toString())+ eol;
 			if (jsonObject.get("num_assignments").toString().length() > 0)
-				printhtml.println("assignments:"
+				fileContent += "assignments:"
 						+ Integer.parseInt(jsonObject.get("num_assignments")
-								.toString()));
+								.toString())+ eol;
 			/*
 			 * Permitted length of annotation is 255 chars. Since the
 			 * conacatenation of sentence IDs exceeds that, not giving that
@@ -437,20 +421,20 @@ public class hitFiles {
 			 * annotations.charAt(annotations.length() - 1) == ',') {
 			 * annotations = annotations .substring(0, annotations.length() -
 			 * 1); } if (annotations.length() > 0)
-			 * printhtml.println("annotation:" + annotations);
+			 * fileContent += "annotation:" + annotations;
 			 */
 			if (jsonObject.get("assignment_duration").toString().length() > 0)
-				printhtml.println("assignmentduration:"
+				fileContent +="assignmentduration:"
 						+ Integer.parseInt(jsonObject
-								.get("assignment_duration").toString()));
+								.get("assignment_duration").toString()) + eol;
 			if (jsonObject.get("hit_lifetime").toString().length() > 0)
-				printhtml.println("hitlifetime:"
+				fileContent +="hitlifetime:"
 						+ Integer.parseInt(jsonObject.get("hit_lifetime")
-								.toString()));
+								.toString())+ eol;
 			if (jsonObject.get("autoapproval").toString().length() > 0)
-				printhtml.println("autoapprovaldelay:"
+				fileContent +="autoapprovaldelay:"
 						+ Integer.parseInt(jsonObject.get("autoapproval")
-								.toString())); /* units - days */
+								.toString())+ eol;/* units - days */
 
 			/*
 			 * Qualifications to filter turkers who match our specifications.
@@ -465,29 +449,26 @@ public class hitFiles {
 				JSONObject innerObj = (JSONObject) qualIter.next();
 
 				if (innerObj.get("id").toString().length() > 0) {
-					printhtml.println("qualification." + qualificationCount
-							+ ":" + innerObj.get("id").toString());
-					printhtml.println("qualification.comparator."
+					fileContent +="qualification." + qualificationCount
+							+ ":" + innerObj.get("id").toString()+ eol;
+					fileContent +="qualification.comparator."
 							+ qualificationCount + ":"
-							+ innerObj.get("comparator").toString());
-					printhtml
-							.println("qualification.value."
+							+ innerObj.get("comparator").toString()+ eol;
+					fileContent +="qualification.value."
 									+ qualificationCount
 									+ ":"
 									+ Integer.parseInt(innerObj.get("value")
-											.toString()));
-					printhtml.println("qualification.private."
+											.toString())+ eol;
+					fileContent +="qualification.private."
 							+ qualificationCount
 							+ ":"
 							+ Boolean.getBoolean(innerObj.get("private")
-									.toString()));
+									.toString())+ eol;
 					qualificationCount++;
 				}
 
 			}
-			printhtml.close();
-			propFile.close();
-			uploadFile(filename, "properties");
+			uploadFile(filename, "properties", fileContent);
 		} catch (Exception e) {
 			System.err.println("Properties" + e.getLocalizedMessage());
 		}
@@ -499,24 +480,21 @@ public class hitFiles {
 	 * hosted in S3.
 	 */
 	public void createQuestionFile(String filename, String S3FolderName) {
+		String fileContent = "";
 		try {
-			OutputStream quesFile = new FileOutputStream(new File(
-					"src/mturk/ner.question"));
-			printhtml = new PrintStream(quesFile);
-			printhtml.println("<?xml version=\"1.0\"?>");
-			printhtml
-					.println("<ExternalQuestion xmlns=\"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd\">");
-			printhtml
-					.println("<ExternalURL>https://aisoftwareresearch.s3.amazonaws.com/ner/"
+			fileContent+= "<?xml version=\"1.0\"?>"+ "\n";
+			fileContent+="<ExternalQuestion xmlns=\"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd\">"+ "\n";
+			fileContent+="<ExternalURL>https://aisoftwareresearch.s3.amazonaws.com/ner/"
 							+ S3FolderName
 							+ "/"
+							+ "hits/"
 							+ filename
 							+ "/"
 							+ filename
-							+ ".html</ExternalURL>	");
-			printhtml.println("<FrameHeight>600</FrameHeight>");
-			printhtml.println("</ExternalQuestion>");
-			uploadFile(filename, "question");
+							+ ".html</ExternalURL>"	+ "\n";
+			fileContent+="<FrameHeight>600</FrameHeight>"+ "\n";
+			fileContent+="</ExternalQuestion>"+ "\n";
+			uploadFile(filename, "question", fileContent);
 		} catch (Exception e) {
 			System.err.println("Question" + e.getLocalizedMessage());
 		}
@@ -527,14 +505,22 @@ public class hitFiles {
 	 * upload file to S3. Each file is put inside a folder. Folder Name is SHA
 	 * of JSON
 	 */
-	public void uploadFile(String filename, String fileType) {
+	public void uploadFile(String filename, String fileType, String fileContent) {
 		String keyName = filename + "/" + filename + "." + fileType;
-		String uploadFileName = "src\\mturk\\ner." + fileType;
 		try {
-			File file = new File(uploadFileName);
-			s3client.putObject(new PutObjectRequest(hitsbucketName, keyName,
-					file));
-			/* System.out.println("uploaded:: " + fileType); */
+			System.out.println(fileType);
+			InputStream inputStream = new ByteArrayInputStream(
+					fileContent.getBytes());
+			ObjectMetadata metadata = new ObjectMetadata();
+			/*
+			 * Set content length. Else stream contents will be buffered in
+			 * memory and could result in out of memory errors.
+			 */
+			metadata.setContentLength(fileContent.length());
+			PutObjectRequest request = new PutObjectRequest(hitsbucketName,
+					keyName, inputStream, metadata);
+			s3client.putObject(request);
+			System.out.println("uploaded");
 		} catch (AmazonServiceException ase) {
 			System.out.println("Error Message:    " + ase.getMessage());
 		} catch (AmazonClientException ace) {

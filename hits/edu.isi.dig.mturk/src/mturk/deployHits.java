@@ -1,12 +1,15 @@
 package mturk;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.HITDataBuffer;
 import com.amazonaws.mturk.addon.HITDataCSVWriter;
@@ -22,6 +25,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
@@ -43,10 +47,7 @@ public class deployHits {
 
 	public boolean hasEnoughFund() {
 		double balance = service.getAccountBalance();
-		/*
-		 * System.out.println("Got account balance: " +
-		 * RequesterService.formatCurrency(balance));
-		 */
+
 		return balance > 0;
 	}
 
@@ -90,7 +91,7 @@ public class deployHits {
 				questionFile = currFileName + "/" + currFileName + ".question";
 				propertiesFile = currFileName + "/" + currFileName
 						+ ".properties";
-				createHIT(inputFile, questionFile, propertiesFile);
+				createHIT(currFileName, inputFile, questionFile, propertiesFile);
 			}
 
 		} catch (Exception e) {
@@ -98,8 +99,8 @@ public class deployHits {
 		}
 	}
 
-	public void createHIT(String inputFile, String questionFile,
-			String propertiesFile) {
+	public void createHIT(String folderName, String inputFile,
+			String questionFile, String propertiesFile) {
 
 		HITQuestion question = new HITQuestion();
 		Properties prop_map = new Properties();
@@ -152,17 +153,40 @@ public class deployHits {
 			HIT[] hits = null;
 
 			HITDataOutput success = new HITDataCSVWriter(
-					"src/mturk/success.success");
+					"src/mturk/ner.success");
 			HITDataOutput failure = new HITDataCSVWriter(
-					"src/mturk/fail.failure");
+					"src/mturk/ner.failure");
+			System.out.println("createhits");
 			hits = service.createHITs(input, props, question, success, failure);
-
+			System.out.println("created");
 			if (hits == null) {
 				throw new Exception("Could not create HITs");
+			} else {
+				uploadFile(folderName, "success");
+				/*uploadFile(folderName, "failure");*/
 			}
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+		}
+	}
+
+	/*
+	 * upload file to S3. Each file is put inside a folder. Folder Name is the
+	 * folder from where the hit files were read
+	 */
+	public void uploadFile(String filename, String fileType) {
+		String keyName = filename + "/" + filename + "." + fileType;
+		String uploadFileName = "src\\mturk\\ner." + fileType;
+		try {
+			File file = new File(uploadFileName);
+			s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
+		} catch (AmazonServiceException ase) {
+			System.out.println("Error Message:    " + ase.getMessage());
+		} catch (AmazonClientException ace) {
+			System.out.println("Error Message: " + ace.getMessage());
+		} catch (Exception e) {
+			System.out.println("Error Message: " + e.getMessage());
 		}
 	}
 }
