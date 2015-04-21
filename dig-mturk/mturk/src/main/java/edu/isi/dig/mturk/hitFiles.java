@@ -42,6 +42,7 @@ public class hitFiles {
 	private static String mturkURL = "";
 	private static String propFilename = "";
 	private AmazonS3 s3client;
+	private static String AWS_PROFILE_NAME = "default";
 
 	public static void main(String[] args) throws URISyntaxException {
 		/*
@@ -59,12 +60,16 @@ public class hitFiles {
 			propFilename = "mturk_sandbox.properties";
 		}
 		
+		if(args[2] != "")
+		{
+			AWS_PROFILE_NAME = args[2];
+		}
 		URL input = hitFiles.class.getClassLoader().getResource(propFilename);
 		
-		
+		System.out.println("URL:" +input.toString());
 		hitFiles hitFiles = new hitFiles(args[1]);
-		System.out.println(input.getPath()+input.getFile());
-		deployHits deployHits = new deployHits(input.getPath()+input.getFile(), args[1]);
+		//System.out.println("HERE:"+	input.getPath()+input.getFile());
+		deployHits deployHits = new deployHits(input.getPath(), args[1],AWS_PROFILE_NAME);
 
 		hitFiles.getFolders(args[1]);
 		if (deployHits.hasEnoughFund()) {
@@ -76,8 +81,8 @@ public class hitFiles {
 	hitFiles(String bucketName) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
-		//s3client = new AmazonS3Client(new ProfileCredentialsProvider());
-		s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
+		s3client = new AmazonS3Client(new ProfileCredentialsProvider(AWS_PROFILE_NAME));
+		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
 	}
 
 	public hitFiles() {
