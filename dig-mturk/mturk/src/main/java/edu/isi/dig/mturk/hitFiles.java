@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,6 +29,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
+import edu.isi.dig.service.SimilarityService;
+
 public class hitFiles {
 
 	/*
@@ -44,6 +48,9 @@ public class hitFiles {
 		 * Sanbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
 		 * MTurk URL: https://www.mturk.com/mturk/externalSubmit.
 		 */
+		
+		Properties prop = new Properties();
+		
 		if (args[0].equals("-live")) {
 			mturkURL = "https://www.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_live.properties";
@@ -51,8 +58,12 @@ public class hitFiles {
 			mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_sandbox.properties";
 		}
+		
+		URL input = hitFiles.class.getClassLoader().getResource(propFilename);
+		
+		
 		hitFiles hitFiles = new hitFiles(args[1]);
-		deployHits deployHits = new deployHits(propFilename, args[1]);
+		deployHits deployHits = new deployHits(input.toURI().toString(), args[1]);
 
 		hitFiles.getFolders(args[1]);
 		if (deployHits.hasEnoughFund()) {
