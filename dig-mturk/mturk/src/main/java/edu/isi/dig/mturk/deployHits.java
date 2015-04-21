@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.HITDataBuffer;
@@ -51,7 +52,9 @@ public class deployHits {
 		service = new RequesterService(new PropertiesClientConfig(propFileName));
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
-		s3client = new AmazonS3Client(new ProfileCredentialsProvider(awsProfileName));
+		AWSCredentials credentials = new ProfileCredentialsProvider(awsProfileName).getCredentials();
+		s3client = new AmazonS3Client(credentials);
+		//s3client = new AmazonS3Client(new ProfileCredentialsProvider(awsProfileName));
 		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
 	}
