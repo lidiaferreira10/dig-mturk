@@ -83,20 +83,18 @@ public class hitFiles {
 		hitFiles.s3client = ConnectToAWS();
 	}
 	
+	hitFiles() {
+	}
 	
 	public static AmazonS3 ConnectToAWS(){
 		
-		String propFile = System.getProperty("user.home") + "/.aws/" + propFilename;
-		PropertiesClientConfig prop = new PropertiesClientConfig(propFile);
-		
+		String propPath = System.getProperty("user.home") + "/.aws/" + propFilename;
+		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);
 		BasicAWSCredentials awsCreds = new BasicAWSCredentials(prop.getAccessKeyId(), prop.getSecretAccessKey()); 
 		s3client = new AmazonS3Client(awsCreds);
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
-		
 		return s3client;
 	}
-	hitFiles(){}
-	
 
 	/* Fetch all config JSONs inside the given s3 bucket */
 	public void getFolders(String folderName) {

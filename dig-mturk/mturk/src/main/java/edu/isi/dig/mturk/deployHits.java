@@ -55,6 +55,10 @@ public class deployHits {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
 		this.s3client = hitFiles.ConnectToAWS();
+
+		String propPath = System.getProperty("user.home") + "/.aws/" + propFileName;
+		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);
+		service = new RequesterService(prop);
     }
 
 	public boolean hasEnoughFund() {
