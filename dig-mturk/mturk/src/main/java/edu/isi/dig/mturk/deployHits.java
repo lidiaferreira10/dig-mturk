@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.http.impl.client.BasicCredentialsProvider;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.HITDataBuffer;
@@ -48,12 +51,13 @@ public class deployHits {
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
 	}
 	
-	public deployHits(String propFileName, String bucketName,String awsProfileName) {
+	public deployHits(String propFileName, String bucketName,String awsKey, String awsSecret) {
 		service = new RequesterService(new PropertiesClientConfig(propFileName));
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
-		AWSCredentials credentials = new ProfileCredentialsProvider(awsProfileName).getCredentials();
-		s3client = new AmazonS3Client(credentials);
+		//AWSCredentials credentials = new ProfileCredentialsProvider(awsProfileName).getCredentials();
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(awsKey, awsSecret); 
+		s3client = new AmazonS3Client(awsCreds);
 		//s3client = new AmazonS3Client(new ProfileCredentialsProvider(awsProfileName));
 		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");

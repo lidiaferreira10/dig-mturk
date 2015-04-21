@@ -19,6 +19,7 @@ import org.json.simple.parser.JSONParser;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
@@ -44,6 +45,8 @@ public class hitFiles {
 	private static String propFilename = "";
 	private AmazonS3 s3client;
 	private static String AWS_PROFILE_NAME = "default";
+	private static String AWS_KEY = "";
+	private static String AWS_SECRET = "";
 
 	public static void main(String[] args) throws URISyntaxException {
 		/*
@@ -65,12 +68,15 @@ public class hitFiles {
 		{
 			AWS_PROFILE_NAME = args[2];
 		}
+		
+		AWS_KEY = args[3];
+		AWS_SECRET = args[4];
 		URL input = hitFiles.class.getClassLoader().getResource(propFilename);
 		
 		System.out.println("URL:" +input.toString());
 		hitFiles hitFiles = new hitFiles(args[1]);
 		//System.out.println("HERE:"+	input.getPath()+input.getFile());
-		deployHits deployHits = new deployHits(input.getPath(), args[1],AWS_PROFILE_NAME);
+		deployHits deployHits = new deployHits(input.getPath(), args[1],AWS_KEY,AWS_SECRET);
 
 		hitFiles.getFolders(args[1]);
 		if (deployHits.hasEnoughFund()) {
@@ -82,8 +88,11 @@ public class hitFiles {
 	hitFiles(String bucketName) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
-		AWSCredentials credentials = new ProfileCredentialsProvider(AWS_PROFILE_NAME).getCredentials();
-		s3client = new AmazonS3Client(credentials);
+		//AWSCredentials credentials = new ProfileCredentialsProvider(AWS_PROFILE_NAME).getCredentials();
+		//s3client = new AmazonS3Client(credentials);
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(AWS_KEY, AWS_SECRET); 
+		s3client = new AmazonS3Client(awsCreds);
 		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
 	}
 
