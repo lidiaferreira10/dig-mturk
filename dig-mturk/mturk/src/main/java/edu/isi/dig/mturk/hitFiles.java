@@ -15,6 +15,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -63,7 +64,8 @@ public class hitFiles {
 	hitFiles(String bucketName) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
-		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		//s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+		s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
 	}
 
 	public hitFiles() {
