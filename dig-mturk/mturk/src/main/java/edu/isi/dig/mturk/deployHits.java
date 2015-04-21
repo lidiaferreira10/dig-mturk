@@ -8,14 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.apache.http.impl.client.BasicCredentialsProvider;
-
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.HITDataBuffer;
 import com.amazonaws.mturk.addon.HITDataInput;
 import com.amazonaws.mturk.addon.HITDataOutput;
@@ -25,7 +19,6 @@ import com.amazonaws.mturk.requester.HIT;
 import com.amazonaws.mturk.service.axis.RequesterService;
 import com.amazonaws.mturk.util.PropertiesClientConfig;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -42,15 +35,7 @@ public class deployHits {
 	private String bucketName = "", prefixKey = "";
 	private AmazonS3 s3client;
 
-	/*public deployHits(String propFileName, String bucketName) {
-		service = new RequesterService(new PropertiesClientConfig(propFileName));
-		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
-		this.prefixKey = "ner/" + bucketName + "/hits";
-		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
-		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
-		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
-	}*/
-	
+
     public deployHits(String propFileName, String bucketName) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";

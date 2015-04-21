@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.mturk.addon.BatchItemCallback;
 import com.amazonaws.mturk.addon.HITDataBuffer;
 import com.amazonaws.mturk.addon.HITDataInput;
@@ -18,7 +17,6 @@ import com.amazonaws.mturk.requester.Assignment;
 import com.amazonaws.mturk.service.axis.RequesterService;
 import com.amazonaws.mturk.util.PropertiesClientConfig;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -34,13 +32,16 @@ public class hitResults {
 	private AmazonS3 s3client;
 
 	public hitResults(String bucketName) {
-		service = new RequesterService(new PropertiesClientConfig(
-				"mturk_sandbox.properties"));
+	
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
-		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
-		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
-	}
+		s3client = hitFiles.ConnectToAWS();
+		
+		String propPath = System.getProperty("user.home") + "/.aws/" + "mturk_sandbox.properties";
+		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);
+		service = new RequesterService(prop);
+    }
+	
 
 	public void getAllHits() {
 		ArrayList<String> hitIds = new ArrayList<String>();
