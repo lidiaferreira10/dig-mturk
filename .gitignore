@@ -8,7 +8,7 @@ sample/feature/*
 sample/config/*
 
 *.class
-*/.project
+.project
 .classpath
 .idea/
 .settings/
