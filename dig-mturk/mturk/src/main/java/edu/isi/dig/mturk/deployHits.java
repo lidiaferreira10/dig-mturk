@@ -51,8 +51,11 @@ public class deployHits {
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
 	}
 	
-	public deployHits(String propFileName, String bucketName,String awsKey, String awsSecret) {
-		service = new RequesterService(new PropertiesClientConfig(propFileName));
+    public deployHits(String propFileName, String bucketName, String awsKey, String awsSecret) {
+		// service = new RequesterService(new PropertiesClientConfig(propFileName));
+		propFile = System.getProperty("user.home") + "/.aws/" + propFileName;
+		prop = PropertiesClientConfig(propFile)
+		service = new RequesterService(new PropertiesClientConfig(propFile));
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
 		//AWSCredentials credentials = new ProfileCredentialsProvider(awsProfileName).getCredentials();
