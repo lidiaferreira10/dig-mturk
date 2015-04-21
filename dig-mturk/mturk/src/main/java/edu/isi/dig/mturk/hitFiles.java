@@ -63,7 +63,8 @@ public class hitFiles {
 		
 		
 		hitFiles hitFiles = new hitFiles(args[1]);
-		deployHits deployHits = new deployHits(input.toURI().toString(), args[1]);
+		System.out.println(input.getPath()+input.getFile());
+		deployHits deployHits = new deployHits(input.getPath()+input.getFile(), args[1]);
 
 		hitFiles.getFolders(args[1]);
 		if (deployHits.hasEnoughFund()) {
