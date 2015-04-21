@@ -42,29 +42,20 @@ public class deployHits {
 	private String bucketName = "", prefixKey = "";
 	private AmazonS3 s3client;
 
-	public deployHits(String propFileName, String bucketName) {
+	/*public deployHits(String propFileName, String bucketName) {
 		service = new RequesterService(new PropertiesClientConfig(propFileName));
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
 		s3client = new AmazonS3Client(new ProfileCredentialsProvider());
 		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
-	}
+	}*/
 	
-    public deployHits(String propFileName, String bucketName, String awsKey, String awsSecret) {
-		// service = new RequesterService(new PropertiesClientConfig(propFileName));
-		propFile = System.getProperty("user.home") + "/.aws/" + propFileName;
-		prop = PropertiesClientConfig(propFile)
-		service = new RequesterService(new PropertiesClientConfig(propFile));
+    public deployHits(String propFileName, String bucketName) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
-		//AWSCredentials credentials = new ProfileCredentialsProvider(awsProfileName).getCredentials();
-		BasicAWSCredentials awsCreds = new BasicAWSCredentials(awsKey, awsSecret); 
-		s3client = new AmazonS3Client(awsCreds);
-		//s3client = new AmazonS3Client(new ProfileCredentialsProvider(awsProfileName));
-		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
-		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
-	}
+		this.s3client = hitFiles.ConnectToAWS();
+    }
 
 	public boolean hasEnoughFund() {
 		double balance = service.getAccountBalance();

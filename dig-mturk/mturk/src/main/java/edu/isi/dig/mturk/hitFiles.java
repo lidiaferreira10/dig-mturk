@@ -22,6 +22,8 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.mturk.service.axis.RequesterService;
+import com.amazonaws.mturk.util.PropertiesClientConfig;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
@@ -43,10 +45,7 @@ public class hitFiles {
 	String hitsbucketName = "";
 	private static String mturkURL = "";
 	private static String propFilename = "";
-	private AmazonS3 s3client;
-	private static String AWS_PROFILE_NAME = "default";
-	private static String AWS_KEY = "";
-	private static String AWS_SECRET = "";
+	private static AmazonS3 s3client;
 
 	public static void main(String[] args) throws URISyntaxException {
 		/*
@@ -64,19 +63,11 @@ public class hitFiles {
 			propFilename = "mturk_sandbox.properties";
 		}
 		
-		if(args[2] != "")
-		{
-			AWS_PROFILE_NAME = args[2];
-		}
 		
-		AWS_KEY = args[3];
-		AWS_SECRET = args[4];
-		URL input = hitFiles.class.getClassLoader().getResource(propFilename);
 		
-		System.out.println("URL:" +input.toString());
 		hitFiles hitFiles = new hitFiles(args[1]);
 		//System.out.println("HERE:"+	input.getPath()+input.getFile());
-		deployHits deployHits = new deployHits(input.getPath(), args[1],AWS_KEY,AWS_SECRET);
+		deployHits deployHits = new deployHits(propFilename, args[1]);
 
 		hitFiles.getFolders(args[1]);
 		if (deployHits.hasEnoughFund()) {
@@ -86,18 +77,26 @@ public class hitFiles {
 	}
 
 	hitFiles(String bucketName) {
+		
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
-		//AWSCredentials credentials = new ProfileCredentialsProvider(AWS_PROFILE_NAME).getCredentials();
-		//s3client = new AmazonS3Client(credentials);
+		hitFiles.s3client = ConnectToAWS();
+	}
+	
+	
+	public static AmazonS3 ConnectToAWS(){
 		
-		BasicAWSCredentials awsCreds = new BasicAWSCredentials(AWS_KEY, AWS_SECRET); 
+		String propFile = System.getProperty("user.home") + "/.aws/" + propFilename;
+		PropertiesClientConfig prop = new PropertiesClientConfig(propFile);
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(prop.getAccessKeyId(), prop.getSecretAccessKey()); 
 		s3client = new AmazonS3Client(awsCreds);
-		//s3client = new AmazonS3Client(new EnvironmentVariableCredentialsProvider());
+		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
+		
+		return s3client;
 	}
-
-	public hitFiles() {
-	}
+	hitFiles(){}
+	
 
 	/* Fetch all config JSONs inside the given s3 bucket */
 	public void getFolders(String folderName) {
