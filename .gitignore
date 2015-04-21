@@ -6,3 +6,9 @@ datasets/*/x-*
 
 sample/feature/*
 sample/config/*
+
+*.class
+.project
+.classpath
+.idea/
+.settings/
