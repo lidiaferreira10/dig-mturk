@@ -1,4 +1,4 @@
-package mturk;
+package edu.isi.dig.mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
