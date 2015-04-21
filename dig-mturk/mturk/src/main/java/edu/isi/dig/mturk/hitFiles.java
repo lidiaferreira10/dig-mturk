@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
-import edu.isi.dig.service.SimilarityService;
 
 public class hitFiles {
 
@@ -43,7 +43,7 @@ public class hitFiles {
 	private static String propFilename = "";
 	private AmazonS3 s3client;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws URISyntaxException {
 		/*
 		 * Sanbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
 		 * MTurk URL: https://www.mturk.com/mturk/externalSubmit.
