@@ -371,10 +371,12 @@ public class hitFiles {
 					+ innerObj.get("label") + "</label> </div>";
 		}
 		panelHTML += "<div class=\"panel-footer\">Markup occurences of";
-		for (int i = 0; i < categories.length; i++) {
-			panelHTML += " <span class=\"text-primary\">" + categories[i]
+		for (int i = 0; i < categories.length-1; i++) {
+			panelHTML += " <span class=\"text-danger\">" + categories[i]
 					+ "</span>,";
 		}
+		panelHTML += " or ";
+		panelHTML += " <span class=\"text-danger\">" + categories[categories.length-1] + "</span>";
 
 		panelHTML += " </div> </div>";
 		return panelHTML;
