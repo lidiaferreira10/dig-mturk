@@ -2,7 +2,7 @@
   {{"instructions_html": {instructions},
     "autoapproval": "129600",
     "assignment_duration": "3600",
-    "hit_lifetime": "3000",
+    "hit_lifetime": "172800",
     "qualifications": [
       {{
         "id": "",
@@ -12,16 +12,15 @@
       }}
     ],
     "description": "Annotate eyes, hair, names, ethnicity in free text",
-    "title": "Annotate eyes, hair, names, ethnicity in free text",
+    "title": "Annotate Eyes, Hair, Names, Ethnicity in Free Text",
     "keywords": "classification, annotation, categorization, markup, natural language, identification",
     "num_assignments": "3",
-    "reward": "0.05",
+    "reward": "0.20",
     "hit_sentences": {sentences},
     "categories": [{{"label": "Eye color"}},
 {{"label": "Hair type"}},
 {{"label": "Person name"}},
 {{"label": "Company name"}},
-{{"label": "Eye color"}},
 {{"label": "Ethnicity/Origin"}}],
     "scratch_categories": [{{"label": "No annotations"}}]
   }}
