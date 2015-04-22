@@ -39,7 +39,7 @@ public class deployHits {
     public deployHits(String propFileName, String bucketName) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
-		this.s3client = hitFiles.ConnectToAWS();
+		this.s3client = hitFiles.ConnectToAWS(propFileName);
 
 		String propPath = System.getProperty("user.home") + "/.aws/" + propFileName;
 		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);

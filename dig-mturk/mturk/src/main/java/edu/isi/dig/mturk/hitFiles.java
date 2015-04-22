@@ -49,7 +49,7 @@ public class hitFiles {
 
 	public static void main(String[] args) throws URISyntaxException {
 		/*
-		 * Sanbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
+		 * Sandbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
 		 * MTurk URL: https://www.mturk.com/mturk/externalSubmit.
 		 */
 		
@@ -65,7 +65,7 @@ public class hitFiles {
 		
 		
 		
-		hitFiles hitFiles = new hitFiles(args[1]);
+		hitFiles hitFiles = new hitFiles(args[1], args[0]);
 		//System.out.println("HERE:"+	input.getPath()+input.getFile());
 		deployHits deployHits = new deployHits(propFilename, args[1]);
 
@@ -76,17 +76,17 @@ public class hitFiles {
 
 	}
 
-	hitFiles(String bucketName) {
+        hitFiles(String bucketName, String propFilename) {
 		
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
-		hitFiles.s3client = ConnectToAWS();
+		hitFiles.s3client = ConnectToAWS(propFilename);
 	}
 	
 	hitFiles() {
 	}
 	
-	public static AmazonS3 ConnectToAWS(){
+	public static AmazonS3 ConnectToAWS(String propFilename){
 		
 		String propPath = System.getProperty("user.home") + "/.aws/" + propFilename;
 		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);

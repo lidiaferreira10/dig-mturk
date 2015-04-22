@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import com.amazonaws.mturk.addon.BatchItemCallback;
 import com.amazonaws.mturk.addon.HITDataBuffer;
@@ -30,14 +31,16 @@ public class hitResults {
 	String successFile = "", fileContent = "";
 	private String bucketName = "", prefixKey = "";
 	private AmazonS3 s3client;
+	private static String propFilename = "";
+	private static String mturkURL = "";
 
-	public hitResults(String bucketName) {
+    public hitResults(String bucketName, String propFilename) {
 	
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
-		s3client = hitFiles.ConnectToAWS();
+		s3client = hitFiles.ConnectToAWS(propFilename);
 		
-		String propPath = System.getProperty("user.home") + "/.aws/" + "mturk_sandbox.properties";
+		String propPath = System.getProperty("user.home") + "/.aws/" + propFilename;
 		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);
 		service = new RequesterService(prop);
     }
@@ -265,7 +268,18 @@ public class hitResults {
 		if (args[0] == null) {
 			System.out.println();
 		} else {
-			hitResults hitResults = new hitResults(args[0]);
+
+			Properties prop = new Properties();
+
+			if (args[0].equals("-live")) {
+				mturkURL = "https://www.mturk.com/mturk/externalSubmit";
+				propFilename = "mturk_live.properties";
+			} else {
+				mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
+				propFilename = "mturk_sandbox.properties";
+			}
+
+			hitResults hitResults = new hitResults(args[1], propFilename);
 			hitResults.getAllHits();
 		}
 	}
