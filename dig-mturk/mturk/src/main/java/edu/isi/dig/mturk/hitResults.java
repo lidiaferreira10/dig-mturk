@@ -1,4 +1,4 @@
-package edu.isi.dig.mturk;
+package mturk.dig.mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -34,17 +34,16 @@ public class hitResults {
 	private static String propFilename = "";
 	private static String mturkURL = "";
 
-    public hitResults(String bucketName, String propFilename) {
-	
+	public hitResults(String bucketName, String propFilename) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
 		this.prefixKey = "ner/" + bucketName + "/hits";
 		s3client = hitFiles.ConnectToAWS(propFilename);
-		
-		String propPath = System.getProperty("user.home") + "/.aws/" + propFilename;
+
+		String propPath = System.getProperty("user.home") + "/.aws/"
+				+ propFilename;
 		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);
 		service = new RequesterService(prop);
-    }
-	
+	}
 
 	public void getAllHits() {
 		ArrayList<String> hitIds = new ArrayList<String>();
@@ -79,7 +78,6 @@ public class hitResults {
 				}
 				listObjectsRequest.setMarker(objectListing.getNextMarker());
 			} while (objectListing.isTruncated());
-
 			Iterator<String> folderIter = folderNames.iterator();
 			while (folderIter.hasNext()) {
 				String currFileName = folderIter.next();
@@ -92,12 +90,18 @@ public class hitResults {
 				while ((line = in_reader.readLine()) != null) {
 					String[] content = line.split(cvsSplitBy);
 					content[0] = content[0].replace("\"", "");
-					if (!content[0].equalsIgnoreCase("hitid") && !hitIds.contains(content[0]) && content[0].length() > 0) {
+					if (!content[0].equalsIgnoreCase("hitid")
+							&& !hitIds.contains(content[0])
+							&& content[0].length() > 0) {
 						hitIds.add(content[0]);
-						//System.out.println("inn" + content[0]);
+						// System.out.println("inn" + content[0]);
 					}
 				}
+				in_object.close();
+				in_objectData.close();
+				in_reader.close();
 			}
+
 			approveAssignments(hitIds);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -108,14 +112,15 @@ public class hitResults {
 		Assignment[] assignment = null;
 		String defaultFeedback = "default feedback";
 		try {
+
 			if (hitIds == null) {
 				throw new Exception("No hits found");
 			} else {
 				Iterator<String> iterator = hitIds.iterator();
 				while (iterator.hasNext()) {
-					String Id  = iterator.next();
-					assignment = service
-							.getAllSubmittedAssignmentsForHIT(Id);
+					String Id = iterator.next();
+					assignment = service.getAllSubmittedAssignmentsForHIT(Id);
+
 					if (assignment == null) {
 						throw new Exception("No assignments found");
 					} else {
@@ -134,12 +139,14 @@ public class hitResults {
 											Object itemId, boolean succeeded,
 											Object result,
 											Exception itemException) {
-										/*System.out.println("approved result");
-										System.out.println("Item id ---"
-												+ itemId);
-										System.out.println("success bool ---"
-												+ succeeded);
-										System.out.println(result);*/
+										/*
+										 * System.out.println("approved result");
+										 * System.out.println("Item id ---" +
+										 * itemId);
+										 * System.out.println("success bool ---"
+										 * + succeeded);
+										 * System.out.println(result);
+										 */
 									}
 								});
 
@@ -157,6 +164,7 @@ public class hitResults {
 		ArrayList<String> folderNames = new ArrayList<String>();
 		String mainBucket = "aisoftwareresearch";
 		try {
+
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
 					.withBucketName(mainBucket).withPrefix(prefixKey);
 			ObjectListing objectListing;
@@ -184,10 +192,10 @@ public class hitResults {
 				}
 				listObjectsRequest.setMarker(objectListing.getNextMarker());
 			} while (objectListing.isTruncated());
-
 			Iterator<String> folderIter = folderNames.iterator();
 			while (folderIter.hasNext()) {
 				String currFileName = folderIter.next();
+
 				successFile = currFileName + "/" + currFileName + ".success";
 				HITDataBuffer input_buffer = new HITDataBuffer();
 				S3Object in_object = s3client.getObject(new GetObjectRequest(
@@ -199,11 +207,12 @@ public class hitResults {
 					input_buffer.writeLine(content.split("\t"));
 				}
 				HITDataInput input = input_buffer;
-				 in_object.close();
+				in_object.close();
 				in_objectData.close();
-				 in_reader.close();
+				in_reader.close();
+				input_buffer.close();
 				/* Reset the content for each success file */
-				fileContent = "";
+				fileContent = "HitId\t WorkerId\tAssignmentId\tsentenceId\toffset\thightlight_text\tcategory\ttext\n";
 				service.getResults(input, new BatchItemCallback() {
 					public void processItemResult(Object itemId,
 							boolean succeeded, Object result,
@@ -226,6 +235,7 @@ public class hitResults {
 							String[] allAnswers = resultmap.get(
 									"answers[question_id answer_value]").split(
 									"\n");
+
 							for (String answer : allAnswers) {
 								answer = answer.trim();
 								String trimValue = answer.split("\t")[0];
@@ -240,7 +250,9 @@ public class hitResults {
 							}
 							resultmap.clear();
 						}
+
 					}
+
 				});
 				if (fileContent.length() > 0) {
 					String keyName = currFileName + "/" + currFileName + ".tsv";
@@ -248,16 +260,16 @@ public class hitResults {
 							fileContent.getBytes());
 					ObjectMetadata metadata = new ObjectMetadata();
 					/*
-					 * Set content length. Else stream contents will be buffered in
-					 * memory and could result in out of memory errors.
+					 * Set content length. Else stream contents will be buffered
+					 * in memory and could result in out of memory errors.
 					 */
 					metadata.setContentLength(fileContent.length());
-					//sSystem.out.println("wrote to   :  " + bucketName + "\t" + keyName);
 					PutObjectRequest request = new PutObjectRequest(bucketName,
 							keyName, inputStream, metadata);
 					s3client.putObject(request);
+					inputStream.close();
 				}
-				
+
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

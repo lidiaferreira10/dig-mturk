@@ -1,11 +1,10 @@
-package edu.isi.dig.mturk;
+package mturk.dig.mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,7 +33,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
-
 public class hitFiles {
 
 	/*
@@ -52,9 +50,9 @@ public class hitFiles {
 		 * Sandbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
 		 * MTurk URL: https://www.mturk.com/mturk/externalSubmit.
 		 */
-		
+
 		Properties prop = new Properties();
-		
+
 		if (args[0].equals("-live")) {
 			mturkURL = "https://www.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_live.properties";
@@ -62,11 +60,9 @@ public class hitFiles {
 			mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_sandbox.properties";
 		}
-		
-		
-		
-		hitFiles hitFiles = new hitFiles(args[1], args[0]);
-		//System.out.println("HERE:"+	input.getPath()+input.getFile());
+
+		hitFiles hitFiles = new hitFiles(args[1], propFilename);
+		// System.out.println("HERE:"+ input.getPath()+input.getFile());
 		deployHits deployHits = new deployHits(propFilename, args[1]);
 
 		hitFiles.getFolders(args[1]);
@@ -76,21 +72,23 @@ public class hitFiles {
 
 	}
 
-        hitFiles(String bucketName, String propFilename) {
-		
+	hitFiles(String bucketName, String propFilename) {
+
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName;
 		this.hitsbucketName = this.bucketName + "/hits";
 		hitFiles.s3client = ConnectToAWS(propFilename);
 	}
-	
+
 	hitFiles() {
 	}
-	
-	public static AmazonS3 ConnectToAWS(String propFilename){
-		
-		String propPath = System.getProperty("user.home") + "/.aws/" + propFilename;
+
+	public static AmazonS3 ConnectToAWS(String propFilename) {
+
+		String propPath = System.getProperty("user.home") + "/.aws/"
+				+ propFilename;
 		PropertiesClientConfig prop = new PropertiesClientConfig(propPath);
-		BasicAWSCredentials awsCreds = new BasicAWSCredentials(prop.getAccessKeyId(), prop.getSecretAccessKey()); 
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(
+				prop.getAccessKeyId(), prop.getSecretAccessKey());
 		s3client = new AmazonS3Client(awsCreds);
 		s3client.setEndpoint("s3-us-west-2.amazonaws.com");
 		return s3client;
@@ -309,9 +307,9 @@ public class hitFiles {
 				@SuppressWarnings("rawtypes")
 				Map.Entry pair = (Map.Entry) sentIter.next();
 
-				fileContent += createPanel(linenum,
-						pair.getKey().toString(), pair.getValue().toString(),
-						categories, scratch_categories);
+				fileContent += createPanel(linenum, pair.getKey().toString(),
+						pair.getValue().toString(), categories,
+						scratch_categories);
 				linenum++;
 			}
 			fileContent += htmlfooter;
@@ -366,17 +364,23 @@ public class hitFiles {
 					+ "\t"
 					+ "0"
 					+ "\t"
+					+ "" // adding an empty string to normalize the output file
+							// format
+					+ "\t"
 					+ "no annotations"
+					+ "\t"
+					+ sentence
 					+ "\n\">"
 					+ innerObj.get("label") + "</label> </div>";
 		}
 		panelHTML += "<div class=\"panel-footer\">Markup occurences of";
-		for (int i = 0; i < categories.length-1; i++) {
+		for (int i = 0; i < categories.length - 1; i++) {
 			panelHTML += " <span class=\"text-danger\">" + categories[i]
 					+ "</span>,";
 		}
 		panelHTML += " or ";
-		panelHTML += " <span class=\"text-danger\">" + categories[categories.length-1] + "</span>";
+		panelHTML += " <span class=\"text-danger\">"
+				+ categories[categories.length - 1] + "</span>";
 
 		panelHTML += " </div> </div>";
 		return panelHTML;
@@ -414,24 +418,26 @@ public class hitFiles {
 	public void createPropertiesFile(JSONObject jsonObject, String filename,
 			Map<String, String> sentences) {
 		String eol = System.getProperty("line.separator");
-			String fileContent = "";
+		String fileContent = "";
 		try {
 
 			if (jsonObject.get("title").toString().length() > 0)
-				fileContent += "title:" + jsonObject.get("title").toString() + eol;
+				fileContent += "title:" + jsonObject.get("title").toString()
+						+ eol;
 			if (jsonObject.get("description").toString().length() > 0)
-				fileContent +="description:"
-						+ jsonObject.get("description").toString()+ eol;
+				fileContent += "description:"
+						+ jsonObject.get("description").toString() + eol;
 			if (jsonObject.get("keywords").toString().length() > 0)
-				fileContent +="keywords:"
-						+ jsonObject.get("keywords").toString()+ eol;
+				fileContent += "keywords:"
+						+ jsonObject.get("keywords").toString() + eol;
 			if (jsonObject.get("reward").toString().length() > 0)
 				fileContent += "reward:"
-						+ Float.valueOf(jsonObject.get("reward").toString())+ eol;
+						+ Float.valueOf(jsonObject.get("reward").toString())
+						+ eol;
 			if (jsonObject.get("num_assignments").toString().length() > 0)
 				fileContent += "assignments:"
 						+ Integer.parseInt(jsonObject.get("num_assignments")
-								.toString())+ eol;
+								.toString()) + eol;
 			/*
 			 * Permitted length of annotation is 255 chars. Since the
 			 * conacatenation of sentence IDs exceeds that, not giving that
@@ -450,21 +456,21 @@ public class hitFiles {
 			 * (annotations.length() > 0 &&
 			 * annotations.charAt(annotations.length() - 1) == ',') {
 			 * annotations = annotations .substring(0, annotations.length() -
-			 * 1); } if (annotations.length() > 0)
-			 * fileContent += "annotation:" + annotations;
+			 * 1); } if (annotations.length() > 0) fileContent += "annotation:"
+			 * + annotations;
 			 */
 			if (jsonObject.get("assignment_duration").toString().length() > 0)
-				fileContent +="assignmentduration:"
+				fileContent += "assignmentduration:"
 						+ Integer.parseInt(jsonObject
 								.get("assignment_duration").toString()) + eol;
 			if (jsonObject.get("hit_lifetime").toString().length() > 0)
-				fileContent +="hitlifetime:"
+				fileContent += "hitlifetime:"
 						+ Integer.parseInt(jsonObject.get("hit_lifetime")
-								.toString())+ eol;
+								.toString()) + eol;
 			if (jsonObject.get("autoapproval").toString().length() > 0)
-				fileContent +="autoapprovaldelay:"
+				fileContent += "autoapprovaldelay:"
 						+ Integer.parseInt(jsonObject.get("autoapproval")
-								.toString())+ eol;/* units - days */
+								.toString()) + eol;/* units - days */
 
 			/*
 			 * Qualifications to filter turkers who match our specifications.
@@ -479,21 +485,22 @@ public class hitFiles {
 				JSONObject innerObj = (JSONObject) qualIter.next();
 
 				if (innerObj.get("id").toString().length() > 0) {
-					fileContent +="qualification." + qualificationCount
-							+ ":" + innerObj.get("id").toString()+ eol;
-					fileContent +="qualification.comparator."
+					fileContent += "qualification." + qualificationCount + ":"
+							+ innerObj.get("id").toString() + eol;
+					fileContent += "qualification.comparator."
 							+ qualificationCount + ":"
-							+ innerObj.get("comparator").toString()+ eol;
-					fileContent +="qualification.value."
-									+ qualificationCount
-									+ ":"
-									+ Integer.parseInt(innerObj.get("value")
-											.toString())+ eol;
-					fileContent +="qualification.private."
+							+ innerObj.get("comparator").toString() + eol;
+					fileContent += "qualification.value."
+							+ qualificationCount
+							+ ":"
+							+ Integer
+									.parseInt(innerObj.get("value").toString())
+							+ eol;
+					fileContent += "qualification.private."
 							+ qualificationCount
 							+ ":"
 							+ Boolean.getBoolean(innerObj.get("private")
-									.toString())+ eol;
+									.toString()) + eol;
 					qualificationCount++;
 				}
 
@@ -512,18 +519,19 @@ public class hitFiles {
 	public void createQuestionFile(String filename, String S3FolderName) {
 		String fileContent = "";
 		try {
-			fileContent+= "<?xml version=\"1.0\"?>"+ "\n";
-			fileContent+="<ExternalQuestion xmlns=\"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd\">"+ "\n";
-			fileContent+="<ExternalURL>https://aisoftwareresearch.s3.amazonaws.com/ner/"
-							+ S3FolderName
-							+ "/"
-							+ "hits/"
-							+ filename
-							+ "/"
-							+ filename
-							+ ".html</ExternalURL>"	+ "\n";
-			fileContent+="<FrameHeight>600</FrameHeight>"+ "\n";
-			fileContent+="</ExternalQuestion>"+ "\n";
+			fileContent += "<?xml version=\"1.0\"?>" + "\n";
+			fileContent += "<ExternalQuestion xmlns=\"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd\">"
+					+ "\n";
+			fileContent += "<ExternalURL>https://aisoftwareresearch.s3.amazonaws.com/ner/"
+					+ S3FolderName
+					+ "/"
+					+ "hits/"
+					+ filename
+					+ "/"
+					+ filename
+					+ ".html</ExternalURL>" + "\n";
+			fileContent += "<FrameHeight>600</FrameHeight>" + "\n";
+			fileContent += "</ExternalQuestion>" + "\n";
 			uploadFile(filename, "question", fileContent);
 		} catch (Exception e) {
 			System.err.println("Question" + e.getLocalizedMessage());

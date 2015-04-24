@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>mturk</groupId>
-  <artifactId>mturk</artifactId>
+  <artifactId>dig.mturk</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>mturk</name>
+  <name>dig.mturk</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -18,6 +18,16 @@
     <repository>
         <id>tc-maven-repo</id>
         <url>http://github.com/tc/tc-maven-repo/raw/master/releases</url>
+    </repository>
+    <repository>
+    <id>git-Subessware</id>
+    <name>mturk-maven</name>
+    <url>https://github.com/Subessware/mturk-maven/raw/master/</url>
+</repository>
+<repository>
+      <id>clojars</id>
+      <name>Clojars repository</name>
+      <url>https://clojars.org/repo</url>
     </repository>
 </repositories>
   
@@ -35,10 +45,15 @@
 		<version>1.7.5</version>
 	</dependency>
     <dependency>
-        <groupId>com.amazon</groupId>
-        <artifactId>java-aws-mturk</artifactId>
-        <version>1.2.2</version>
+       <groupId>com.amazon</groupId>
+  <artifactId>java-aws-mturk</artifactId>
+  <version>1.2.2</version>
     </dependency>
+    <dependency>
+  <groupId>org.clojars.zaxtax</groupId>
+  <artifactId>java-aws-mturk</artifactId>
+  <version>1.6.2</version>
+</dependency>
    <dependency>
 		<groupId>com.googlecode.json-simple</groupId>
 		<artifactId>json-simple</artifactId>
