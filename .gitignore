@@ -13,3 +13,7 @@ data-processing/karma/models-graphviz
 data-processing/karma/models-autosave
 data-processing/karma/alignment-graph
 data-processing/karma/semantic-type-files
+
+*.pyc
+*~
+*.pdf
