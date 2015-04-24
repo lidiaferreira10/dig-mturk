@@ -16,6 +16,7 @@
 python create_hit_configs.py -f pyfmt/embed/hitdata.pyfmt feature/embed/embed.json
 
 common arguments:
+-f/--format: pyfmt file
 -j/--experiment: experiment name (default auto-generated)
 -w/--write: write output
 -c/--cloud: write to S3
@@ -26,7 +27,7 @@ less common arguments:
 -x/--check: filter function(s); can supply multiple times
 
 rare arguments:
--f/--field: elastic search path (default hasBodyPart.text.english)
+-e/--field: elastic search path (default hasBodyPart.text.english)
 -g/--generator: iterator to generate tokens from text content
 
 obsolete(?) arguments:
@@ -61,6 +62,13 @@ import tempfile
 
 import util
 from util import echo, ensureDirectoriesExist
+
+##
+
+# def iterChunksTrimmed(iterable, n, fillvalue=None):
+#     args = [iter(iterable)] * n
+#     return izip(*args)
+
 
 ### argparse/main argument validation and canonicalization
 
@@ -237,7 +245,11 @@ def standardCheck(s):
     # negative polarity, returns first failure case
     return _longEnough(s) or _onlySlightlyUnicode(s) or _shortEnough(s)
 CHECK=["standardCheck"]
-
+# new CHECK function
+def asciiCheck(s):
+    # negative polarity, returns first failure case
+    return _longEnough(s) or _onlySlightlyUnicode(s, threshold=0.0) or _shortEnough(s)
+CHECK=["asciiCheck"]
 ### Used to insert selected sentences into JSON template
 def renderSentenceJson(experiment, sentenceRecords):
     """SENTENCERECORDS is a sequence of dicts, each one detailing a sentence for annotation.  Extract and format as JSON the relevant information for MTurk"""
@@ -248,7 +260,7 @@ def renderSentenceJson(experiment, sentenceRecords):
     return json.dumps(sentences, indent=4)
 
 ### Used to select (potentially multiple) fragments from a single ad content text string
-def generateMatchContexts(words, behind, ahead, matcher=MATCHER):
+def generateFragmentContexts(words, behind, ahead, matcher=MATCHER, every=None):
     """With BEHIND, AHEAD, MATCHER: Can be used to generate multiple contexts within a single document;
 Without BEHIND, AHEAD, MATCHER: just yield the input as one sentence context """
     if ahead and behind:
@@ -259,6 +271,8 @@ Without BEHIND, AHEAD, MATCHER: just yield the input as one sentence context """
                 start = max(i-behind, 0)
                 end = min(i+ahead, len(words))
                 yield (start, end)
+    elif every:
+        pass
     elif len(words)>0 and matcher(words[0]):
         # single match of whole thing
         yield (0, len(words))
@@ -343,6 +357,7 @@ def create_hit_configs(elsjson,
                 return "https://%s/%s/%s" % (ZONENAME, BUCKETNAME, expName)
             else:
                 outfile = os.path.join(tempfile.gettempdir(), outpath)
+                print >> sys.stderr, "Write to %s" % outfile
                 ensureDirectoriesExist(outfile)
                 with open(outfile, 'w') as f:
                     f.write(jdata)
@@ -391,7 +406,7 @@ def create_hit_configs(elsjson,
                             # we are interested in this instance
                             words = [word for word in generator(payload)]
                             # all matches or just one match:
-                            for (start, end) in generateMatchContexts(words, None, None, matcher):
+                            for (start, end) in generateFragmentContexts(words, None, None, matcher):
                                 hitRecords.append({"X-indexId": docId, 
                                                    "X-indexName": docIndex,
                                                    "X-field": field,
