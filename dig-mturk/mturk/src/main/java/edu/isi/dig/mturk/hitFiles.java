@@ -9,7 +9,6 @@ import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,11 +16,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.mturk.service.axis.RequesterService;
 import com.amazonaws.mturk.util.PropertiesClientConfig;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -50,9 +45,6 @@ public class hitFiles {
 		 * Sandbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
 		 * MTurk URL: https://www.mturk.com/mturk/externalSubmit.
 		 */
-
-		Properties prop = new Properties();
-
 		if (args[0].equals("-live")) {
 			mturkURL = "https://www.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_live.properties";
@@ -81,7 +73,10 @@ public class hitFiles {
 
 	hitFiles() {
 	}
-
+	public static AmazonS3 ConnectToAWS() {
+		s3client = ConnectToAWS("mturk_sandbox.properties");
+		return s3client;
+	}
 	public static AmazonS3 ConnectToAWS(String propFilename) {
 
 		String propPath = System.getProperty("user.home") + "/.aws/"
