@@ -1,11 +1,7 @@
-@prefix ht: <http://memexproxy.com/ontology/human-trafficking/> . 
-@prefix memex: <http://memexproxy.com/ontology/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix skos: <http://www.w3.org/2008/05/skos#> .
-@prefix schema: <http://schema.org/> .
 @prefix mturk: <http://dig.isi.edu/ontology/mturk/> .
 
 <http://dig.isi.edu/ontology/mturk/> rdf:type owl:Ontology .
@@ -16,26 +12,84 @@
 #
 #########################################################
 
-mturk:Annotation rdf:type owl:Class ; 
-	rdfs:subClassOf schema:CreativeWork ;
-	rdfs:label "Annotation"@en ;
-	rdfs:comment """Document (Creative Work) produced by annotating part of another CreativeWork"""
+mturk:Sentence rdf:type owl:Class ; 
+	rdfs:comment """The sentence being annotated"""
 	.
 
-mturk:annotationOffset rdf:type owl:DatatypeProperty ;
-	rdfs:label "annotationOffset"@en ;
+mturk:AnnotationSet rdf:type owl:Class ; 
+	rdfs:comment """The set of annotations for a sentence"""
+	.
+
+mturk:Annotation rdf:type owl:Class ; 
+	rdfs:comment """An annotation provided by an mturk worker"""
+	.
+
+#########################################################
+#
+# Generic Properties
+#
+#########################################################
+
+mturk:annotation rdf:type owl:ObjectProperty ; 
+	rdfs:domain mturk:AnnotationSet ; 
+	rdfs:range mturk:Annotation ;
+	rdfs:comment "A generic annotation property. Specific annotations are subproperties of this" 
+	.
+
+mturk:annotationSet rdf:type owl:ObjectProperty ; 
+	rdfs:domain mturk:Sentence ; 
+	rdfs:range mturk:AnnotationSet ;
+	rdfs:comment "The set of annotations for a sentence" 
+	.
+
+mturk:offset rdf:type owl:DatatypeProperty ;
 	rdfs:domain mturk:Annotation ;
 	rdfs:comment "The beginning offset for an annotation"
 	.
 
-mturk:annotationLabel rdf:type owl:DatatypeProperty ;
-	rdfs:label "annotationLabel"@en ;
+mturk:value rdf:type owl:DatatypeProperty ;
 	rdfs:domain mturk:Annotation ;
-	rdfs:comment "The label for an annotation"
+	rdfs:comment "The part of a sentence that the turker selected"
 	.
 
-mturk:annotationValue rdf:type owl:DatatypeProperty ;
-	rdfs:label "annotationValue"@en ;
+mturk:hitId rdf:type owl:DatatypeProperty ;
 	rdfs:domain mturk:Annotation ;
-	rdfs:comment "The value for an annotation"
+	rdfs:comment "The ID of the HIT"
 	.
+
+mturk:assignmentId rdf:type owl:DatatypeProperty ;
+	rdfs:domain mturk:Annotation ;
+	rdfs:comment "The ID of the Assignment within a HIT"
+	.
+
+
+#########################################################
+#
+# Experiment-Specific Properties
+#
+#########################################################
+
+mturk:personName rdf:type owl:ObjectProperty ; 
+	rdfs:subPropertyOf mturk:annotation ;
+	rdfs:comment "A person name annotation" 
+	.
+
+mturk:companyName rdf:type owl:ObjectProperty ; 
+	rdfs:subPropertyOf mturk:annotation ;
+	rdfs:comment "A person name annotation" 
+	.
+
+mturk:hairType rdf:type owl:ObjectProperty ; 
+	rdfs:subPropertyOf mturk:annotation ;
+	rdfs:comment "A person name annotation" 
+	.
+
+mturk:eyeColor rdf:type owl:ObjectProperty ; 
+	rdfs:subPropertyOf mturk:annotation ;
+	rdfs:comment "A person name annotation" 
+	.
+
+mturk:ethnicityOrigin rdf:type owl:ObjectProperty ; 
+	rdfs:subPropertyOf mturk:annotation ;
+	rdfs:comment "A person name annotation" 
+	.	

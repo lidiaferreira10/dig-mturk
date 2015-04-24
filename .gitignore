@@ -1,14 +1,15 @@
-datasets/x-*
-datasets/*/x-*
 
-*~
-*.pyc
 
-sample/feature/*
-sample/config/*
+data-processing/karma/semantic-type-files
 
-*.class
-.project
-.classpath
-.idea/
-.settings/
+data-processing/karma/user-uploaded-files
+
+data-processing/karma/user-preferences/WSP1.json
+
+data-processing/karma/models-json
+
+data-processing/karma/models-graphviz
+
+data-processing/karma/models-autosave
+
+data-processing/karma/alignment-graph
