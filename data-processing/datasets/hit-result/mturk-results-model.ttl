@@ -1,0 +1,884 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix mturk: <http://dig.isi.edu/ontology/mturk/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix km-dev: <http://isi.edu/integration/karma/dev#> .
+
+_:node19jmas5vgx1 a km-dev:R2RMLMapping ;
+	km-dev:sourceName "mturk-sample.tsv" ;
+	km-dev:modelPublicationTime "1429899974640"^^xsd:long ;
+	km-dev:modelVersion "1.7" ;
+	km-dev:hasInputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"DocumentUri\"}],[{\"columnName\":\"Offset\"}],[{\"columnName\":\"Value\"}],[{\"columnName\":\"HitId\"}]]" ;
+	km-dev:hasOutputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"Offset\"}],[{\"columnName\":\"Value\"}],[{\"columnName\":\"annotation_set_uri\"}],[{\"columnName\":\"sentence_uri\"}],[{\"columnName\":\"HitId\"}]]" ;
+	km-dev:hasModelLabel "mturk-results" ;
+	km-dev:hasBaseURI "http://dig.isi.edu/mturk/data" ;
+	km-dev:hasWorksheetHistory """[
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"HitId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/hitId\",
+                    \"DomainLabel\": \"mturk:Annotation1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1 (add)\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"AssignmentId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/assignmentId\",
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AssignmentId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AssignmentId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"DocumentUri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"sentence_uri\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtSentenceUri(getValue(\\\"DocumentUri\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"DocumentUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentence_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"sentence_uri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyName\",
+                \"value\": \"isUriOfClass\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyUri\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/Sentence\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyId\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/Sentence1 (add)\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://isi.edu/integration/karma/dev#classLink\",
+                    \"DomainLabel\": \"mturk:Sentence1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentence_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentence_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetMetaPropertyCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"Offset\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/offset\",
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Offset\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Offset\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"sentence_uri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"annotation_set_uri\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtAnnotationSetUri(getValue(\\\"sentence_uri\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentence_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotation_set_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"annotation_set_uri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyName\",
+                \"value\": \"isUriOfClass\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyUri\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyId\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://isi.edu/integration/karma/dev#classLink\",
+                    \"DomainLabel\": \"mturk:AnnotationSet1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotation_set_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotation_set_uri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetMetaPropertyCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"orderedColumns\",
+                \"value\": [
+                    {
+                        \"id\": [{\"columnName\": \"HitId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"HitId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Offset\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"Offset\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"WorkerId\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"WorkerId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AssignmentId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AssignmentId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"DocumentUri\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"DocumentUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"sentence_uri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"sentence_uri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"annotation_set_uri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"annotation_set_uri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Value\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Value\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Label\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Label\"
+                    }
+                ],
+                \"type\": \"orderedColumns\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"OrganizeColumnsCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"properties\",
+                \"value\": {
+                    \"hasServiceProperties\": false,
+                    \"hasPrefix\": false,
+                    \"graphLabel\": \"\",
+                    \"hasBaseURI\": true,
+                    \"baseURI\": \"http://dig.isi.edu/mturk/data\"
+                },
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetWorksheetPropertiesCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"properties\",
+                \"value\": {
+                    \"hasServiceProperties\": false,
+                    \"hasPrefix\": true,
+                    \"prefix\": \"mturk\",
+                    \"graphLabel\": \"\",
+                    \"hasBaseURI\": false
+                },
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetWorksheetPropertiesCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"properties\",
+                \"value\": {
+                    \"hasServiceProperties\": false,
+                    \"hasPrefix\": false,
+                    \"graphLabel\": \"mturk-results\",
+                    \"hasBaseURI\": false
+                },
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetWorksheetPropertiesCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"Value\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/value\",
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Value\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Value\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"initialEdges\",
+                \"value\": [
+                    {
+                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
+                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\"
+                    },
+                    {
+                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
+                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
+                    }
+                ],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newEdges\",
+                \"value\": [
+                    {
+                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
+                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\"
+                    },
+                    {
+                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
+                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
+                    }
+                ],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"ChangeInternalNodeLinksCommand\"
+    }
+]""" .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 a rr:TriplesMap .
+
+_:node19jmas5vgx1 km-dev:hasTriplesMap km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx2 rr:tableName "mturk-sample.tsv" ;
+	a rr:LogicalTable ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasLogicalTable _:node19jmas5vgx2 .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 rr:logicalTable _:node19jmas5vgx2 ;
+	rr:subjectMap _:node19jmas5vgx3 .
+
+_:node19jmas5vgx1 km-dev:hasSubjectMap _:node19jmas5vgx3 .
+
+_:node19jmas5vgx3 km-dev:isPartOfMapping _:node19jmas5vgx1 ;
+	a rr:SubjectMap ;
+	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Annotation1" ;
+	rr:class mturk:Annotation ;
+	rr:termType rr:BlankNode ;
+	km-dev:namePrefix "mturk:Annotation1" .
+
+km-dev:PredicateObjectMap_15c5039e-d4ef-49c4-b499-c6a33bc4c828 rr:predicate mturk:assignmentId .
+
+_:node19jmas5vgx4 rr:column "AssignmentId" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasObjectMap _:node19jmas5vgx4 .
+
+km-dev:PredicateObjectMap_15c5039e-d4ef-49c4-b499-c6a33bc4c828 rr:objectMap _:node19jmas5vgx4 .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 rr:predicateObjectMap km-dev:PredicateObjectMap_15c5039e-d4ef-49c4-b499-c6a33bc4c828 .
+
+km-dev:PredicateObjectMap_15c5039e-d4ef-49c4-b499-c6a33bc4c828 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_15c5039e-d4ef-49c4-b499-c6a33bc4c828 .
+
+km-dev:PredicateObjectMap_bc51c728-9454-43ff-b596-f2308f3ad6ad rr:predicate mturk:hitId .
+
+_:node19jmas5vgx5 rr:column "HitId" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasObjectMap _:node19jmas5vgx5 .
+
+km-dev:PredicateObjectMap_bc51c728-9454-43ff-b596-f2308f3ad6ad rr:objectMap _:node19jmas5vgx5 .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 rr:predicateObjectMap km-dev:PredicateObjectMap_bc51c728-9454-43ff-b596-f2308f3ad6ad .
+
+km-dev:PredicateObjectMap_bc51c728-9454-43ff-b596-f2308f3ad6ad a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_bc51c728-9454-43ff-b596-f2308f3ad6ad .
+
+km-dev:PredicateObjectMap_a3ea34da-1a05-47e8-b323-a6dd202138f8 rr:predicate mturk:offset .
+
+_:node19jmas5vgx6 rr:column "Offset" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasObjectMap _:node19jmas5vgx6 .
+
+km-dev:PredicateObjectMap_a3ea34da-1a05-47e8-b323-a6dd202138f8 rr:objectMap _:node19jmas5vgx6 .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 rr:predicateObjectMap km-dev:PredicateObjectMap_a3ea34da-1a05-47e8-b323-a6dd202138f8 .
+
+km-dev:PredicateObjectMap_a3ea34da-1a05-47e8-b323-a6dd202138f8 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a3ea34da-1a05-47e8-b323-a6dd202138f8 .
+
+km-dev:PredicateObjectMap_b0ec3570-07e1-42eb-bc03-8cc3ac75ecff rr:predicate mturk:value .
+
+_:node19jmas5vgx7 rr:column "Value" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasObjectMap _:node19jmas5vgx7 .
+
+km-dev:PredicateObjectMap_b0ec3570-07e1-42eb-bc03-8cc3ac75ecff rr:objectMap _:node19jmas5vgx7 .
+
+km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 rr:predicateObjectMap km-dev:PredicateObjectMap_b0ec3570-07e1-42eb-bc03-8cc3ac75ecff .
+
+km-dev:PredicateObjectMap_b0ec3570-07e1-42eb-bc03-8cc3ac75ecff a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_b0ec3570-07e1-42eb-bc03-8cc3ac75ecff .
+
+km-dev:TriplesMap_28bf12da-f724-4fec-ae49-493a41f5f0f5 a rr:TriplesMap .
+
+_:node19jmas5vgx1 km-dev:hasTriplesMap km-dev:TriplesMap_28bf12da-f724-4fec-ae49-493a41f5f0f5 .
+
+km-dev:TriplesMap_28bf12da-f724-4fec-ae49-493a41f5f0f5 km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx8 rr:tableName "mturk-sample.tsv" ;
+	a rr:LogicalTable ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasLogicalTable _:node19jmas5vgx8 .
+
+km-dev:TriplesMap_28bf12da-f724-4fec-ae49-493a41f5f0f5 rr:logicalTable _:node19jmas5vgx8 ;
+	rr:subjectMap _:node19jmas5vgx9 .
+
+_:node19jmas5vgx1 km-dev:hasSubjectMap _:node19jmas5vgx9 .
+
+_:node19jmas5vgx9 km-dev:isPartOfMapping _:node19jmas5vgx1 ;
+	a rr:SubjectMap ;
+	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/AnnotationSet1" ;
+	rr:class mturk:AnnotationSet ;
+	rr:template "{annotation_set_uri}" .
+
+km-dev:PredicateObjectMap_88d27d1b-ab00-4206-959b-70ed9442c17b rr:predicate mturk:annotation .
+
+km-dev:RefObjectMap_f6e33ac3-553f-4b1a-b677-7819a3104b9a a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_0aadcfcd-801f-4f2d-bdc5-3c3773655621 ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasObjectMap km-dev:RefObjectMap_f6e33ac3-553f-4b1a-b677-7819a3104b9a .
+
+km-dev:PredicateObjectMap_88d27d1b-ab00-4206-959b-70ed9442c17b rr:objectMap km-dev:RefObjectMap_f6e33ac3-553f-4b1a-b677-7819a3104b9a .
+
+km-dev:TriplesMap_28bf12da-f724-4fec-ae49-493a41f5f0f5 rr:predicateObjectMap km-dev:PredicateObjectMap_88d27d1b-ab00-4206-959b-70ed9442c17b .
+
+km-dev:PredicateObjectMap_88d27d1b-ab00-4206-959b-70ed9442c17b a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_88d27d1b-ab00-4206-959b-70ed9442c17b .
+
+km-dev:TriplesMap_6b1f6dc5-1fd4-4e9b-bede-1c7631927f02 a rr:TriplesMap .
+
+_:node19jmas5vgx1 km-dev:hasTriplesMap km-dev:TriplesMap_6b1f6dc5-1fd4-4e9b-bede-1c7631927f02 .
+
+km-dev:TriplesMap_6b1f6dc5-1fd4-4e9b-bede-1c7631927f02 km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx10 rr:tableName "mturk-sample.tsv" ;
+	a rr:LogicalTable ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasLogicalTable _:node19jmas5vgx10 .
+
+km-dev:TriplesMap_6b1f6dc5-1fd4-4e9b-bede-1c7631927f02 rr:logicalTable _:node19jmas5vgx10 ;
+	rr:subjectMap _:node19jmas5vgx11 .
+
+_:node19jmas5vgx1 km-dev:hasSubjectMap _:node19jmas5vgx11 .
+
+_:node19jmas5vgx11 km-dev:isPartOfMapping _:node19jmas5vgx1 ;
+	a rr:SubjectMap ;
+	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Sentence1" ;
+	rr:class mturk:Sentence ;
+	rr:template "{sentence_uri}" ;
+	a km-dev:steinerTreeRootNode .
+
+km-dev:PredicateObjectMap_8ec3ceb9-e569-4c6a-9173-f0a50a14c645 rr:predicate mturk:annotationSet .
+
+km-dev:RefObjectMap_7e272f93-414a-46b0-b9aa-545ad1137b3b a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_28bf12da-f724-4fec-ae49-493a41f5f0f5 ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasObjectMap km-dev:RefObjectMap_7e272f93-414a-46b0-b9aa-545ad1137b3b .
+
+km-dev:PredicateObjectMap_8ec3ceb9-e569-4c6a-9173-f0a50a14c645 rr:objectMap km-dev:RefObjectMap_7e272f93-414a-46b0-b9aa-545ad1137b3b .
+
+km-dev:TriplesMap_6b1f6dc5-1fd4-4e9b-bede-1c7631927f02 rr:predicateObjectMap km-dev:PredicateObjectMap_8ec3ceb9-e569-4c6a-9173-f0a50a14c645 .
+
+km-dev:PredicateObjectMap_8ec3ceb9-e569-4c6a-9173-f0a50a14c645 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19jmas5vgx1 .
+
+_:node19jmas5vgx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_8ec3ceb9-e569-4c6a-9173-f0a50a14c645 .
