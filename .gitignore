@@ -12,3 +12,6 @@ sample/config/*
 .classpath
 .idea/
 .settings/
+
+data-processing/karma/config
+data-processing/karma/ontologies-readme.md
