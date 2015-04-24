@@ -1,12 +1,3 @@
-datasets/x-*
-datasets/*/x-*
-
-*~
-*.pyc
-
-sample/feature/*
-sample/config/*
-
 *.class
 .project
 .classpath
@@ -15,3 +6,10 @@ sample/config/*
 
 data-processing/karma/config
 data-processing/karma/ontologies-readme.md
+data-processing/karma/user-uploaded-files
+data-processing/karma/user-preferences/WSP1.json
+data-processing/karma/models-json
+data-processing/karma/models-graphviz
+data-processing/karma/models-autosave
+data-processing/karma/alignment-graph
+data-processing/karma/semantic-type-files
