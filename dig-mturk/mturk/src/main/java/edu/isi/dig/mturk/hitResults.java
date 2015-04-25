@@ -275,9 +275,14 @@ public class hitResults {
 	}
 
 	public static void main(String args[]) {
-		if (args[0] == null) {
-			System.out.println();
+		if (args[0].equalsIgnoreCase("-live")) {
+			propFilename = "mturk_live.properties";
+		} else if (args[0].equalsIgnoreCase("-sandbox")) {
+			propFilename = "mturk_sandbox.properties";
 		} else {
+			System.out.println("Incorrect environment name.");
+			System.exit(0);
+		}
 			if (args[0].equals("-live")) {
 				propFilename = "mturk_live.properties";
 			} else {
@@ -285,6 +290,5 @@ public class hitResults {
 			}
 			hitResults hitResults = new hitResults(args[1], propFilename);
 			hitResults.getAllHits();
-		}
 	}
 }
