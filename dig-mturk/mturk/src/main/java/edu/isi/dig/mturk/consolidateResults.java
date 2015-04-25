@@ -41,6 +41,7 @@ public class consolidateResults {
 				 * that the files required for a particular hit aren't mixed up
 				 * with data from another hit instance.
 				 */
+				result = "HitId\t WorkerId\tAssignmentId\tsentenceId\toffset\thightlight_text\tcategory\ttext\n"; 
 				for (S3ObjectSummary objectSummary : objectListing
 						.getObjectSummaries()) {
 					String key = objectSummary.getKey();
@@ -56,6 +57,8 @@ public class consolidateResults {
 								InputStream in_objectData = in_object.getObjectContent();
 								BufferedReader in_reader = new BufferedReader(
 										new InputStreamReader(in_objectData));
+								//discard first line as it will be heading
+								content = in_reader.readLine();
 								while ((content = in_reader.readLine()) != null) {
 									result += content + "\n";
 								}
