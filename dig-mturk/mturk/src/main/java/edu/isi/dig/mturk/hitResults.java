@@ -1,4 +1,4 @@
-package mturk.dig.mturk;
+package edu.isi.dig.mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import com.amazonaws.mturk.addon.BatchItemCallback;
 import com.amazonaws.mturk.addon.HITDataBuffer;
@@ -32,7 +31,6 @@ public class hitResults {
 	private String bucketName = "", prefixKey = "";
 	private AmazonS3 s3client;
 	private static String propFilename = "";
-	private static String mturkURL = "";
 
 	public hitResults(String bucketName, String propFilename) {
 		this.bucketName = "aisoftwareresearch/ner/" + bucketName + "/hits";
@@ -277,22 +275,20 @@ public class hitResults {
 	}
 
 	public static void main(String args[]) {
-		if (args[0] == null) {
-			System.out.println();
+		if (args[0].equalsIgnoreCase("-live")) {
+			propFilename = "mturk_live.properties";
+		} else if (args[0].equalsIgnoreCase("-sandbox")) {
+			propFilename = "mturk_sandbox.properties";
 		} else {
-
-			Properties prop = new Properties();
-
+			System.out.println("Incorrect environment name.");
+			System.exit(0);
+		}
 			if (args[0].equals("-live")) {
-				mturkURL = "https://www.mturk.com/mturk/externalSubmit";
 				propFilename = "mturk_live.properties";
 			} else {
-				mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
 				propFilename = "mturk_sandbox.properties";
 			}
-
 			hitResults hitResults = new hitResults(args[1], propFilename);
 			hitResults.getAllHits();
-		}
 	}
 }

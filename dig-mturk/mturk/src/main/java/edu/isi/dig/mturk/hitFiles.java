@@ -1,4 +1,4 @@
-package mturk.dig.mturk;
+package edu.isi.dig.mturk;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -46,10 +46,10 @@ public class hitFiles {
 		 * Sandbox URL: https://workersandbox.mturk.com/mturk/externalSubmit.
 		 * MTurk URL: https://www.mturk.com/mturk/externalSubmit.
 		 */
-		if (args[0].equals("-live")) {
+		if (args[0].equalsIgnoreCase("-live")) {
 			mturkURL = "https://www.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_live.properties";
-		} else if (args[0].equals("-sandbox")) {
+		} else if (args[0].equalsIgnoreCase("-sandbox")) {
 			mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_sandbox.properties";
 		}
@@ -75,8 +75,6 @@ public class hitFiles {
 		hitFiles.s3client = ConnectToAWS(propFilename);
 	}
 
-	hitFiles() {
-	}
 	public static AmazonS3 ConnectToAWS() {
 		s3client = ConnectToAWS("mturk_sandbox.properties");
 		return s3client;
