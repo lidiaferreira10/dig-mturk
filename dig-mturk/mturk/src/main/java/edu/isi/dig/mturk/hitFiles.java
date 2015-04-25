@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.lang.IllegalArgumentException;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,9 +49,12 @@ public class hitFiles {
 		if (args[0].equals("-live")) {
 			mturkURL = "https://www.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_live.properties";
-		} else {
+		} else if (args[0].equals("-sandbox")) {
 			mturkURL = "https://workersandbox.mturk.com/mturk/externalSubmit";
 			propFilename = "mturk_sandbox.properties";
+		}
+		else {
+		    throw new java.lang.IllegalArgumentException("unexpected location " + args[0] + " found");
 		}
 
 		hitFiles hitFiles = new hitFiles(args[1], propFilename);
