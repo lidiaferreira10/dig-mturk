@@ -50,10 +50,11 @@ import itertools
 import argparse
 import uuid
 from htmltoken import tokenize, bucketize
+import hashlib
 
 import boto
 BUCKETNAME = 'aisoftwareresearch'
-PROFILE_NAME = 'aisoftwareresearch_philpot'
+PROFILE_NAME = 'aisoftwareresearch'
 ZONENAME='s3-us-west-2.amazonaws.com'
 
 import StringIO
@@ -63,12 +64,8 @@ import tempfile
 import util
 from util import echo, ensureDirectoriesExist
 
-##
-
-# def iterChunksTrimmed(iterable, n, fillvalue=None):
-#     args = [iter(iterable)] * n
-#     return izip(*args)
-
+def verb(f, *args):
+    print >> sys.stderr, f % tuple(args)
 
 ### argparse/main argument validation and canonicalization
 
@@ -79,6 +76,17 @@ def isValidFileArg(parser, arg):
     else:
         # return open(arg, 'r')  # return an open file handle
         return arg
+
+def intOrNone(parser, arg):
+    if arg==None:
+        return arg
+    elif arg=="None":
+        return None
+    else:
+        try:
+            return int(arg)
+        except:
+            parser.error("Neither None nor a valid int: %r" % arg)
 
 def toFn(expr):
     """Convert string expression like F into the global function F; F(abc) becomes the (presumably functional) value of F("abc") (note: quotes inputs)"""
@@ -259,8 +267,10 @@ def renderSentenceJson(experiment, sentenceRecords):
                           "sentence": " ".join(d["tokens"])})
     return json.dumps(sentences, indent=4)
 
-### Used to select (potentially multiple) fragments from a single ad content text string
-def generateFragmentContexts(words, behind, ahead, matcher=MATCHER, every=None):
+TOKENCOUNT=12
+
+### Used to select (potentially multiple) fragments from a single ad content text token list
+def generateFragmentContexts(words, behind, ahead, matcher=MATCHER, tokencount=None):
     """With BEHIND, AHEAD, MATCHER: Can be used to generate multiple contexts within a single document;
 Without BEHIND, AHEAD, MATCHER: just yield the input as one sentence context """
     if ahead and behind:
@@ -271,8 +281,14 @@ Without BEHIND, AHEAD, MATCHER: just yield the input as one sentence context """
                 start = max(i-behind, 0)
                 end = min(i+ahead, len(words))
                 yield (start, end)
-    elif every:
-        pass
+    elif tokencount:
+        # generate non-overlapping subsequences of length TOKENCOUNT
+        # """yield (0,n), (n,2n), (nk,nk+n)... for all indices of nk+n <=len(iterable)"""
+        l = len(words)
+        for start in xrange(0, l, tokencount):
+            end = start+tokencount
+            if end < l:
+                yield (start, end)
     elif len(words)>0 and matcher(words[0]):
         # single match of whole thing
         yield (0, len(words))
@@ -287,6 +303,9 @@ SKIP=None
 HITCOUNT=10
 HITSIZE=10
 
+class ExitLoop(Exception):
+    pass
+
 seen = {}
 def create_hit_configs(elsjson,
                        experiment=None, format=None, instructions=None, 
@@ -294,6 +313,7 @@ def create_hit_configs(elsjson,
                        generator=GENERATOR,
                        matcher=MATCHER,
                        check=CHECK,
+                       tokencount=TOKENCOUNT,
                        write=False, cloud=False,
                        field="hasBodyPart.text", 
                        seen=seen, skip=SKIP, 
@@ -329,8 +349,9 @@ def create_hit_configs(elsjson,
         input = json.load(f)
     ehits = input["hits"]["hits"]
 
-    def publish_hit(experiment, hitCount, records):
-        outpath = 'config/%s__%04d.json' % (experiment, hitCount)
+    def publish_hit(experiment, hitIndex, records):
+        print >> sys.stderr, "PH"
+        outpath = 'config/%s__%04d.json' % (experiment, hitIndex)
         if write:
             data = renderSentenceJson(experiment, records)
             sio = StringIO.StringIO()
@@ -338,7 +359,7 @@ def create_hit_configs(elsjson,
             jdata = sio.getvalue()
             # Dump the intermediate (post-substitution) JSON
             if verbose:
-                jfile = os.path.join(tempfile.gettempdir(), "jdata__%s__%04d.json" % (experiment, hitCount))
+                jfile = os.path.join(tempfile.gettempdir(), "jdata__%s__%04d.json" % (experiment, hitIndex))
                 with open(jfile, 'w') as f:
                     print >> f, jdata
             # Validate the JSON
@@ -372,63 +393,74 @@ def create_hit_configs(elsjson,
             if problem:
                 return problem
 
-    # we want to generate HITCOUNT files
-    # each with HITSIZE
+    # we want to generate HITCOUNT output (hit) files each with HITSIZE sentences
 
     def nested(hitcount, hitsize):
         hitNum = 0
-        while hitNum < hitcount:
-            hitRecords = []
-            while len(hitRecords)<hitsize:
-                try:
-                    ehit = ehits.pop(0)
-                    docId = ehit["_id"]
-                    docIndex = ehit["_index"]
-                    fields = ehit.get("fields")
+        hitRecords = []
+        try:
+            while ehits:
+                ehit = ehits.pop(0)
+                # work on this ehit
+                docId = ehit["_id"]
+                docIndex = ehit["_index"]
+                fields = ehit.get("fields")
+                if verbose:
+                    print >> sys.stderr, "Ehit: %r" % (ehit)
+                payloads = fields and fields.get(field, [])
+                if payloads:
                     if verbose:
-                        print >> sys.stderr, "Ehit: %r" % (ehit)
-                    payloads = fields and fields.get(field, [])
-                    if verbose:
-                        print >> sys.stderr, "Payloads for field %r: %r" % (field, payloads)
-                    problem = None
-                    if payloads:
-                        for payload in ehit["fields"][field]:
-                            if seen.get(payload, False):
-                                # already seen this one
-                                continue
-                            problem = applyChecks(payload, check)
-                            if problem:
-                                if verbose:
-                                    print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
-                                continue
+                        print >> sys.stderr, "% s Payloads for field %r: %r" % (len(payloads), field)
+                    for payload in ehit["fields"][field]:
+                        if seen.get(payload, False):
+                            # already seen this one
+                            continue
+                        problem = applyChecks(payload, check)
+                        if problem:
                             if verbose:
-                                print >> sys.stderr, "processing %s" % docId
-                            # we are interested in this instance
-                            words = [word for word in generator(payload)]
-                            # all matches or just one match:
-                            for (start, end) in generateFragmentContexts(words, None, None, matcher):
-                                hitRecords.append({"X-indexId": docId, 
-                                                   "X-indexName": docIndex,
-                                                   "X-field": field,
-                                                   "X-generator": generatorName,
-                                                   "X-reqWindowWidth": (end-start)+1,
-                                                   "X-tokenStart": start,
-                                                   "X-tokenEnd": end,
-                                                   "X-elasticsearchJsonPathname": elsjson,
-                                                   "id": docId,
-                                                   "tokens": words[start:end]
-                                                   })
-                    else:
+                                print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
+                            continue
                         if verbose:
-                            print >> sys.stderr, "No payloads for ehit %r" % (ehit)
-                except IndexError as ie:
-                    outpath = 'config/%s__%04d.json' % (experiment, hitNum)
-                    print >> sys.stderr, "Ran out of ES data from %s while working on hit %s, sentence %s" % (elsjson, outpath, len(hitRecords))
-                    raise ie
-            # this hit is fully populated
-            publish_hit(experiment, hitNum, hitRecords)
-            hitRecords = []
-            hitNum += 1
+                            print >> sys.stderr, "processing %s" % docId
+                        # we are interested in this instance
+                        words = [word for word in generator(payload)]
+                        # all matches or just one match:
+                        for (start, end) in generateFragmentContexts(words, None, None, matcher, tokencount=tokencount):
+                            verb("%s/%s hits, %s/%s hit records", hitNum, hitcount, 1+len(hitRecords), hitsize)
+                            hashText = " ".join(words[start:end])
+                            hashCode = hashlib.sha1(hashText.encode('utf-8')).hexdigest().upper()
+                            hashUri = "http://dig.isi.edu/sentence/" + hashCode
+                            hitRecords.append({"X-indexId": docId, 
+                                               "X-indexName": docIndex,
+                                               "X-field": field,
+                                               "X-generator": generatorName,
+                                               "X-reqWindowWidth": (end-start)+1,
+                                               "X-tokenStart": start,
+                                               "X-tokenEnd": end,
+                                               "X-elasticsearchJsonPathname": elsjson,
+                                               "id": hashUri,
+                                               "tokens": words[start:end]
+                                               })
+                            if len(hitRecords)==hitsize:
+                                # publish
+                                publish_hit(experiment, hitNum, hitRecords)
+                                # prepare for next
+                                hitNum += 1
+                                hitRecords = []
+                                if hitNum==hitcount:
+                                    raise ExitLoop
+                            else:
+                                continue
+                else:
+                    if verbose:
+                        print >> sys.stderr, "No payloads for ehit %r" % (ehit)
+
+            if hitNum != hitcount:
+                print >> sys.stderr, "Ran out of ES data"
+
+        except ExitLoop as e:
+            pass
+
     nested(hitcount, hitsize)
 
 def main(argv=None):
@@ -443,6 +475,9 @@ def main(argv=None):
                         type=int, default=HITCOUNT)
     parser.add_argument('-l','--hitsize', required=False, help='number of sentences per hit',
                         type=int, default=HITSIZE)
+    parser.add_argument('-t','--tokencount', required=False, help='number of tokens per sentence',
+                        default=TOKENCOUNT,
+                        type=lambda x: intOrNone(parser, x))
     parser.add_argument('-w','--write', required=False, action='store_true', help='write hit files')
     parser.add_argument('-c','--cloud', required=False, action='store_true', help='write destination is S3; ignored unless -w/--write supplied')
     parser.add_argument('-x','--check', help='filter function(s)', required=False, default=[], action='append')
@@ -457,8 +492,9 @@ def main(argv=None):
 
     elsjson = args.elsjson
     generator = args.generator
-    hitsize = args.hitsize
     hitcount = args.hitcount
+    hitsize = args.hitsize
+    tokencount = args.tokencount
     write = args.write
     format = args.format
     (dirpath, _) = os.path.split(format)
@@ -470,7 +506,7 @@ def main(argv=None):
     skip = None if args.skip==0 else args.skip
     verbose = args.verbose
     s = create_hit_configs(elsjson, experiment=experiment, 
-                           hitsize=hitsize, hitcount=hitcount,
+                           hitsize=hitsize, hitcount=hitcount, tokencount=tokencount,
                            write=write, cloud=cloud, 
                            format=format, instructions=instructions,
                            field=field, generator=generator, check=check, skip=skip, 
@@ -481,4 +517,3 @@ def main(argv=None):
 # call main() if this is run as standalone
 if __name__ == "__main__":
     sys.exit(main())
-
