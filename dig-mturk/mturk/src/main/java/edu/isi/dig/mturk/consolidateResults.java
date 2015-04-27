@@ -68,13 +68,14 @@ public class consolidateResults {
 				}
 				listObjectsRequest.setMarker(objectListing.getNextMarker());
 			} while (objectListing.isTruncated());
-			uploadFile("conslidatedResult", "tsv",result);
+			uploadFile("consolidatedResult", "tsv", result);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 	}
 	public void uploadFile(String filename, String fileType, String fileContent) {
 		String keyName = filename + "." + fileType;
+		System.out.println("S3 uploading to " + keyName + " using target folder " + targetFolder);
 		try {
 			InputStream inputStream = new ByteArrayInputStream(
 					fileContent.getBytes());
