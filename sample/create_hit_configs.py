@@ -15,7 +15,7 @@
 """Typical usage:
 python create_hit_configs.py -f pyfmt/embed/hitdata.pyfmt feature/embed/embed.json
 
-common arguments:
+most common arguments:
 -f/--format: pyfmt file
 -j/--experiment: experiment name (default auto-generated)
 -w/--write: write output
@@ -24,14 +24,13 @@ common arguments:
 less common arguments:
 -k/--hitcount: number of hits to create (default 10)
 -l/--hitsize: number of sentences per hit (default 10)
+-t/--tokencount: number of tokens per sentence (default 60) can be a posint or "None"
+-s/--skip: skip specified number of sentences.  useful to generate non-overlapping sets from same esjson
 -x/--check: filter function(s); can supply multiple times
 
 rare arguments:
 -e/--field: elastic search path (default hasBodyPart.text.english)
 -g/--generator: iterator to generate tokens from text content
-
-obsolete(?) arguments:
--s/--skip: skip the first K arguments
 
 utility arguments:
 -h/--help: help
@@ -267,7 +266,7 @@ def renderSentenceJson(experiment, sentenceRecords):
                           "sentence": " ".join(d["tokens"])})
     return json.dumps(sentences, indent=4)
 
-TOKENCOUNT=12
+TOKENCOUNT=60
 
 ### Used to select (potentially multiple) fragments from a single ad content text token list
 def generateFragmentContexts(words, behind, ahead, matcher=MATCHER, tokencount=None):
@@ -395,7 +394,7 @@ def create_hit_configs(elsjson,
 
     # we want to generate HITCOUNT output (hit) files each with HITSIZE sentences
 
-    def nested(hitcount, hitsize):
+    def nested(hitcount, hitsize, skip):
         hitNum = 0
         hitRecords = []
         try:
@@ -426,31 +425,35 @@ def create_hit_configs(elsjson,
                         words = [word for word in generator(payload)]
                         # all matches or just one match:
                         for (start, end) in generateFragmentContexts(words, None, None, matcher, tokencount=tokencount):
-                            verb("%s/%s hits, %s/%s hit records", hitNum, hitcount, 1+len(hitRecords), hitsize)
-                            hashText = " ".join(words[start:end])
-                            hashCode = hashlib.sha1(hashText.encode('utf-8')).hexdigest().upper()
-                            hashUri = "http://dig.isi.edu/sentence/" + hashCode
-                            hitRecords.append({"X-indexId": docId, 
-                                               "X-indexName": docIndex,
-                                               "X-field": field,
-                                               "X-generator": generatorName,
-                                               "X-reqWindowWidth": (end-start)+1,
-                                               "X-tokenStart": start,
-                                               "X-tokenEnd": end,
-                                               "X-elasticsearchJsonPathname": elsjson,
-                                               "id": hashUri,
-                                               "tokens": words[start:end]
-                                               })
-                            if len(hitRecords)==hitsize:
-                                # publish
-                                publish_hit(experiment, hitNum, hitRecords)
-                                # prepare for next
-                                hitNum += 1
-                                hitRecords = []
-                                if hitNum==hitcount:
-                                    raise ExitLoop
-                            else:
+                            if skip:
+                                skip -= 1
                                 continue
+                            else:
+                                verb("%s/%s hits, %s/%s hit records", hitNum, hitcount, 1+len(hitRecords), hitsize)
+                                hashText = " ".join(words[start:end])
+                                hashCode = hashlib.sha1(hashText.encode('utf-8')).hexdigest().upper()
+                                hashUri = "http://dig.isi.edu/sentence/" + hashCode
+                                hitRecords.append({"X-indexId": docId, 
+                                                   "X-indexName": docIndex,
+                                                   "X-field": field,
+                                                   "X-generator": generatorName,
+                                                   "X-reqWindowWidth": (end-start)+1,
+                                                   "X-tokenStart": start,
+                                                   "X-tokenEnd": end,
+                                                   "X-elasticsearchJsonPathname": elsjson,
+                                                   "id": hashUri,
+                                                   "tokens": words[start:end]
+                                                   })
+                                if len(hitRecords)==hitsize:
+                                    # publish
+                                    publish_hit(experiment, hitNum, hitRecords)
+                                    # prepare for next
+                                    hitNum += 1
+                                    hitRecords = []
+                                    if hitNum==hitcount:
+                                        raise ExitLoop
+                                else:
+                                    continue
                 else:
                     if verbose:
                         print >> sys.stderr, "No payloads for ehit %r" % (ehit)
@@ -461,7 +464,7 @@ def create_hit_configs(elsjson,
         except ExitLoop as e:
             pass
 
-    nested(hitcount, hitsize)
+    nested(hitcount, hitsize, skip)
 
 def main(argv=None):
     '''this is called if run from command line'''
