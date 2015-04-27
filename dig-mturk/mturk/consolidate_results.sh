@@ -1,6 +1,5 @@
 #!/bin/sh
 
-STAGING_AREA=$1
-EXPERIMENT=$2
+EXPERIMENT=$1
 
-mvn exec:java -Dexec.mainClass="edu.isi.dig.mturk.consolidateResults" -Dexec.args="$STAGING_AREA $EXPERIMENT"
+mvn exec:java -Dexec.mainClass="edu.isi.dig.mturk.consolidateResults" -Dexec.args="$EXPERIMENT"
