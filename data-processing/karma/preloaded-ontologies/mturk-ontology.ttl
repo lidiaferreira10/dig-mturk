@@ -24,6 +24,10 @@ mturk:Annotation rdf:type owl:Class ;
 	rdfs:comment """An annotation provided by an mturk worker"""
 	.
 
+mturk:Worker rdf:type owl:Class ; 
+	rdfs:comment """An mturk worker"""
+	.
+
 #########################################################
 #
 # Generic Properties
@@ -62,6 +66,11 @@ mturk:assignmentId rdf:type owl:DatatypeProperty ;
 	rdfs:comment "The ID of the Assignment within a HIT"
 	.
 
+
+mturk:workerId rdf:type owl:DatatypeProperty ;
+	rdfs:domain mturk:Worker ;
+	rdfs:comment "The ID of the worker"
+	.
 
 #########################################################
 #
