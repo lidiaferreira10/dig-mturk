@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -253,6 +255,15 @@ public class hitResults {
 
 				});
 				if (fileContent.length() > 0) {
+				    /* temp: materialize locally */
+					PrintWriter writer = new PrintWriter("/tmp/suba.tsv", "UTF-8");
+					writer.println(fileContent);
+					writer.close();
+					System.out.println("file content length = " + fileContent.length());
+					System.out.println("UTF length = " + fileContent.getBytes("UTF-8").length);
+				    /* end temp*/
+				    
+
 					String keyName = currFileName + "/" + currFileName + ".tsv";
 					InputStream inputStream = new ByteArrayInputStream(
 							fileContent.getBytes());
@@ -261,7 +272,8 @@ public class hitResults {
 					 * Set content length. Else stream contents will be buffered
 					 * in memory and could result in out of memory errors.
 					 */
-					metadata.setContentLength(fileContent.length());
+					// metadata.setContentLength(fileContent.length());
+					metadata.setContentLength(fileContent.getBytes("UTF-8").length);
 					PutObjectRequest request = new PutObjectRequest(bucketName,
 							keyName, inputStream, metadata);
 					s3client.putObject(request);
