@@ -66,10 +66,20 @@ mturk:assignmentId rdf:type owl:DatatypeProperty ;
 	rdfs:comment "The ID of the Assignment within a HIT"
 	.
 
-
 mturk:workerId rdf:type owl:DatatypeProperty ;
 	rdfs:domain mturk:Worker ;
 	rdfs:comment "The ID of the worker"
+	.
+
+mturk:text rdf:type owl:DatatypeProperty ;
+	rdfs:domain mturk:Sentence ;
+	rdfs:comment "The text submitted to the worker for this task"
+	.
+
+mturk:worker rdf:type owl:ObjectProperty ; 
+	rdfs:domain mturk:Annotation ; 
+	rdfs:range mturk:Worker ;
+	rdfs:comment "The worker who performed a task"
 	.
 
 #########################################################
