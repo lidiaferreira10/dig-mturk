@@ -40,7 +40,7 @@
 <li>Click on the appropriate radio button to specify what words are
 <li>If you select something by mistake, click on the red <small><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button></small>
 <li>If there is nothing to mark up, select <em>No Annotations</em>
-<li>Mark up all occurences of the categories
+<li>Mark up <em>all</em> occurences of hair type and eye color
 </ul>
 </div>
 </div>
@@ -53,14 +53,14 @@
   <div class="panel-heading"><h1 class="panel-title">Example Sentence</h1>
   </div>
   <div class="panel-body">
-   <p class="text-muted">Lorem <span class="highlight_8">blue</span> <s>eyes</s> ipsum dolor, <s>beautiful</s> <span class="highlight_9">long brown hair with curls</span> te graece my name is Mary utroque I work for Walmart nusquam mea, I am a Latino, Japanese and Hungarian mix mei. Odio nostrud <span class="highlight_4">brown</span> <s>eyes</s> posidonium. </p>
+   <p class="text-muted">Lorem <span class="highlight_8">blue eyes</span> ipsum dolor sit amet, <span class="highlight_6">beautiful long brown hair</span> consectetur adipiscing te graece utroque nusquam mea, mei. Odio <span class="highlight_10">blonde</span> nostrud mollit anim id est laborum <span class="highlight_11">brown eyes</span> posidonium. </p>
 
 
 <div class="top-buffer row">
-  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_8">blue</span>
+  <div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_8">blue eyes</span>
   </div>
 
-  <div class="col-xs-2 col-md-8">
+  <div class="col-xs-6 col-md-3">
   <label class="radio-inline">
   <input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1" checked="checked">Eye color
   </label>
@@ -76,16 +76,16 @@
 </div> <!-- row -->
 
 <div class="top-buffer row">
-  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_9">long brown hair with curls</span>
+  <div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_6">beautiful long brown hair</span>
   </div>
 
-  <div class="col-xs-9 col-md-8">
+  <div class="col-xs-6 col-md-3">
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1">Eye color
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="option1">Eye color
   </label>
   
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions2" id="inlineRadio1" value="option1" checked="checked">Hair type
+  <input type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="option1" checked="checked">Hair type
   </label>
 </div>
 
@@ -95,16 +95,36 @@
 </div> <!-- row -->
 
 <div class="top-buffer row">
-  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_4">brown</span>
+  <div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_10">blonde</span>
   </div>
 
-  <div class="col-xs-9 col-md-8">
+  <div class="col-xs-6 col-md-3">
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1" checked="checked">Eye color
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio3" value="option1">Eye color
   </label>
   
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions8" id="inlineRadio1" value="option1">Hair type
+  <input type="radio" name="inlineRadioOptions3" id="inlineRadio3" value="option1" checked="checked">Hair type
+  </label>
+  
+</div>
+
+  <div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+  </div>
+
+</div> <!-- row -->
+
+<div class="top-buffer row">
+  <div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_11">brown eyes</span>
+  </div>
+
+  <div class="col-xs-6 col-md-3">
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio4" value="option1" checked="checked">Eye color
+  </label>
+  
+  <label class="radio-inline">
+  <input type="radio" name="inlineRadioOptions4" id="inlineRadio4" value="option1">Hair type
   </label>
   
 </div>
@@ -120,7 +140,7 @@
 <div class="top-buffer row">
 <div class="col-xs-11 col-md-12 checkbox">
   <label class="radio-inline">
-  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  <input type="checkbox" name="inlineRadioOptions5" id="inlineRadio5" value="option1">No annotations
   </label>
 </div>
 </div> <!-- row -->
@@ -134,15 +154,6 @@
 </div>
 
 </div><!--panel-->
-</div>
-
-
-<div class="lead">
-A few things to keep in mind:
-<ul>
-<li>Highlight only the words that contain the categories, the examples above show examples of words that you should <b>not</b> annotate <s>like this</s>
-<li>Some sentences may contain multiple occurrences of the same category, mark them all
-</ul>
 </div>
 
 <!-- End instructions -->
@@ -160,16 +171,16 @@ A few things to keep in mind:
 
 
 <div class="top-buffer row">
-  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span>selected text
+  <div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span>selected text
   </div>
 
-  <div class="col-xs-9 col-md-8">
+  <div class="col-xs-6 col-md-3">
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Eye color
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio6" value="option1">Eye color
   </label>
   
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Hair type
+  <input type="radio" name="inlineRadioOptions6" id="inlineRadio6" value="option1">Hair type
   </label>
   
 </div>
@@ -181,16 +192,16 @@ A few things to keep in mind:
 
 
 <div class="top-buffer row">
-  <div class="col-xs-2 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span>selected text
+  <div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span>selected text
   </div>
 
-  <div class="col-xs-9 col-md-8">
+  <div class="col-xs-6 col-md-3">
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Eye color
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio7" value="option1">Eye color
   </label>
   
   <label class="radio-inline">
-  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Hair type
+  <input type="radio" name="inlineRadioOptions7" id="inlineRadio7" value="option1">Hair type
   </label>
   
 </div>
@@ -204,7 +215,7 @@ A few things to keep in mind:
 <div class="top-buffer row">
 <div class="col-xs-11 col-md-12 checkbox">
   <label class="radio-inline">
-  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  <input type="checkbox" name="inlineRadioOptions8" id="inlineRadio8" value="option1">No annotations
   </label>
 </div>
 </div> <!-- row -->
@@ -234,7 +245,7 @@ A few things to keep in mind:
 <div class="top-buffer row">
 <div class="col-xs-11 col-md-12 checkbox">
   <label class="radio-inline">
-  <input type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">No annotations
+  <input type="checkbox" name="inlineRadioOptions9" id="inlineRadio9" value="option1">No annotations
   </label>
 </div>
 </div> <!-- row -->
