@@ -1,0 +1,106 @@
+/* css*/
+.highlight_1{
+	background-color: rgb(141, 211, 199);
+}
+.highlight_2 {
+	background-color: rgb(255, 255, 179);
+}
+.highlight_3 {
+	background-color: rgb(190, 186, 218);
+}
+.highlight_4{
+	background-color: rgb(251, 128, 114);
+}
+.highlight_5 {
+	background-color: rgb(128, 177, 211);
+}
+.highlight_6 {
+	background-color: rgb(253, 180, 98);
+}
+.highlight_7{
+	background-color: rgb(179, 222, 105);
+}
+.highlight_8 {
+	background-color: rgb(252, 205, 229);
+}
+.highlight_9 {
+	background-color: rgb(217, 217, 217);
+}
+.highlight_10{
+	background-color: rgb(188, 128, 189);
+}
+.highlight_11 {
+	background-color: rgb(204, 235, 197);
+}
+.highlight_12 {
+	background-color: rgb(255, 237, 111);
+}
+/* css for delete button that appears at the end of each tag*/
+.deleteBtn {
+	color: #FF0000;
+	background: transparent;
+	border: none;
+}
+.top-buffer { 
+margin-top:8px; 
+}
+body {
+	margin: 10px !important;
+	font-size: 16px !important;
+}
+.tag_div {
+	margin-top: 5px;
+}
+.btn_wrapper {
+	text-align: center;
+}
+/*submit button styles*/
+.submitBtn {
+	position: absolute;
+}
+.col-xs-8 {
+	width: 30% !important;
+}
+.col-xs-8 span {
+	word-wrap: break-word;
+}
+.modal_title_custom {
+	margin-bottom: 0px !important;
+	border-bottom-left-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+}  
+
+.custom_checkbox {
+	padding: 15px;
+}
+.sample_tag{
+	padding-left: 15px;
+  padding-right: 15px;
+}
+.modal-sentID {
+	font-weight: bold;
+	color: #FF0000 ;
+}
+a:focus, a:hover {
+	text-decoration: none !important;
+}
+.instructions {
+ display: block;
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #333;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.instructions-pre {
+  padding: 9.5px;
+  margin: 0 0 10px;
+  background-color: transparent;
+  border: none;
+}
