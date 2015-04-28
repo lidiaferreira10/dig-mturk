@@ -370,6 +370,8 @@ public class hitFiles {
 					+ "\n\">"
 					+ innerObj.get("label") + "</label> </div>";
 		}
+		/* If only two categories, will render as A, or B */
+		/* If only one category, will render as A, or A */
 		panelHTML += "<div class=\"panel-footer\">Markup occurences of";
 		for (int i = 0; i < categories.length - 1; i++) {
 			panelHTML += " <span class=\"text-danger\">" + categories[i]
