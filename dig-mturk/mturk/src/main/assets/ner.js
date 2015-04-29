@@ -72,7 +72,7 @@ $(document).ready(function() {
                 modalHTML += "<li><span class=\"modal-sentID\">" + e + ": </span> " + errors[e] +
                     "</li>";
 		    }
-		    modalHTML += "<ul> </div>";
+		    modalHTML += "</ul> </div>";
 		    $("#modal_box .modal-body").html(modalHTML);
 		    $("#modal_box").modal("show");
 		} else {
