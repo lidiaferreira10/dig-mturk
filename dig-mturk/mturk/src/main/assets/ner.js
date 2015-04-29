@@ -223,7 +223,7 @@ function computeRadioClass(categoryCount) {
     case 7:
     case 8:
     default:
-	result = 'col-xs-2 col-md-10';
+	result = 'col-xs-9 col-md-8';
 	break;
     }
     return result;
