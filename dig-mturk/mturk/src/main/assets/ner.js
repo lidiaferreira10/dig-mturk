@@ -6,7 +6,7 @@ var categories = [];
 var HTML_CONTENT = "__HTMLMARKUP__"
 
 $( document ).ready(function() {
-	$('[data-toggle="tooltip"]').tooltip(); 
+$('[data-toggle="tooltip"]').tooltip(); 
 	
 	document.getElementById('assignmentId').value = gup('assignmentId');
 
@@ -183,8 +183,71 @@ function highlightSelection(){
 		createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
 	}
 	else {
-		createTagRow(parent_id, elasticSearchId, sentText , class_to_add, text, char_offset);
+		createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
 	}
+}
+
+function computeSpanClass(categoryCount) {
+    result = '';
+    switch (categoryCount) {
+    case 0:
+    case 1:
+    case 2:
+	result = 'col-xs-4 col-md-3';
+	break;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    default:
+	result = 'col-xs-2 col-md-3';
+	break;
+    }
+    return result;
+}
+
+function computeRadioClass(categoryCount) {
+    result = '';
+    switch (categoryCount) {
+    case 0:
+    case 1:
+    case 2:
+	result = 'col-xs-6 col-md-3';
+	break;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    default:
+	result = 'col-xs-2 col-md-10';
+	break;
+    }
+    return result;
+}
+
+function computeDeleteBtnClass(categoryCount) {
+    result = '';
+    switch (categoryCount) {
+    case 0:
+    case 1:
+    case 2:
+	result = 'col-xs-1 col-md-1';
+	break;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    default:
+	result = 'col-xs-1 col-md-1';
+	break;
+    }
+    return result;
 }
 
 function createTagRow(fieldset_id, elasticSearchId, sentText, class_identifier, text, char_offset) {
@@ -207,13 +270,17 @@ function createTagRow(fieldset_id, elasticSearchId, sentText, class_identifier, 
 		$(div).attr( 'class', 'tag_div top-buffer row');
 		$(right_triangle).attr( 'class', 'glyphicon glyphicon-triangle-right');
 		
-		$(deleteBtn_container).attr( 'class', 'col-xs-1 col-md-1'); 
-		$(span_container).attr( 'class', 'col-xs-2 col-md-3');
+		var span_class = computeSpanClass(categories.length);
+		var radio_class = computeRadioClass(categories.length);
+		var deleteBtn_class = computeDeleteBtnClass(categories.length);
 
-		$(radio_container).attr( 'class', 'col-xs-2 col-md-8');
+		$(span_container).attr( 'class', span_class);
+		$(radio_container).attr( 'class', radio_class);
+		$(deleteBtn_container).attr( 'class', deleteBtn_class); 
+
 		$(span).addClass(class_identifier);
+		// span.innerHTML = text + ' length: ' + categories.length.toString() + ' radio:' + radio_class + ' span:' + span_class;
 		span.innerHTML = text;
-		
 
 		span_container.appendChild(right_triangle);
 		span_container.appendChild(span);
@@ -239,7 +306,7 @@ function createTagRow(fieldset_id, elasticSearchId, sentText, class_identifier, 
 		
 		$('<button/>',{
 		class: 'deleteBtn glyphicon glyphicon-remove',
-        name: 'deleteTag'
+		name: 'deleteTag'
 		}).appendTo(deleteBtn_container);
 		
 		
