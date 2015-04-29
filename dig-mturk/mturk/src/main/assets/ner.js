@@ -3,7 +3,7 @@ var color_classes = ['highlight_1', 'highlight_2', 'highlight_3', 'highlight_4',
 
 var categories = [];
 
-var HTML_CONTENT = "__HTMLMARKUP__"
+var HTML_CONTENT = "__HTMLMARKUP__";
 
 $( document ).ready(function() {
 $('[data-toggle="tooltip"]').tooltip(); 
