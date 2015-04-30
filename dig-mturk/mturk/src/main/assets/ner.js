@@ -48,7 +48,7 @@ $(document).ready(function() {
 	$('button[name=submit]').bind("click", function(event) {
 		var submit_text = "";
 		var errors = {};
-
+		event.preventDefault();
 		$('div[name=parent_container]').each(function() {
 			var currSent = $(this).find('div[class=sentence]').attr('id');
 			if ($($(this).find('[type=checkbox]')).is(':checked')) {} else {
@@ -69,12 +69,12 @@ $(document).ready(function() {
 		if (!$.isEmptyObject(errors)) {
 		    var modalHTML = "<div> <ul>";
 		    for (var e in errors) {
-                modalHTML += "<li><span class=\"modal-sentID\">" + e + ": </span> " + errors[e] +
-                    "</li>";
+			modalHTML += "<li><span class=\"modal-sentID\">" + e + ": </span> " + errors[e] +
+			    "</li>";
 		    }
 		    modalHTML += "</ul> </div>";
 		    $("#modal_box .modal-body").html(modalHTML);
-		    $("#modal_box").modal("show");
+		    $("#modal_box").modal({show: true, keyboard:true, backdrop:'static'});
 		} else {
 		    /*// submit to our server
 		      $.ajax({
@@ -87,7 +87,7 @@ $(document).ready(function() {
 		      });
 		    */
 		    $("#mturk_form").submit();
-		}
+	}
 
 	    });
 
