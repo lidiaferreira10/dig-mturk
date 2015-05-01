@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -237,16 +235,26 @@ public class hitResults {
 									"\n");
 
 							for (String answer : allAnswers) {
+
 								answer = answer.trim();
-								String trimValue = answer.split("\t")[0];
-								fileContent += hitid
-										+ "\t"
-										+ workerId
-										+ "\t"
-										+ assignmentid
-										+ "\t"
-										+ answer.substring(trimValue.length())
-												.trim() + "\n";
+								/*
+								 * Only if answer has content it need to be
+								 * written to file. Answer may not have content
+								 * because of the design of the radio button
+								 * values and splitting result map values by \n.
+								 */
+								if (answer.length() > 0) {
+									String trimValue = answer.split("\t")[0];
+									fileContent += hitid
+											+ "\t"
+											+ workerId
+											+ "\t"
+											+ assignmentid
+											+ "\t"
+											+ answer.substring(
+													trimValue.length()).trim()
+											+ "\n";
+								}
 							}
 							resultmap.clear();
 						}
@@ -255,15 +263,6 @@ public class hitResults {
 
 				});
 				if (fileContent.length() > 0) {
-				    /* temp: materialize locally */
-					PrintWriter writer = new PrintWriter("/tmp/suba.tsv", "UTF-8");
-					writer.println(fileContent);
-					writer.close();
-					System.out.println("file content length = " + fileContent.length());
-					System.out.println("UTF length = " + fileContent.getBytes("UTF-8").length);
-				    /* end temp*/
-				    
-
 					String keyName = currFileName + "/" + currFileName + ".tsv";
 					InputStream inputStream = new ByteArrayInputStream(
 							fileContent.getBytes());
@@ -272,8 +271,7 @@ public class hitResults {
 					 * Set content length. Else stream contents will be buffered
 					 * in memory and could result in out of memory errors.
 					 */
-					// metadata.setContentLength(fileContent.length());
-					metadata.setContentLength(fileContent.getBytes("UTF-8").length);
+					metadata.setContentLength(fileContent.length());
 					PutObjectRequest request = new PutObjectRequest(bucketName,
 							keyName, inputStream, metadata);
 					s3client.putObject(request);
@@ -295,12 +293,12 @@ public class hitResults {
 			System.out.println("Incorrect environment name.");
 			System.exit(0);
 		}
-			if (args[0].equals("-live")) {
-				propFilename = "mturk_live.properties";
-			} else {
-				propFilename = "mturk_sandbox.properties";
-			}
-			hitResults hitResults = new hitResults(args[1], propFilename);
-			hitResults.getAllHits();
+		if (args[0].equals("-live")) {
+			propFilename = "mturk_live.properties";
+		} else {
+			propFilename = "mturk_sandbox.properties";
+		}
+		hitResults hitResults = new hitResults(args[1], propFilename);
+		hitResults.getAllHits();
 	}
 }
