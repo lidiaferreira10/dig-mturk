@@ -278,6 +278,7 @@ public class hitFiles {
 			htmlheader += "<div class=\"page-header\">	<h1>" + title
 					+ "</h1>	</div>";
 			htmlheader += instructions;
+			htmlheader += "\n\n";
 			/*
 			 * form submit URL should point to MTurk sandbox / MTurk URL. Sanbox
 			 * URL: https://workersandbox.mturk.com/mturk/externalSubmit. MTurk
@@ -286,8 +287,8 @@ public class hitFiles {
 			 */
 			htmlheader += "<form id=\"mturk_form\" method=\"POST\" action=\""
 					+ mturkURL
-					+ "\"><input type=\"hidden\" id=\"assignmentId\" name=\"assignmentId\" value=\"\">";
-			htmlheader += "<h2>Mark Up the Following Sentences</h2>";
+					+ "\"><input type=\"hidden\" id=\"assignmentId\" name=\"assignmentId\" value=\"\">\n";
+			htmlheader += "<h2>Mark Up the Following Sentences</h2>\n";
 			String htmlfooter = "<div class=\"btn_wrapper\">	<button name='submit' class=\"submitBtn btn btn-primary\"> Submit</button>	</div>";
 			htmlfooter += "<div class=\"modal fade\" id=\"modal_box\">	<div class=\"modal-dialog\">	<div class=\"modal-content\">";
 			htmlfooter += "<div class=\"modal-header alert alert-danger modal_title_custom\">	<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
@@ -321,20 +322,20 @@ public class hitFiles {
 	 * creates a panel for each sentence. Input: linenum - to keep track of
 	 * sentence number; sentence - the text content of sentence;
 	 * scratch_categories: the check boxes shown at the bottom of each sentence
-	 * panel. It usually contains "no entity present" Output: String containing
+	 * panel. It usually contains "No annotations" Output: String containing
 	 * HTML mark up for the panel
 	 */
 	public String createPanel(int linenum, String elasticSearchID,
 			String sentence, String category, JSONArray scratch_categories) {
 
-		String panelHTML = "<div class=\"panel panel-primary\" name=\"parent_container\">";
+		String panelHTML = "<div class=\"panel panel-primary\" name=\"parent_container\">\n";
 		panelHTML += "<div class=\"panel-heading\"><h1 class=\"panel-title\">Sentence "
-				+ linenum + "</h1></div>";
+				+ linenum + "</h1></div>\n";
 		panelHTML += "<div class=\"panel-body\" id=\"container_" + linenum
 				+ "\">	<div class=\"sentence\"  elastic-search-id= \""
 				+ elasticSearchID + "\" id=\"sentence_" + linenum + "\"> "
-				+ sentence + "</div> </div>";
-		/* panel footer - shld list all the categories */
+				+ sentence + "</div> </div>\n";
+		/* panel footer - should list all the categories */
 		String[] categories = category.split(",");
 		/*
 		 * create a dummy tag
@@ -368,7 +369,7 @@ public class hitFiles {
 					+ "\t"
 					+ sentence
 					+ "\n\">"
-					+ innerObj.get("label") + "</label> </div>";
+					+ innerObj.get("label") + "</label> </div>\n";
 		}
 		/* If only two categories, will render as A, or B */
 		/* If only one category, will render as A, or A */
@@ -381,7 +382,7 @@ public class hitFiles {
 		panelHTML += " <span class=\"text-danger\">"
 				+ categories[categories.length - 1] + "</span>";
 
-		panelHTML += " </div> </div>";
+		panelHTML += " </div> </div>\n";
 		return panelHTML;
 	}
 
