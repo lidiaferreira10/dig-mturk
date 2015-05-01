@@ -356,7 +356,7 @@ def create_hit_configs(elsjson,
             sio = StringIO.StringIO()
             sio.write(format.format(sentences=data,instructions=instructions))
             jdata = sio.getvalue()
-            # Dump the intermediate (post-substitution) JSON
+            # on for verbose do we dump the intermediate (post-substitution) JSON to tmp file
             if verbose:
                 jfile = os.path.join(tempfile.gettempdir(), "jdata__%s__%04d.json" % (experiment, hitIndex))
                 with open(jfile, 'w') as f:
@@ -409,18 +409,19 @@ def create_hit_configs(elsjson,
                 payloads = fields and fields.get(field, [])
                 if payloads:
                     if verbose:
-                        print >> sys.stderr, "% s Payloads for field %r: %r" % (len(payloads), field)
+                        print >> sys.stderr, "Payloads for field %r: %r" % (field, len(payloads))
                     for payload in ehit["fields"][field]:
                         if seen.get(payload, False):
                             # already seen this one
                             continue
+                        seen[payload] = True
                         problem = applyChecks(payload, check)
                         if problem:
                             if verbose:
-                                print >> sys.stderr, "broken/rejected row [%s] %r" % (problem, ehit)                  
+                                print >> sys.stderr, "Broken/rejected row [%s] %r" % (problem, ehit)                  
                             continue
                         if verbose:
-                            print >> sys.stderr, "processing %s" % docId
+                            print >> sys.stderr, "Processing %s" % docId
                         # we are interested in this instance
                         words = [word for word in generator(payload)]
                         # all matches or just one match:
@@ -429,8 +430,11 @@ def create_hit_configs(elsjson,
                                 skip -= 1
                                 continue
                             else:
-                                verb("%s/%s hits, %s/%s hit records", hitNum, hitcount, 1+len(hitRecords), hitsize)
                                 hashText = " ".join(words[start:end])
+                                if seen.get(hashText, False):
+                                    continue
+                                seen[hashText] = True
+                                verb("%s/%s hits, %s/%s hit records", hitNum, hitcount, 1+len(hitRecords), hitsize)
                                 hashCode = hashlib.sha1(hashText.encode('utf-8')).hexdigest().upper()
                                 hashUri = "http://dig.isi.edu/sentence/" + hashCode
                                 hitRecords.append({"X-indexId": docId, 
