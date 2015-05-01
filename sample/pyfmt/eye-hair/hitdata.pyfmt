@@ -15,7 +15,7 @@
     "title": "Annotate Eyes, Hair in Free Text",
     "keywords": "classification, annotation, categorization, markup, natural language, identification",
     "num_assignments": "3",
-    "reward": "0.20",
+    "reward": "0.05",
     "hit_sentences": {sentences},
     "categories": [{{"label": "Eye color"}},
 {{"label": "Hair type"}}],
