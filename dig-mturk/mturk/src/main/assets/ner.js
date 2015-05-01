@@ -48,7 +48,7 @@ $(document).ready(function() {
 	$('button[name=submit]').bind("click", function(event) {
 		var submit_text = "";
 		var errors = {};
-		event.preventDefault();
+		
 		$('div[name=parent_container]').each(function() {
 			var currSent = $(this).find('div[class=sentence]').attr('id');
 			if ($($(this).find('[type=checkbox]')).is(':checked')) {} else {
@@ -67,6 +67,7 @@ $(document).ready(function() {
 		    });
 
 		if (!$.isEmptyObject(errors)) {
+			event.preventDefault();
 		    var modalHTML = "<div> <ul>";
 		    for (var e in errors) {
 			modalHTML += "<li><span class=\"modal-sentID\">" + e + ": </span> " + errors[e] +
@@ -86,7 +87,9 @@ $(document).ready(function() {
 		      }
 		      });
 		    */
+		    //alert("before submit");
 		    $("#mturk_form").submit();
+		    //alert("after submit");		    
 	}
 
 	    });
@@ -171,13 +174,22 @@ $(document).ready(function() {
 		});
 	    char_offset = $($(this).find('span[class=' + class_to_add + ']:first')[0]).attr('offset')
 		window.getSelection().removeAllRanges();
-
-	    if ($($('#' + parent_id).parent().find('[type=checkbox]')).is(':checked')) {
-		$($('#' + parent_id).parent().find('[type=checkbox]')).attr('checked', false);
-		createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
-	    } else {
-		createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
-	    }
+	
+		/* Check if the selected content has at least one character*/
+		if (text.replace(/^\s+|\s/g, '').length > 0) {
+			if ($($('#' + parent_id).parent().find('[type=checkbox]')).is(':checked')) {
+			$($('#' + parent_id).parent().find('[type=checkbox]')).attr('checked', false);
+			createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
+			} else {
+			createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
+			}
+		}
+		/* if the selected content has no characters then remove the highlights applied in the sentence*/
+		else {
+			$(this).find('span[class=' + class_to_add + ']').each(function() {
+				$(this).removeClass(class_to_add);
+			});
+		}
 	}
 
 	function computeSpanClass(categoryCount) {
