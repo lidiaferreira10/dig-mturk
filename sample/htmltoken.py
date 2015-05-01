@@ -34,9 +34,9 @@ class HTMLTokenizer(HTMLParser):
             self.buffer.append("&#x%s;" % name)
         else:
             self.buffer.append("&#%s;" % name)
-    def handle_comment(data):
+    def handle_comment(self, data):
         pass
-    def handle_decl(data):
+    def handle_decl(self, data):
         pass
 
 #     def myidentity(self, token):
