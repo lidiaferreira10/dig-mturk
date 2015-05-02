@@ -1,4 +1,4 @@
-## consolidatedResult-resize46.tsv
+## consolidatedResult-eyehair67.tsv
 
 ### PyTransforms
 #### _annotationClass_
@@ -20,7 +20,7 @@ return mtSentenceUri(getValue("sentenceId"))
 | _ WorkerId_ | `mturk:workerId` | `mturk:Worker1`|
 | _AssignmentId_ | `mturk:assignmentId` | `mturk:Annotation1`|
 | _HitId_ | `mturk:hitId` | `mturk:Annotation1`|
-| _annotationClass_ | `km-dev:objectPropertySpecialization` | `mturk:Sentence1`|
+| _annotationClass_ | `km-dev:objectPropertySpecialization` | `mturk:AnnotationSet1`|
 | _hightlight_text_ | `mturk:value` | `mturk:Annotation1`|
 | _offset_ | `mturk:offset` | `mturk:Annotation1`|
 | _sentenceUri_ | `uri` | `mturk:Sentence1`|

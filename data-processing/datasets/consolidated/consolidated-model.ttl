@@ -6,12 +6,12 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix km-dev: <http://isi.edu/integration/karma/dev#> .
 
-_:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
-	km-dev:sourceName "consolidatedResult-resize46.tsv" ;
-	km-dev:modelPublicationTime "1430240950292"^^xsd:long ;
+_:node19k8sp1lqx1 a km-dev:R2RMLMapping ;
+	km-dev:sourceName "consolidatedResult-eyehair67.tsv" ;
+	km-dev:modelPublicationTime "1430522726074"^^xsd:long ;
 	km-dev:modelVersion "1.7" ;
 	km-dev:hasInputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"sentenceId\"}],[{\"columnName\":\"offset\"}],[{\"columnName\":\"hightlight_text\"}],[{\"columnName\":\"category\"}],[{\"columnName\":\" WorkerId\"}],[{\"columnName\":\"text\"}],[{\"columnName\":\"HitId\"}]]" ;
-	km-dev:hasOutputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"sentenceId\"}],[{\"columnName\":\"annotationClass\"}],[{\"columnName\":\"offset\"}],[{\"columnName\":\"hightlight_text\"}],[{\"columnName\":\"category\"}],[{\"columnName\":\" WorkerId\"}],[{\"columnName\":\"text\"}],[{\"columnName\":\"sentenceUri\"}],[{\"columnName\":\"HitId\"}]]" ;
+	km-dev:hasOutputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"sentenceId\"}],[{\"columnName\":\"sentenceUri\"}],[{\"columnName\":\"offset\"}],[{\"columnName\":\"hightlight_text\"}],[{\"columnName\":\"annotationClass\"}],[{\"columnName\":\"category\"}],[{\"columnName\":\" WorkerId\"}],[{\"columnName\":\"text\"}],[{\"columnName\":\"HitId\"}]]" ;
 	km-dev:hasModelLabel "consolidated" ;
 	km-dev:hasBaseURI "http://dig.isi.edu/mturk/data" ;
 	km-dev:hasWorksheetHistory """[
@@ -76,7 +76,7 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceId\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
@@ -374,75 +374,6 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotationClass\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"metaPropertyName\",
-                \"value\": \"isSpecializationForEdge\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"metaPropertyUri\",
-                \"value\": {
-                    \"subject\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                    \"predicate\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
-                    \"object\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
-                },
-                \"type\": \"linkWithHNodeId\"
-            },
-            {
-                \"name\": \"metaPropertyId\",
-                \"value\": {
-                    \"subject\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                    \"predicate\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
-                    \"object\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
-                },
-                \"type\": \"linkWithHNodeId\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SetMetaPropertyCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
                 \"value\": [{\"columnName\": \"hightlight_text\"}],
                 \"type\": \"hNodeId\"
             },
@@ -577,59 +508,6 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
             }
         ],
         \"commandName\": \"SetWorksheetPropertiesCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"initialEdges\",
-                \"value\": [
-                    {
-                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
-                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
-                    },
-                    {
-                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
-                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
-                    }
-                ],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newEdges\",
-                \"value\": [
-                    {
-                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
-                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
-                    },
-                    {
-                        \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
-                        \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                        \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
-                    }
-                ],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"ChangeInternalNodeLinksCommand\"
     },
     {
         \"tags\": [\"Modeling\"],
@@ -873,7 +751,7 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceId\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
@@ -980,20 +858,65 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
                 \"type\": \"worksheetId\"
             },
             {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"properties\",
+                \"value\": {
+                    \"hasServiceProperties\": false,
+                    \"hasPrefix\": false,
+                    \"graphLabel\": \"\",
+                    \"hasBaseURI\": true,
+                    \"baseURI\": \"http://dig.isi.edu/mturk/data\"
+                },
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetWorksheetPropertiesCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
                 \"name\": \"initialEdges\",
-                \"value\": [{
-                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
-                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
-                }],
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"alignmentId\",
+                \"value\": \"WSP15:WS1AL\",
                 \"type\": \"other\"
             },
             {
                 \"name\": \"newEdges\",
                 \"value\": [{
-                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
-                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
+                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\",
+                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
+                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1 (add)\",
+                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/Sentence1\"
                 }],
                 \"type\": \"other\"
             },
@@ -1024,14 +947,24 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
                 \"type\": \"other\"
             },
             {
-                \"name\": \"properties\",
-                \"value\": {
-                    \"hasServiceProperties\": false,
-                    \"hasPrefix\": false,
-                    \"graphLabel\": \"\",
-                    \"hasBaseURI\": true,
-                    \"baseURI\": \"http://dig.isi.edu/mturk/data\"
-                },
+                \"name\": \"initialEdges\",
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"alignmentId\",
+                \"value\": \"WSP15:WS1AL\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newEdges\",
+                \"value\": [{
+                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\",
+                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
+                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
+                }],
                 \"type\": \"other\"
             },
             {
@@ -1045,255 +978,324 @@ _:node19k0g1u0kx1 a km-dev:R2RMLMapping ;
                 \"type\": \"hNodeIdList\"
             }
         ],
-        \"commandName\": \"SetWorksheetPropertiesCommand\"
+        \"commandName\": \"ChangeInternalNodeLinksCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"annotationClass\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyName\",
+                \"value\": \"isSpecializationForEdge\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyUri\",
+                \"value\": {
+                    \"subject\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                    \"predicate\": \"http://dig.isi.edu/ontology/mturk/annotation\",
+                    \"object\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
+                },
+                \"type\": \"linkWithHNodeId\"
+            },
+            {
+                \"name\": \"metaPropertyId\",
+                \"value\": {
+                    \"subject\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                    \"predicate\": \"http://dig.isi.edu/ontology/mturk/annotation\",
+                    \"object\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
+                },
+                \"type\": \"linkWithHNodeId\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetMetaPropertyCommand\"
     }
 ]""" .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b a rr:TriplesMap .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a a rr:TriplesMap .
 
-_:node19k0g1u0kx1 km-dev:hasTriplesMap km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b .
+_:node19k8sp1lqx1 km-dev:hasTriplesMap km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx2 rr:tableName "consolidatedResult-resize46.tsv" ;
+_:node19k8sp1lqx2 rr:tableName "consolidatedResult-eyehair67.tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasLogicalTable _:node19k0g1u0kx2 .
+_:node19k8sp1lqx1 km-dev:hasLogicalTable _:node19k8sp1lqx2 .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b rr:logicalTable _:node19k0g1u0kx2 ;
-	rr:subjectMap _:node19k0g1u0kx3 .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a rr:logicalTable _:node19k8sp1lqx2 ;
+	rr:subjectMap _:node19k8sp1lqx3 .
 
-_:node19k0g1u0kx1 km-dev:hasSubjectMap _:node19k0g1u0kx3 .
+_:node19k8sp1lqx1 km-dev:hasSubjectMap _:node19k8sp1lqx3 .
 
-_:node19k0g1u0kx3 km-dev:isPartOfMapping _:node19k0g1u0kx1 ;
+_:node19k8sp1lqx3 km-dev:isPartOfMapping _:node19k8sp1lqx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Annotation1" ;
 	rr:class mturk:Annotation ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:Annotation1" .
 
-km-dev:PredicateObjectMap_e6912755-2255-482a-922c-aca23f6f2e49 rr:predicate mturk:assignmentId .
+km-dev:PredicateObjectMap_c34c1911-e24d-4f56-92e3-4de5d6e39028 rr:predicate mturk:assignmentId .
 
-_:node19k0g1u0kx4 rr:column "AssignmentId" ;
+_:node19k8sp1lqx4 rr:column "AssignmentId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap _:node19k0g1u0kx4 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap _:node19k8sp1lqx4 .
 
-km-dev:PredicateObjectMap_e6912755-2255-482a-922c-aca23f6f2e49 rr:objectMap _:node19k0g1u0kx4 .
+km-dev:PredicateObjectMap_c34c1911-e24d-4f56-92e3-4de5d6e39028 rr:objectMap _:node19k8sp1lqx4 .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b rr:predicateObjectMap km-dev:PredicateObjectMap_e6912755-2255-482a-922c-aca23f6f2e49 .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a rr:predicateObjectMap km-dev:PredicateObjectMap_c34c1911-e24d-4f56-92e3-4de5d6e39028 .
 
-km-dev:PredicateObjectMap_e6912755-2255-482a-922c-aca23f6f2e49 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_c34c1911-e24d-4f56-92e3-4de5d6e39028 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_e6912755-2255-482a-922c-aca23f6f2e49 .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_c34c1911-e24d-4f56-92e3-4de5d6e39028 .
 
-km-dev:PredicateObjectMap_dd1c7308-6e8d-42a5-a62a-8d2bdd5394db rr:predicate mturk:hitId .
+km-dev:PredicateObjectMap_a2332232-7d8a-4927-afc5-e33d8dff4ab4 rr:predicate mturk:hitId .
 
-_:node19k0g1u0kx5 rr:column "HitId" ;
+_:node19k8sp1lqx5 rr:column "HitId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap _:node19k0g1u0kx5 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap _:node19k8sp1lqx5 .
 
-km-dev:PredicateObjectMap_dd1c7308-6e8d-42a5-a62a-8d2bdd5394db rr:objectMap _:node19k0g1u0kx5 .
+km-dev:PredicateObjectMap_a2332232-7d8a-4927-afc5-e33d8dff4ab4 rr:objectMap _:node19k8sp1lqx5 .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b rr:predicateObjectMap km-dev:PredicateObjectMap_dd1c7308-6e8d-42a5-a62a-8d2bdd5394db .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a rr:predicateObjectMap km-dev:PredicateObjectMap_a2332232-7d8a-4927-afc5-e33d8dff4ab4 .
 
-km-dev:PredicateObjectMap_dd1c7308-6e8d-42a5-a62a-8d2bdd5394db a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_a2332232-7d8a-4927-afc5-e33d8dff4ab4 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_dd1c7308-6e8d-42a5-a62a-8d2bdd5394db .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a2332232-7d8a-4927-afc5-e33d8dff4ab4 .
 
-km-dev:PredicateObjectMap_5a3c8c8f-46c6-4a47-b4bb-2647b8aa906e rr:predicate mturk:offset .
+km-dev:PredicateObjectMap_f0d2da05-00fb-4560-8cc8-67150e561349 rr:predicate mturk:offset .
 
-_:node19k0g1u0kx6 rr:column "offset" ;
+_:node19k8sp1lqx6 rr:column "offset" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap _:node19k0g1u0kx6 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap _:node19k8sp1lqx6 .
 
-km-dev:PredicateObjectMap_5a3c8c8f-46c6-4a47-b4bb-2647b8aa906e rr:objectMap _:node19k0g1u0kx6 .
+km-dev:PredicateObjectMap_f0d2da05-00fb-4560-8cc8-67150e561349 rr:objectMap _:node19k8sp1lqx6 .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b rr:predicateObjectMap km-dev:PredicateObjectMap_5a3c8c8f-46c6-4a47-b4bb-2647b8aa906e .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a rr:predicateObjectMap km-dev:PredicateObjectMap_f0d2da05-00fb-4560-8cc8-67150e561349 .
 
-km-dev:PredicateObjectMap_5a3c8c8f-46c6-4a47-b4bb-2647b8aa906e a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_f0d2da05-00fb-4560-8cc8-67150e561349 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_5a3c8c8f-46c6-4a47-b4bb-2647b8aa906e .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_f0d2da05-00fb-4560-8cc8-67150e561349 .
 
-km-dev:PredicateObjectMap_4e6ec4d2-fccc-4986-875a-7a2400366751 rr:predicate mturk:value .
+km-dev:PredicateObjectMap_c715f378-1aca-4bce-b9fd-4e2f8c8e9f78 rr:predicate mturk:value .
 
-_:node19k0g1u0kx7 rr:column "hightlight_text" ;
+_:node19k8sp1lqx7 rr:column "hightlight_text" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap _:node19k0g1u0kx7 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap _:node19k8sp1lqx7 .
 
-km-dev:PredicateObjectMap_4e6ec4d2-fccc-4986-875a-7a2400366751 rr:objectMap _:node19k0g1u0kx7 .
+km-dev:PredicateObjectMap_c715f378-1aca-4bce-b9fd-4e2f8c8e9f78 rr:objectMap _:node19k8sp1lqx7 .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b rr:predicateObjectMap km-dev:PredicateObjectMap_4e6ec4d2-fccc-4986-875a-7a2400366751 .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a rr:predicateObjectMap km-dev:PredicateObjectMap_c715f378-1aca-4bce-b9fd-4e2f8c8e9f78 .
 
-km-dev:PredicateObjectMap_4e6ec4d2-fccc-4986-875a-7a2400366751 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_c715f378-1aca-4bce-b9fd-4e2f8c8e9f78 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_4e6ec4d2-fccc-4986-875a-7a2400366751 .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_c715f378-1aca-4bce-b9fd-4e2f8c8e9f78 .
 
-km-dev:PredicateObjectMap_fa5891ed-c31d-41d6-9afe-3acf8b96e4ad rr:predicate mturk:worker .
+km-dev:PredicateObjectMap_bd242bed-2c12-4ed6-861f-47f9898b0015 rr:predicate mturk:worker .
 
-km-dev:RefObjectMap_dc50d7ed-037e-4c20-ab30-8f40a5cba744 a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_3d38a162-5844-458a-8c1c-e6f3ca3b3f03 ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:RefObjectMap_f6a8db36-9212-48cf-9e13-a732a47fa63d a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_3ef0b602-d774-43a3-b36a-d5b94335cdce ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap km-dev:RefObjectMap_dc50d7ed-037e-4c20-ab30-8f40a5cba744 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap km-dev:RefObjectMap_f6a8db36-9212-48cf-9e13-a732a47fa63d .
 
-km-dev:PredicateObjectMap_fa5891ed-c31d-41d6-9afe-3acf8b96e4ad rr:objectMap km-dev:RefObjectMap_dc50d7ed-037e-4c20-ab30-8f40a5cba744 .
+km-dev:PredicateObjectMap_bd242bed-2c12-4ed6-861f-47f9898b0015 rr:objectMap km-dev:RefObjectMap_f6a8db36-9212-48cf-9e13-a732a47fa63d .
 
-km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b rr:predicateObjectMap km-dev:PredicateObjectMap_fa5891ed-c31d-41d6-9afe-3acf8b96e4ad .
+km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a rr:predicateObjectMap km-dev:PredicateObjectMap_bd242bed-2c12-4ed6-861f-47f9898b0015 .
 
-km-dev:PredicateObjectMap_fa5891ed-c31d-41d6-9afe-3acf8b96e4ad a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_bd242bed-2c12-4ed6-861f-47f9898b0015 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_fa5891ed-c31d-41d6-9afe-3acf8b96e4ad .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_bd242bed-2c12-4ed6-861f-47f9898b0015 .
 
-km-dev:TriplesMap_3d38a162-5844-458a-8c1c-e6f3ca3b3f03 a rr:TriplesMap .
+km-dev:TriplesMap_3ef0b602-d774-43a3-b36a-d5b94335cdce a rr:TriplesMap .
 
-_:node19k0g1u0kx1 km-dev:hasTriplesMap km-dev:TriplesMap_3d38a162-5844-458a-8c1c-e6f3ca3b3f03 .
+_:node19k8sp1lqx1 km-dev:hasTriplesMap km-dev:TriplesMap_3ef0b602-d774-43a3-b36a-d5b94335cdce .
 
-km-dev:TriplesMap_3d38a162-5844-458a-8c1c-e6f3ca3b3f03 km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:TriplesMap_3ef0b602-d774-43a3-b36a-d5b94335cdce km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx8 rr:tableName "consolidatedResult-resize46.tsv" ;
+_:node19k8sp1lqx8 rr:tableName "consolidatedResult-eyehair67.tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasLogicalTable _:node19k0g1u0kx8 .
+_:node19k8sp1lqx1 km-dev:hasLogicalTable _:node19k8sp1lqx8 .
 
-km-dev:TriplesMap_3d38a162-5844-458a-8c1c-e6f3ca3b3f03 rr:logicalTable _:node19k0g1u0kx8 ;
-	rr:subjectMap _:node19k0g1u0kx9 .
+km-dev:TriplesMap_3ef0b602-d774-43a3-b36a-d5b94335cdce rr:logicalTable _:node19k8sp1lqx8 ;
+	rr:subjectMap _:node19k8sp1lqx9 .
 
-_:node19k0g1u0kx1 km-dev:hasSubjectMap _:node19k0g1u0kx9 .
+_:node19k8sp1lqx1 km-dev:hasSubjectMap _:node19k8sp1lqx9 .
 
-_:node19k0g1u0kx9 km-dev:isPartOfMapping _:node19k0g1u0kx1 ;
+_:node19k8sp1lqx9 km-dev:isPartOfMapping _:node19k8sp1lqx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Worker1" ;
 	rr:class mturk:Worker ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:Worker1" .
 
-km-dev:PredicateObjectMap_a9297b8a-678e-46de-b027-286b88d5bf4b rr:predicate mturk:workerId .
+km-dev:PredicateObjectMap_a94d26b1-db03-4a9c-8a47-ecba1a291faf rr:predicate mturk:workerId .
 
-_:node19k0g1u0kx10 rr:column " WorkerId" ;
+_:node19k8sp1lqx10 rr:column " WorkerId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap _:node19k0g1u0kx10 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap _:node19k8sp1lqx10 .
 
-km-dev:PredicateObjectMap_a9297b8a-678e-46de-b027-286b88d5bf4b rr:objectMap _:node19k0g1u0kx10 .
+km-dev:PredicateObjectMap_a94d26b1-db03-4a9c-8a47-ecba1a291faf rr:objectMap _:node19k8sp1lqx10 .
 
-km-dev:TriplesMap_3d38a162-5844-458a-8c1c-e6f3ca3b3f03 rr:predicateObjectMap km-dev:PredicateObjectMap_a9297b8a-678e-46de-b027-286b88d5bf4b .
+km-dev:TriplesMap_3ef0b602-d774-43a3-b36a-d5b94335cdce rr:predicateObjectMap km-dev:PredicateObjectMap_a94d26b1-db03-4a9c-8a47-ecba1a291faf .
 
-km-dev:PredicateObjectMap_a9297b8a-678e-46de-b027-286b88d5bf4b a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_a94d26b1-db03-4a9c-8a47-ecba1a291faf a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a9297b8a-678e-46de-b027-286b88d5bf4b .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a94d26b1-db03-4a9c-8a47-ecba1a291faf .
 
-km-dev:TriplesMap_2336618c-05ec-4855-8463-9f62f2dbe6d6 a rr:TriplesMap .
+km-dev:TriplesMap_800d93c6-e908-475f-90a2-1e75da831e2e a rr:TriplesMap .
 
-_:node19k0g1u0kx1 km-dev:hasTriplesMap km-dev:TriplesMap_2336618c-05ec-4855-8463-9f62f2dbe6d6 .
+_:node19k8sp1lqx1 km-dev:hasTriplesMap km-dev:TriplesMap_800d93c6-e908-475f-90a2-1e75da831e2e .
 
-km-dev:TriplesMap_2336618c-05ec-4855-8463-9f62f2dbe6d6 km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:TriplesMap_800d93c6-e908-475f-90a2-1e75da831e2e km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx11 rr:tableName "consolidatedResult-resize46.tsv" ;
+_:node19k8sp1lqx11 rr:tableName "consolidatedResult-eyehair67.tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasLogicalTable _:node19k0g1u0kx11 .
+_:node19k8sp1lqx1 km-dev:hasLogicalTable _:node19k8sp1lqx11 .
 
-km-dev:TriplesMap_2336618c-05ec-4855-8463-9f62f2dbe6d6 rr:logicalTable _:node19k0g1u0kx11 ;
-	rr:subjectMap _:node19k0g1u0kx12 .
+km-dev:TriplesMap_800d93c6-e908-475f-90a2-1e75da831e2e rr:logicalTable _:node19k8sp1lqx11 ;
+	rr:subjectMap _:node19k8sp1lqx12 .
 
-_:node19k0g1u0kx1 km-dev:hasSubjectMap _:node19k0g1u0kx12 .
+_:node19k8sp1lqx1 km-dev:hasSubjectMap _:node19k8sp1lqx12 .
 
-_:node19k0g1u0kx12 km-dev:isPartOfMapping _:node19k0g1u0kx1 ;
+_:node19k8sp1lqx12 km-dev:isPartOfMapping _:node19k8sp1lqx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/AnnotationSet1" ;
 	rr:class mturk:AnnotationSet ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:AnnotationSet1" .
 
-km-dev:PredicateObjectMap_94358861-eb39-4ee6-b28d-89675bd6f8a4 rr:predicate mturk:annotation .
+km-dev:PredicateObjectMap_9e6a0dd9-604c-40c3-8d0c-4c7479a6064b rr:predicate "{annotationClass}" .
 
-km-dev:RefObjectMap_60cdd67c-a183-46c3-8263-2512e95ffd29 a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_a482b67d-de2e-4742-98be-c101040e1e3b ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:RefObjectMap_76fab959-7513-4527-962a-b89e12c26e3d a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_42175acb-ab25-4abd-b1e5-691320bb352a ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap km-dev:RefObjectMap_60cdd67c-a183-46c3-8263-2512e95ffd29 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap km-dev:RefObjectMap_76fab959-7513-4527-962a-b89e12c26e3d .
 
-km-dev:PredicateObjectMap_94358861-eb39-4ee6-b28d-89675bd6f8a4 rr:objectMap km-dev:RefObjectMap_60cdd67c-a183-46c3-8263-2512e95ffd29 .
+km-dev:PredicateObjectMap_9e6a0dd9-604c-40c3-8d0c-4c7479a6064b rr:objectMap km-dev:RefObjectMap_76fab959-7513-4527-962a-b89e12c26e3d .
 
-km-dev:TriplesMap_2336618c-05ec-4855-8463-9f62f2dbe6d6 rr:predicateObjectMap km-dev:PredicateObjectMap_94358861-eb39-4ee6-b28d-89675bd6f8a4 .
+km-dev:TriplesMap_800d93c6-e908-475f-90a2-1e75da831e2e rr:predicateObjectMap km-dev:PredicateObjectMap_9e6a0dd9-604c-40c3-8d0c-4c7479a6064b .
 
-km-dev:PredicateObjectMap_94358861-eb39-4ee6-b28d-89675bd6f8a4 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_9e6a0dd9-604c-40c3-8d0c-4c7479a6064b a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_94358861-eb39-4ee6-b28d-89675bd6f8a4 .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_9e6a0dd9-604c-40c3-8d0c-4c7479a6064b .
 
-km-dev:TriplesMap_b1af8a66-12ae-4676-9912-8a467b99a7d3 a rr:TriplesMap .
+km-dev:TriplesMap_f47f593f-e1ed-486e-b7ce-ef87165c8dae a rr:TriplesMap .
 
-_:node19k0g1u0kx1 km-dev:hasTriplesMap km-dev:TriplesMap_b1af8a66-12ae-4676-9912-8a467b99a7d3 .
+_:node19k8sp1lqx1 km-dev:hasTriplesMap km-dev:TriplesMap_f47f593f-e1ed-486e-b7ce-ef87165c8dae .
 
-km-dev:TriplesMap_b1af8a66-12ae-4676-9912-8a467b99a7d3 km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:TriplesMap_f47f593f-e1ed-486e-b7ce-ef87165c8dae km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx13 rr:tableName "consolidatedResult-resize46.tsv" ;
+_:node19k8sp1lqx13 rr:tableName "consolidatedResult-eyehair67.tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasLogicalTable _:node19k0g1u0kx13 .
+_:node19k8sp1lqx1 km-dev:hasLogicalTable _:node19k8sp1lqx13 .
 
-km-dev:TriplesMap_b1af8a66-12ae-4676-9912-8a467b99a7d3 rr:logicalTable _:node19k0g1u0kx13 ;
-	rr:subjectMap _:node19k0g1u0kx14 .
+km-dev:TriplesMap_f47f593f-e1ed-486e-b7ce-ef87165c8dae rr:logicalTable _:node19k8sp1lqx13 ;
+	rr:subjectMap _:node19k8sp1lqx14 .
 
-_:node19k0g1u0kx1 km-dev:hasSubjectMap _:node19k0g1u0kx14 .
+_:node19k8sp1lqx1 km-dev:hasSubjectMap _:node19k8sp1lqx14 .
 
-_:node19k0g1u0kx14 km-dev:isPartOfMapping _:node19k0g1u0kx1 ;
+_:node19k8sp1lqx14 km-dev:isPartOfMapping _:node19k8sp1lqx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Sentence1" ;
 	rr:class mturk:Sentence ;
 	rr:template "{sentenceUri}" ;
 	a km-dev:steinerTreeRootNode .
 
-km-dev:PredicateObjectMap_1e91f73e-139a-4676-97fe-cfe47433dc9d rr:predicate "{annotationClass}" .
+km-dev:PredicateObjectMap_b2c9ce51-f882-4661-a978-8a4f6481e675 rr:predicate mturk:annotationSet .
 
-km-dev:RefObjectMap_8b729cbb-6cc5-40ba-9db5-a7e61848ee42 a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_2336618c-05ec-4855-8463-9f62f2dbe6d6 ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:RefObjectMap_fdaccabe-8945-46f9-b815-66b2dd9365d9 a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_800d93c6-e908-475f-90a2-1e75da831e2e ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap km-dev:RefObjectMap_8b729cbb-6cc5-40ba-9db5-a7e61848ee42 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap km-dev:RefObjectMap_fdaccabe-8945-46f9-b815-66b2dd9365d9 .
 
-km-dev:PredicateObjectMap_1e91f73e-139a-4676-97fe-cfe47433dc9d rr:objectMap km-dev:RefObjectMap_8b729cbb-6cc5-40ba-9db5-a7e61848ee42 .
+km-dev:PredicateObjectMap_b2c9ce51-f882-4661-a978-8a4f6481e675 rr:objectMap km-dev:RefObjectMap_fdaccabe-8945-46f9-b815-66b2dd9365d9 .
 
-km-dev:TriplesMap_b1af8a66-12ae-4676-9912-8a467b99a7d3 rr:predicateObjectMap km-dev:PredicateObjectMap_1e91f73e-139a-4676-97fe-cfe47433dc9d .
+km-dev:TriplesMap_f47f593f-e1ed-486e-b7ce-ef87165c8dae rr:predicateObjectMap km-dev:PredicateObjectMap_b2c9ce51-f882-4661-a978-8a4f6481e675 .
 
-km-dev:PredicateObjectMap_1e91f73e-139a-4676-97fe-cfe47433dc9d a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_b2c9ce51-f882-4661-a978-8a4f6481e675 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_1e91f73e-139a-4676-97fe-cfe47433dc9d .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_b2c9ce51-f882-4661-a978-8a4f6481e675 .
 
-km-dev:PredicateObjectMap_79b76d36-4532-4e49-aad3-72cc004763b8 rr:predicate mturk:text .
+km-dev:PredicateObjectMap_3ee14d90-e3ac-47ec-a647-8c361e8fe8a4 rr:predicate mturk:text .
 
-_:node19k0g1u0kx15 rr:column "text" ;
+_:node19k8sp1lqx15 rr:column "text" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasObjectMap _:node19k0g1u0kx15 .
+_:node19k8sp1lqx1 km-dev:hasObjectMap _:node19k8sp1lqx15 .
 
-km-dev:PredicateObjectMap_79b76d36-4532-4e49-aad3-72cc004763b8 rr:objectMap _:node19k0g1u0kx15 .
+km-dev:PredicateObjectMap_3ee14d90-e3ac-47ec-a647-8c361e8fe8a4 rr:objectMap _:node19k8sp1lqx15 .
 
-km-dev:TriplesMap_b1af8a66-12ae-4676-9912-8a467b99a7d3 rr:predicateObjectMap km-dev:PredicateObjectMap_79b76d36-4532-4e49-aad3-72cc004763b8 .
+km-dev:TriplesMap_f47f593f-e1ed-486e-b7ce-ef87165c8dae rr:predicateObjectMap km-dev:PredicateObjectMap_3ee14d90-e3ac-47ec-a647-8c361e8fe8a4 .
 
-km-dev:PredicateObjectMap_79b76d36-4532-4e49-aad3-72cc004763b8 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19k0g1u0kx1 .
+km-dev:PredicateObjectMap_3ee14d90-e3ac-47ec-a647-8c361e8fe8a4 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19k8sp1lqx1 .
 
-_:node19k0g1u0kx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_79b76d36-4532-4e49-aad3-72cc004763b8 .
+_:node19k8sp1lqx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_3ee14d90-e3ac-47ec-a647-8c361e8fe8a4 .
