@@ -1,16 +1,17 @@
 #!/usr/bin/python
 
+import sys
+import os
 import csv
 import io
-import sys
 from itertools import count, izip
 import argparse
-
 
 INPATH = "/Users/philpot/Downloads/consolidatedResult.tsv"
 
 def outpath(inpath):
-    return "validated_" + inpath
+    h,t = os.path.split(inpath)
+    return os.path.join(h,"validated_" + t)
 
 def validateConsolidate(consolidatedResult):
     with io.open(outpath(consolidatedResult), 'w', encoding='UTF-8') as outfile:
