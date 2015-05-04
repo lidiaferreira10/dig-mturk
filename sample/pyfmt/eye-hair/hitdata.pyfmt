@@ -11,11 +11,11 @@
         "private": ""
       }}
     ],
-    "description": "Annotate eyes, hair in free text",
-    "title": "Annotate Eyes, Hair in Free Text",
-    "keywords": "classification, annotation, categorization, markup, natural language, identification",
+    "description": "Label eyes, hair in free text",
+    "title": "Label Eyes, Hair in Free Text",
+    "keywords": "easy, label, tag, english, language, highlight, classify, classification, annotate, annotation, categorize, categorization, markup, natural language, identify, identification",
     "num_assignments": "3",
-    "reward": "0.05",
+    "reward": "0.10",
     "hit_sentences": {sentences},
     "categories": [{{"label": "Eye color"}},
 {{"label": "Hair type"}}],
