@@ -351,22 +351,14 @@ public class hitFiles {
 		 * ;
 		 */
 		Iterator<?> categoryIter = scratch_categories.iterator();
+		String cleanSentence = sentence.replaceAll("\"", "\\\\\"");
+		cleanSentence = cleanSentence.replaceAll("\t", " ");
+		
 		while (categoryIter.hasNext()) {
 			JSONObject innerObj = (JSONObject) categoryIter.next();
-			panelHTML += "<div class=\"checkbox custom_checkbox\"><label> <input type=\"checkbox\" name= \""
+			panelHTML += "<div class=\"checkbox custom_checkbox\"><label> <input type=\"checkbox\" name= \"no_annotation\" elastic-search-id= \""
 					+ elasticSearchID
-					+ "checkbox\" value=\" "
-					+ elasticSearchID
-					+ "\t"
-					+ "0"
-					+ "\t"
-					+ "" // adding an empty string to normalize the output file
-							// format
-					+ "\t"
-					+ "no annotations"
-					+ "\t"
-					+ sentence
-					+ "\n\">"
+					+ "\">"
 					+ innerObj.get("label") + "</label> </div>";
 		}
 		panelHTML += "<div class=\"panel-footer\">Markup occurences of";
