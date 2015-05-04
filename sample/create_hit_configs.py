@@ -20,7 +20,7 @@ most common arguments:
 -j/--experiment: experiment name (default auto-generated)
 -w/--write: write output
 -c/--cloud: write to S3
--p/--pretokenized: write all tokens to file
+-p/--pretokenize: write all tokens to file
 
 less common arguments:
 -k/--hitcount: number of hits to create (default 10)
@@ -264,7 +264,8 @@ def renderSentenceJson(experiment, sentenceRecords):
     sentences = []
     for d in sentenceRecords:
         sentences.append({"id": d["id"],
-                          "sentence": " ".join(d["tokens"])})
+                          "sentence": " ".join(d["tokens"]),
+                          "tokens": d["tokens"]})
     return json.dumps(sentences, indent=4)
 
 TOKENCOUNT=60
@@ -315,7 +316,7 @@ def create_hit_configs(elsjson,
                        check=CHECK,
                        tokencount=TOKENCOUNT,
                        write=False, cloud=False,
-                       pretokenized=False,
+                       pretokenize=False,
                        field="hasBodyPart.text", 
                        seen=seen, skip=SKIP, 
                        verbose=False):
@@ -511,7 +512,7 @@ def main(argv=None):
     instructions = os.path.join(dirpath, 'page.html')
     experiment = args.experiment
     cloud = args.cloud
-    pretokenized = args.pretokenized
+    pretokenize = args.pretokenize
     field = args.field
     check = args.check or CHECK
     skip = None if args.skip==0 else args.skip
@@ -519,7 +520,7 @@ def main(argv=None):
     s = create_hit_configs(elsjson, experiment=experiment, 
                            hitsize=hitsize, hitcount=hitcount, tokencount=tokencount,
                            write=write, cloud=cloud, 
-                           pretokenized=pretokenized,
+                           pretokenize=pretokenize,
                            format=format, instructions=instructions,
                            field=field, generator=generator, check=check, skip=skip, 
                            verbose=verbose)
