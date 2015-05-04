@@ -264,7 +264,7 @@ public class hitFiles {
 		try {
 
 			String htmlheader = "<html><head>";
-			htmlheader += " <meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+			htmlheader += "<meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
 			htmlheader += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js\"></script>";
 			htmlheader += "<script src = \"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.js\"> </script>";
 			htmlheader += "<script src = \"https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js\"> </script>";
@@ -272,6 +272,7 @@ public class hitFiles {
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css\">";
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css\">";
 			htmlheader += "</head><body categories= \"" + categories + "\">";
+			htmlheader += "<span style=\"color: #FFFFFF; background-color:#FFFFFF\">" + this.bucketName + "</span>";
 			htmlheader += "<div class=\"container\"><div class=\"\">";
 
 			htmlheader += "<div class=\"page-header\">	<h1>" + title
