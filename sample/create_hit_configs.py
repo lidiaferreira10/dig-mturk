@@ -20,6 +20,7 @@ most common arguments:
 -j/--experiment: experiment name (default auto-generated)
 -w/--write: write output
 -c/--cloud: write to S3
+-p/--pretokenized: write all tokens to file
 
 less common arguments:
 -k/--hitcount: number of hits to create (default 10)
@@ -314,6 +315,7 @@ def create_hit_configs(elsjson,
                        check=CHECK,
                        tokencount=TOKENCOUNT,
                        write=False, cloud=False,
+                       pretokenized=False,
                        field="hasBodyPart.text", 
                        seen=seen, skip=SKIP, 
                        verbose=False):
@@ -487,6 +489,7 @@ def main(argv=None):
                         type=lambda x: intOrNone(parser, x))
     parser.add_argument('-w','--write', required=False, action='store_true', help='write hit files')
     parser.add_argument('-c','--cloud', required=False, action='store_true', help='write destination is S3; ignored unless -w/--write supplied')
+    parser.add_argument('-p','--pretokenize', required=False, action='store_true', help='include tokens in file')
     parser.add_argument('-x','--check', help='filter function(s)', required=False, default=[], action='append')
 
     parser.add_argument('-e','--field', required=False, help='elasticsearch path expression to extract content string',
@@ -508,6 +511,7 @@ def main(argv=None):
     instructions = os.path.join(dirpath, 'page.html')
     experiment = args.experiment
     cloud = args.cloud
+    pretokenized = args.pretokenized
     field = args.field
     check = args.check or CHECK
     skip = None if args.skip==0 else args.skip
@@ -515,6 +519,7 @@ def main(argv=None):
     s = create_hit_configs(elsjson, experiment=experiment, 
                            hitsize=hitsize, hitcount=hitcount, tokencount=tokencount,
                            write=write, cloud=cloud, 
+                           pretokenized=pretokenized,
                            format=format, instructions=instructions,
                            field=field, generator=generator, check=check, skip=skip, 
                            verbose=verbose)
