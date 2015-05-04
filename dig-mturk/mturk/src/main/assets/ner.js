@@ -97,8 +97,16 @@ $(document).ready(function() {
 	/* bind events */
 	$(function() {
 		$(".sentence").bind("mouseup", highlightSelection);
-	    })
+		$('input[name="no_annotation"]').bind("change", noAnnotationSelected);
+	})
 
+		/* Event handler for no annotation checkbox. It sets the value for the checkbox. 
+	The value should be consistent with the value need for result*/
+	function noAnnotationSelected() {
+		var elasticSearchId = $(this).attr("elastic-search-id");
+		var sentText = ($(this).closest(".panel-primary")).find(".sentence").text();
+		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\n");
+	}
 	    function highlightSelection() {
 	    var elasticSearchId = $(this).attr("elastic-search-id");
 	    var parent_id = $(this).parent().attr('id');
@@ -254,7 +262,7 @@ $(document).ready(function() {
 	    }
 	    return result;
 	}
-
+	
 	function createTagRow(fieldset_id, elasticSearchId, sentText, class_identifier, text, char_offset) {
             var fieldset = document.getElementById(fieldset_id);
             var name = class_identifier;
