@@ -41,7 +41,7 @@ public class consolidateResults {
 				 * that the files required for a particular hit aren't mixed up
 				 * with data from another hit instance.
 				 */
-				result ="HitId\t WorkerId\tAssignmentId\tSentenceId\tOffset\tHightlighted Text\tCategory\tText\tEncoded Text\n"; 
+				result = "HitId\tWorkerId\tAssignmentId\tSentenceId\tOffset\tHighlightedText\tCategory\tText\tEncodedTokens\n";
 				for (S3ObjectSummary objectSummary : objectListing
 						.getObjectSummaries()) {
 					String key = objectSummary.getKey();
