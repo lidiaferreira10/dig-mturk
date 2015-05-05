@@ -97,7 +97,7 @@ $(document).ready(function() {
 	/* bind events */
 	$(function() {
 		$(".sentence").bind("mouseup", highlightSelection);
-		$('input[name="no_annotation"]').bind("change", noAnnotationSelected);
+		$('input[name^="no_annotation"]').bind("change", noAnnotationSelected);
 	})
 
 		/* Event handler for no annotation checkbox. It sets the value for the checkbox. 
