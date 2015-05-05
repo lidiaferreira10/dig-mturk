@@ -57,7 +57,6 @@ public class hitFiles {
 		}
 
 		hitFiles hitFiles = new hitFiles(args[1], propFilename);
-		// System.out.println("HERE:"+ input.getPath()+input.getFile());
 		deployHits deployHits = new deployHits(propFilename, args[1]);
 
 		hitFiles.getFolders(args[1]);
@@ -134,6 +133,7 @@ public class hitFiles {
 		JSONParser parser = new JSONParser();
 		String category = new String(), instructions, title;
 		Map<String, String> sentences = new HashMap<String, String>();
+		Map<String, String> tokens = new HashMap<String, String>();
 		String filename = "";
 		JSONArray scratch_categories;
 
@@ -171,11 +171,12 @@ public class hitFiles {
 					JSONObject innerObj = (JSONObject) sentIter.next();
 					sentences.put(innerObj.get("id").toString(),
 							innerObj.get("sentence").toString());
+					tokens.put(innerObj.get("id").toString(),innerObj.get("tokens").toString());
 				}
 
 				filename = calculateSHA(jsonObject);
 				createFolder(filename);
-				generateHTML(title, instructions, category, sentences,
+				generateHTML(title, instructions, category, sentences, tokens,
 						filename, scratch_categories);
 				createInputFile(sentences, filename);
 				createPropertiesFile(jsonObject, filename, sentences);
@@ -257,7 +258,7 @@ public class hitFiles {
 	}
 
 	public void generateHTML(String title, String instructions,
-			String categories, Map<String, String> sentences, String filename,
+			String categories, Map<String, String> sentences, Map<String, String> tokens , String filename,
 			JSONArray scratch_categories) {
 		int linenum = 1;
 		String fileContent = "";
@@ -302,9 +303,8 @@ public class hitFiles {
 			while (sentIter.hasNext()) {
 				@SuppressWarnings("rawtypes")
 				Map.Entry pair = (Map.Entry) sentIter.next();
-
 				fileContent += createPanel(linenum, pair.getKey().toString(),
-						pair.getValue().toString(), categories,
+						pair.getValue().toString(), tokens.get(pair.getKey().toString()), categories,
 						scratch_categories);
 				linenum++;
 			}
@@ -324,35 +324,18 @@ public class hitFiles {
 	 * HTML mark up for the panel
 	 */
 	public String createPanel(int linenum, String elasticSearchID,
-			String sentence, String category, JSONArray scratch_categories) {
+			String sentence, String tokens, String category, JSONArray scratch_categories) {
 
 		String panelHTML = "<div class=\"panel panel-primary\" name=\"parent_container\">";
 		panelHTML += "<div class=\"panel-heading\"><h1 class=\"panel-title\">Sentence "
 				+ linenum + "</h1></div>";
 		panelHTML += "<div class=\"panel-body\" id=\"container_" + linenum
 				+ "\">	<div class=\"sentence\"  elastic-search-id= \""
-				+ elasticSearchID + "\" id=\"sentence_" + linenum + "\"> "
+				+ elasticSearchID + "\" tokens=\""+ tokens+"\" id=\"sentence_" + linenum + "\"> "
 				+ sentence + "</div> </div>";
 		/* panel footer - shld list all the categories */
 		String[] categories = category.split(",");
-		/*
-		 * create a dummy tag
-		 * 
-		 * panelHTML +=
-		 * "<div class=\"row sample_tag\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"Please select text first.\">"
-		 * +
-		 * "<div class=\"col-xs-1\"></div><div class=\"col-xs-2\"><span class=\"glyphicon glyphicon-triangle-right\"></span></div>"
-		 * +
-		 * "<div class=\"col-xs-1\"></div><div name=\"radio_container\" class=\"col-xs-7\"><div class=\"row\">"
-		 * ; for (int i = 0; i < categories.length; i++) { panelHTML +=
-		 * "<div class=\"col-xs-3\"><label class=\"radio-inline\"><input type=\"radio\" name=\"sample\" value=\"\" disabled>"
-		 * + categories[i]+"</label></div>"; } panelHTML +=
-		 * "</div></div><div class=\"col-xs-1\"><button class=\"deleteBtn glyphicon glyphicon-remove\" name=\"deleteTag\" disabled></button></div></div>"
-		 * ;
-		 */
 		Iterator<?> categoryIter = scratch_categories.iterator();
-		String cleanSentence = sentence.replaceAll("\"", "\\\\\"");
-		cleanSentence = cleanSentence.replaceAll("\t", " ");
 		
 		while (categoryIter.hasNext()) {
 			JSONObject innerObj = (JSONObject) categoryIter.next();

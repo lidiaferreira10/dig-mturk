@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -42,7 +41,7 @@ public class consolidateResults {
 				 * that the files required for a particular hit aren't mixed up
 				 * with data from another hit instance.
 				 */
-				result = "HitId\t WorkerId\tAssignmentId\tsentenceId\toffset\thightlight_text\tcategory\ttext\n"; 
+				result ="HitId\t WorkerId\tAssignmentId\tSentenceId\tOffset\tHightlighted Text\tCategory\tText\tEncoded Text\n"; 
 				for (S3ObjectSummary objectSummary : objectListing
 						.getObjectSummaries()) {
 					String key = objectSummary.getKey();
@@ -69,14 +68,13 @@ public class consolidateResults {
 				}
 				listObjectsRequest.setMarker(objectListing.getNextMarker());
 			} while (objectListing.isTruncated());
-			uploadFile("consolidatedResult", "tsv", result);
+			uploadFile("consolidatedResult", "tsv",result);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 	}
 	public void uploadFile(String filename, String fileType, String fileContent) {
 		String keyName = filename + "." + fileType;
-		// System.out.println("S3 uploading to " + keyName + " using target folder " + targetFolder);
 		try {
 			InputStream inputStream = new ByteArrayInputStream(
 					fileContent.getBytes());
@@ -85,8 +83,7 @@ public class consolidateResults {
 			 * Set content length. Else stream contents will be buffered in
 			 * memory and could result in out of memory errors.
 			 */
-			// metadata.setContentLength(fileContent.length());
-			metadata.setContentLength(fileContent.getBytes("UTF-8").length);
+			metadata.setContentLength(fileContent.length());
 			PutObjectRequest request = new PutObjectRequest(targetFolder,
 					keyName, inputStream, metadata);
 			s3client.putObject(request);
@@ -94,9 +91,6 @@ public class consolidateResults {
 			System.out.println("Error Message:    " + ase.getMessage());
 		} catch (AmazonClientException ace) {
 			System.out.println("Error Message: " + ace.getMessage());
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 	}
