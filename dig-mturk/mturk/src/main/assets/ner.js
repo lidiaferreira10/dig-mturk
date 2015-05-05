@@ -104,14 +104,17 @@ $(document).ready(function() {
 	The value should be consistent with the value need for result*/
 	function noAnnotationSelected() {
 		var elasticSearchId = $(this).attr("elastic-search-id");
-		var sentText = ($(this).closest(".panel-primary")).find(".sentence").text();
-		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\n");
+		var sentContainer = ($(this).closest(".panel-primary")).find(".sentence");
+		var encodedText = $(sentContainer).attr("tokens");
+		var sentText = $(sentContainer).text();
+		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\t" + encodedText + "\n");
 	}
 	    function highlightSelection() {
 	    var elasticSearchId = $(this).attr("elastic-search-id");
 	    var parent_id = $(this).parent().attr('id');
 	    var text = '';
 	    var sentText = $(this).text();
+		var encodedText = $(this).attr("tokens");
 	    var char_offset = 0;
 	    if (window.getSelection) { // supported by webkit and 
 		sel = window.getSelection();
@@ -187,9 +190,9 @@ $(document).ready(function() {
 		if (text.replace(/^\s+|\s/g, '').length > 0) {
 			if ($($('#' + parent_id).parent().find('[type=checkbox]')).is(':checked')) {
 			$($('#' + parent_id).parent().find('[type=checkbox]')).attr('checked', false);
-			createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
+			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset);
 			} else {
-			createTagRow(parent_id, elasticSearchId, sentText, class_to_add, text, char_offset);
+			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset);
 			}
 		}
 		/* if the selected content has no characters then remove the highlights applied in the sentence*/
@@ -263,7 +266,7 @@ $(document).ready(function() {
 	    return result;
 	}
 	
-	function createTagRow(fieldset_id, elasticSearchId, sentText, class_identifier, text, char_offset) {
+	function createTagRow(fieldset_id, elasticSearchId, sentText, encodedText, class_identifier, text, char_offset) {
             var fieldset = document.getElementById(fieldset_id);
             var name = class_identifier;
             name = name.replace(/ /g, '');
@@ -310,7 +313,7 @@ $(document).ready(function() {
 				type: "radio",
 				    name: fieldset_id + name,
 				    value: elasticSearchId + "\t" + char_offset + "\t" + text + "\t" +
-				    value + "\t" + sentText + "\n",
+				    value + "\t" + sentText + "\t" + encodedText+"\n",
 				    }).appendTo(label).after(value);
 
 			radio_container.appendChild(label);
