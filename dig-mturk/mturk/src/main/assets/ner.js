@@ -60,7 +60,7 @@ $(document).ready(function() {
 					}
 				    });
 			    } else {
-				errors[currSent] = "If nothing to highlight select \"No Annotation\"";
+				errors[currSent] = "If nothing to highlight select \"No Annotations\"";
 
 			    }
 			}
