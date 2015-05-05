@@ -75,21 +75,10 @@ $(document).ready(function() {
 		    }
 		    modalHTML += "</ul> </div>";
 		    $("#modal_box .modal-body").html(modalHTML);
-		    $("#modal_box").modal({show: true, keyboard:true, backdrop:'static'});
+		    $("#modal_box").modal({show: true, keyboard: true, backdrop: 'static'});
 		} else {
-		    /*// submit to our server
-		      $.ajax({
-		      url: "/submit",
-		      type: 'post',
-		      success: function(result) {
-		      // submit to mechanical turk
-		      $('form').submit();
-		      }
-		      });
-		    */
-		    //alert("before submit");
+		    /* submit to our server */
 		    $("#mturk_form").submit();
-		    //alert("after submit");		    
 	}
 
 	    });
