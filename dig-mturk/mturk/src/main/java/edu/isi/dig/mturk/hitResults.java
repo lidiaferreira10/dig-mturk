@@ -92,7 +92,6 @@ public class hitResults {
 							&& !hitIds.contains(content[0])
 							&& content[0].length() > 0) {
 						hitIds.add(content[0]);
-						// System.out.println("inn" + content[0]);
 					}
 				}
 				in_object.close();
@@ -244,6 +243,11 @@ public class hitResults {
 								 * values and splitting result map values by \n.
 								 */
 								if (answer.length() > 0) {
+									/*
+									 * Since the first token is the name of
+									 * checkbox / radio button it can be trimmed
+									 * before writing to file
+									 */
 									String trimValue = answer.split("\t")[0];
 									fileContent += hitid
 											+ "\t"
