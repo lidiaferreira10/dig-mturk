@@ -1,0 +1,645 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix mturk: <http://dig.isi.edu/ontology/mturk/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix km-dev: <http://isi.edu/integration/karma/dev#> .
+
+_:node19kjge065x1 a km-dev:R2RMLMapping ;
+	km-dev:sourceName "tokenized-sample.tsv" ;
+	km-dev:modelPublicationTime "1430878879941"^^xsd:long ;
+	km-dev:modelVersion "1.7" ;
+	km-dev:hasInputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"SentenceId\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"WorkerId\"}],[{\"columnName\":\"HitId\"}]]" ;
+	km-dev:hasOutputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"decodedTokensJoined\"}],[{\"columnName\":\"sentenceUri\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"WorkerId\"}],[{\"columnName\":\"HitId\"}]]" ;
+	km-dev:hasModelLabel "tokenized-sample.tsv" ;
+	km-dev:hasBaseURI "http://localhost:8080/source/" ;
+	km-dev:hasWorksheetHistory """[
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"HitId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/hitId\",
+                    \"DomainLabel\": \"mturk:Annotation1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1 (add)\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"WorkerId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/workerId\",
+                    \"DomainLabel\": \"mturk:Worker1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Worker1 (add)\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Worker\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"WorkerId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"WorkerId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"AssignmentId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/assignmentId\",
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AssignmentId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AssignmentId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"initialEdges\",
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"alignmentId\",
+                \"value\": \"WSP31:WS1AL\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newEdges\",
+                \"value\": [{
+                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/Worker\",
+                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/worker\",
+                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Worker1\",
+                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"ChangeInternalNodeLinksCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"SentenceId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"sentenceUri\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtSentenceUri(getValue(\\\"SentenceId\\\"))\\n\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"sentenceUri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyName\",
+                \"value\": \"isUriOfClass\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyUri\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/Sentence\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyId\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/Sentence1 (add)\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"FullType\": \"http://isi.edu/integration/karma/dev#classLink\",
+                    \"isPrimary\": true,
+                    \"DomainLabel\": \"mturk:Sentence1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetMetaPropertyCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"Text\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/text\",
+                    \"isPrimary\": true,
+                    \"DomainLabel\": \"mturk:Sentence1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Text\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Text\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"EncodedTokens\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"decodedTokensJoined\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtDecodeTokens(getValue(\\\"EncodedTokens\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"EncodedTokens\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"decodedTokensJoined\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"delimiter\",
+                \"value\": \"tab\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColName\",
+                \"value\": \"decodedTokens\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newHNodeId\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SplitValuesCommand\"
+    }
+]""" .
+
+km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 a rr:TriplesMap .
+
+_:node19kjge065x1 km-dev:hasTriplesMap km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 .
+
+km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x2 rr:tableName "tokenized-sample.tsv" ;
+	a rr:LogicalTable ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasLogicalTable _:node19kjge065x2 .
+
+km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 rr:logicalTable _:node19kjge065x2 ;
+	rr:subjectMap _:node19kjge065x3 .
+
+_:node19kjge065x1 km-dev:hasSubjectMap _:node19kjge065x3 .
+
+_:node19kjge065x3 km-dev:isPartOfMapping _:node19kjge065x1 ;
+	a rr:SubjectMap ;
+	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Annotation1" ;
+	rr:class mturk:Annotation ;
+	rr:termType rr:BlankNode ;
+	km-dev:namePrefix "mturk:Annotation1" ;
+	a km-dev:steinerTreeRootNode .
+
+km-dev:PredicateObjectMap_e3fb8eb8-d4f9-4e95-8597-61e7fa1e3d81 rr:predicate mturk:assignmentId .
+
+_:node19kjge065x4 rr:column "AssignmentId" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasObjectMap _:node19kjge065x4 .
+
+km-dev:PredicateObjectMap_e3fb8eb8-d4f9-4e95-8597-61e7fa1e3d81 rr:objectMap _:node19kjge065x4 .
+
+km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 rr:predicateObjectMap km-dev:PredicateObjectMap_e3fb8eb8-d4f9-4e95-8597-61e7fa1e3d81 .
+
+km-dev:PredicateObjectMap_e3fb8eb8-d4f9-4e95-8597-61e7fa1e3d81 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_e3fb8eb8-d4f9-4e95-8597-61e7fa1e3d81 .
+
+km-dev:PredicateObjectMap_45320224-223e-4383-b70a-a298ce2d8b25 rr:predicate mturk:hitId .
+
+_:node19kjge065x5 rr:column "HitId" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasObjectMap _:node19kjge065x5 .
+
+km-dev:PredicateObjectMap_45320224-223e-4383-b70a-a298ce2d8b25 rr:objectMap _:node19kjge065x5 .
+
+km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 rr:predicateObjectMap km-dev:PredicateObjectMap_45320224-223e-4383-b70a-a298ce2d8b25 .
+
+km-dev:PredicateObjectMap_45320224-223e-4383-b70a-a298ce2d8b25 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_45320224-223e-4383-b70a-a298ce2d8b25 .
+
+km-dev:PredicateObjectMap_e7bfded7-25e4-466d-a379-94d88ba95994 rr:predicate mturk:worker .
+
+km-dev:RefObjectMap_ab03b19f-7fbb-4df8-8bc8-d731ad0a8580 a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_b0a26a44-39cb-459d-b7ac-1df878129169 ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasObjectMap km-dev:RefObjectMap_ab03b19f-7fbb-4df8-8bc8-d731ad0a8580 .
+
+km-dev:PredicateObjectMap_e7bfded7-25e4-466d-a379-94d88ba95994 rr:objectMap km-dev:RefObjectMap_ab03b19f-7fbb-4df8-8bc8-d731ad0a8580 .
+
+km-dev:TriplesMap_0c17f828-a9eb-413b-9469-5e9fef259732 rr:predicateObjectMap km-dev:PredicateObjectMap_e7bfded7-25e4-466d-a379-94d88ba95994 .
+
+km-dev:PredicateObjectMap_e7bfded7-25e4-466d-a379-94d88ba95994 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_e7bfded7-25e4-466d-a379-94d88ba95994 .
+
+km-dev:TriplesMap_b0a26a44-39cb-459d-b7ac-1df878129169 a rr:TriplesMap .
+
+_:node19kjge065x1 km-dev:hasTriplesMap km-dev:TriplesMap_b0a26a44-39cb-459d-b7ac-1df878129169 .
+
+km-dev:TriplesMap_b0a26a44-39cb-459d-b7ac-1df878129169 km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x6 rr:tableName "tokenized-sample.tsv" ;
+	a rr:LogicalTable ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasLogicalTable _:node19kjge065x6 .
+
+km-dev:TriplesMap_b0a26a44-39cb-459d-b7ac-1df878129169 rr:logicalTable _:node19kjge065x6 ;
+	rr:subjectMap _:node19kjge065x7 .
+
+_:node19kjge065x1 km-dev:hasSubjectMap _:node19kjge065x7 .
+
+_:node19kjge065x7 km-dev:isPartOfMapping _:node19kjge065x1 ;
+	a rr:SubjectMap ;
+	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Worker1" ;
+	rr:class mturk:Worker ;
+	rr:termType rr:BlankNode ;
+	km-dev:namePrefix "mturk:Worker1" .
+
+km-dev:PredicateObjectMap_277a61b8-02d3-4f4e-9fed-a9f5f7ae3acc rr:predicate mturk:workerId .
+
+_:node19kjge065x8 rr:column "WorkerId" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasObjectMap _:node19kjge065x8 .
+
+km-dev:PredicateObjectMap_277a61b8-02d3-4f4e-9fed-a9f5f7ae3acc rr:objectMap _:node19kjge065x8 .
+
+km-dev:TriplesMap_b0a26a44-39cb-459d-b7ac-1df878129169 rr:predicateObjectMap km-dev:PredicateObjectMap_277a61b8-02d3-4f4e-9fed-a9f5f7ae3acc .
+
+km-dev:PredicateObjectMap_277a61b8-02d3-4f4e-9fed-a9f5f7ae3acc a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_277a61b8-02d3-4f4e-9fed-a9f5f7ae3acc .
+
+km-dev:TriplesMap_9d963e67-333e-410f-8c95-eeea5595231f a rr:TriplesMap .
+
+_:node19kjge065x1 km-dev:hasTriplesMap km-dev:TriplesMap_9d963e67-333e-410f-8c95-eeea5595231f .
+
+km-dev:TriplesMap_9d963e67-333e-410f-8c95-eeea5595231f km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x9 rr:tableName "tokenized-sample.tsv" ;
+	a rr:LogicalTable ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasLogicalTable _:node19kjge065x9 .
+
+km-dev:TriplesMap_9d963e67-333e-410f-8c95-eeea5595231f rr:logicalTable _:node19kjge065x9 ;
+	rr:subjectMap _:node19kjge065x10 .
+
+_:node19kjge065x1 km-dev:hasSubjectMap _:node19kjge065x10 .
+
+_:node19kjge065x10 km-dev:isPartOfMapping _:node19kjge065x1 ;
+	a rr:SubjectMap ;
+	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Sentence1" ;
+	rr:class mturk:Sentence ;
+	rr:template "{sentenceUri}" .
+
+km-dev:PredicateObjectMap_ad0201aa-5882-44ab-af0c-154ab4ee058c rr:predicate mturk:text .
+
+_:node19kjge065x11 rr:column "Text" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasObjectMap _:node19kjge065x11 .
+
+km-dev:PredicateObjectMap_ad0201aa-5882-44ab-af0c-154ab4ee058c rr:objectMap _:node19kjge065x11 .
+
+km-dev:TriplesMap_9d963e67-333e-410f-8c95-eeea5595231f rr:predicateObjectMap km-dev:PredicateObjectMap_ad0201aa-5882-44ab-af0c-154ab4ee058c .
+
+km-dev:PredicateObjectMap_ad0201aa-5882-44ab-af0c-154ab4ee058c a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19kjge065x1 .
+
+_:node19kjge065x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_ad0201aa-5882-44ab-af0c-154ab4ee058c .
