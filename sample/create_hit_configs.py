@@ -51,6 +51,7 @@ import argparse
 import uuid
 from htmltoken import tokenize, bucketize
 import hashlib
+import base64
 
 import boto
 BUCKETNAME = 'aisoftwareresearch'
@@ -265,7 +266,7 @@ def renderSentenceJson(experiment, sentenceRecords):
     for d in sentenceRecords:
         sentences.append({"id": d["id"],
                           "sentence": " ".join(d["tokens"]),
-                          "tokens": d["tokens"]})
+                          "tokens": base64.b64encode(json.dumps(d["tokens"]))})
     return json.dumps(sentences, indent=4)
 
 TOKENCOUNT=60
