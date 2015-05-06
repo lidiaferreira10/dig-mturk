@@ -209,7 +209,7 @@ public class hitResults {
 				in_reader.close();
 				input_buffer.close();
 				/* Reset the content for each success file */
-				fileContent = "HitId\tWorkerId\tAssignmentId\tSentenceId\tOffset\tHighlightedText\tCategory\tText\tEncodedTokens\t\TokenIds\n";
+				fileContent = "HitId\tWorkerId\tAssignmentId\tSentenceId\tOffset\tHighlightedText\tCategory\tText\tEncodedTokens\tTokenIdxs\n";
 				service.getResults(input, new BatchItemCallback() {
 					public void processItemResult(Object itemId,
 							boolean succeeded, Object result,
