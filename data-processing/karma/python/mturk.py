@@ -1,7 +1,8 @@
-
+import base64
+import json
 
 def mtSentenceUri(sentenceId):
-    sid = getValue("sentenceId")
+    sid = sentenceId
     if sid=="emptyanswer":
         return ""
     elif sid.startswith("http"):
@@ -22,3 +23,19 @@ def mtAnnotationClass(category):
     return categoryToAnnotationClass.get(category, "")
 
     
+safeSeparatorCharacter = "\t"
+
+def mtDecodeTokens(encodedTokens):
+    return safeSeparatorCharacter.join(json.loads(base64.b64decode(encodedTokens)))
+
+def mtExtractAnnotatedTokens(tokenIds, joinedTokens):
+    """Beware of fencepost error here"""
+    ids = [-1+int(i) for i in tokenIds.split(',') if (i and i>0)]
+    tokens = joinedTokens.split(safeSeparatorCharacter)
+    annotated = [tokens[i] for i in ids]
+    return safeSeparatorCharacter.join(annotated)
+
+
+def mtDecodeTokens2(encodedTokens):
+    return json.loads("[1, 2]")
+
