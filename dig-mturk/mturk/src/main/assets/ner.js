@@ -19,28 +19,30 @@ $(document).ready(function() {
 		    var words = curr_sent.text().split(' ');
 		    curr_sent.empty();
 		    var spl_chars;
-        var offset = 0
+	var offset = 0;
+	var idx = 0;
 	    $.each(words, function(i, word) {
 		    if (word == HTML_CONTENT) {
-			curr_sent.append($("<span offset=" + offset + ">").text('\ufffd'));
+			curr_sent.append($("<span offset=" + offset + " idx=" + idx + ">").text('\ufffd'));
 			offset += 1;
 			curr_sent.append($("<span offset=" + offset + ">").text(" "));
 			offset += 1;
 		    } else if (!/^[a-zA-Z0-9]*$/.test(word)) {
 			var spl_chars = word.substring(word.match(/([^A-Za-z])/i).index, word.length);
 			word = word.substring(0, word.match(/([^A-Za-z])/i).index)
-			curr_sent.append($("<span offset=" + offset + ">").text(word));
+			curr_sent.append($("<span offset=" + offset + " idx=" + idx + ">").text(word));
 			offset += word.length;
 			curr_sent.append($("<span offset=" + offset + ">").text(spl_chars));
 			offset += spl_chars.length;
 			curr_sent.append($("<span offset=" + offset + ">").text(" "));
 			offset += 1;
 		    } else {
-			curr_sent.append($("<span offset=" + offset + ">").text(word));
+			curr_sent.append($("<span offset=" + offset + " idx=" + idx + ">").text(word));
 			offset += word.length;
 			curr_sent.append($("<span offset=" + offset + ">").text(" "));
 			offset += 1;
 		    }
+		    idx += 1;
 		});
 		});
 
