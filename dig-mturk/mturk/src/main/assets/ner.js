@@ -98,8 +98,9 @@ $(document).ready(function() {
 		var sentContainer = ($(this).closest(".panel-primary")).find(".sentence");
 		var encodedText = $(sentContainer).attr("tokens");
 		var sentText = $(sentContainer).text();
-		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\t" + encodedText + "\n");
+		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\t" + encodedText + "\t" + -1 + "\n");
 	}
+
 	    function highlightSelection() {
 	    var elasticSearchId = $(this).attr("elastic-search-id");
 	    var parent_id = $(this).parent().attr('id');
@@ -171,19 +172,22 @@ $(document).ready(function() {
 			$(this).addClass(class_to_add);
 		    }
 		});
+	    var token_idxs = []
 	    $(this).find('span[class=' + class_to_add + ']').each(function() {
 		    text += $(this).text();
+		    token_idxs.push( $(this).attr('idx'));
 		});
-	    char_offset = $($(this).find('span[class=' + class_to_add + ']:first')[0]).attr('offset')
-		window.getSelection().removeAllRanges();
+	    char_offset = $($(this).find('span[class=' + class_to_add + ']:first')[0]).attr('offset');
+	    token_idxs_str = token_idxs.join([separator = ',']);
+	    window.getSelection().removeAllRanges();
 	
 		/* Check if the selected content has at least one character*/
 		if (text.replace(/^\s+|\s/g, '').length > 0) {
 			if ($($('#' + parent_id).parent().find('[type=checkbox]')).is(':checked')) {
-			$($('#' + parent_id).parent().find('[type=checkbox]')).attr('checked', false);
-			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset);
+			    $($('#' + parent_id).parent().find('[type=checkbox]')).attr('checked', false);
+			    createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset, token_idxs_str);
 			} else {
-			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset);
+			    createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset, token_idxs_str);
 			}
 		}
 		/* if the selected content has no characters then remove the highlights applied in the sentence*/
@@ -257,7 +261,7 @@ $(document).ready(function() {
 	    return result;
 	}
 	
-	function createTagRow(fieldset_id, elasticSearchId, sentText, encodedText, class_identifier, text, char_offset) {
+	function createTagRow(fieldset_id, elasticSearchId, sentText, encodedText, class_identifier, text, char_offset, token_idx) {
             var fieldset = document.getElementById(fieldset_id);
             var name = class_identifier;
             name = name.replace(/ /g, '');
@@ -304,7 +308,7 @@ $(document).ready(function() {
 				type: "radio",
 				    name: fieldset_id + name,
 				    value: elasticSearchId + "\t" + char_offset + "\t" + text + "\t" +
-				    value + "\t" + sentText + "\t" + encodedText+"\n",
+				    value + "\t" + sentText + "\t" + encodedText + "\t" + token_idx + "\n",
 				    }).appendTo(label).after(value);
 
 			radio_container.appendChild(label);
