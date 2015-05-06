@@ -76,10 +76,20 @@ mturk:text rdf:type owl:DatatypeProperty ;
 	rdfs:comment "The text submitted to the worker for this task"
 	.
 
+mturk:allTokens rdf:type owl:DatatypeProperty ;
+	rdfs:domain mturk:Sentence ;
+	rdfs:comment "The tokens for the sentence submitted to worker for this task"
+	.
+
 mturk:worker rdf:type owl:ObjectProperty ; 
 	rdfs:domain mturk:Annotation ; 
 	rdfs:range mturk:Worker ;
 	rdfs:comment "The worker who performed a task"
+	.
+
+mturk:annotatedTokens rdf:type owl:DatatypeProperty ;
+	rdfs:domain mturk:Annotation ;
+	rdfs:comment "The marked-up tokens for this annotation"
 	.
 
 #########################################################
