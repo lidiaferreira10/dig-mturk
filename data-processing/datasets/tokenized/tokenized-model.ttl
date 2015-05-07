@@ -6,13 +6,13 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix km-dev: <http://isi.edu/integration/karma/dev#> .
 
-_:node19kl9lhpex1 a km-dev:R2RMLMapping ;
-	km-dev:sourceName "tokenized-sample2.tsv" ;
-	km-dev:modelPublicationTime "1430938896175"^^xsd:long ;
+_:node19ko64fi5x1 a km-dev:R2RMLMapping ;
+	km-dev:sourceName "consolidatedResult (15).tsv" ;
+	km-dev:modelPublicationTime "1431035854405"^^xsd:long ;
 	km-dev:modelVersion "1.7" ;
-	km-dev:hasInputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"SentenceId\"}],[{\"columnName\":\"annotatedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"decodedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"Category\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"WorkerId\"}],[{\"columnName\":\"HitId\"}]]" ;
-	km-dev:hasOutputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"annotationSetUri\"}],[{\"columnName\":\"sentenceUri\"}],[{\"columnName\":\"annotatedTokensJoined\"}],[{\"columnName\":\"annotatedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"decodedTokensJoined\"}],[{\"columnName\":\"decodedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"annotationClass\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"WorkerId\"}],[{\"columnName\":\"HitId\"}]]" ;
-	km-dev:hasModelLabel "tokenized-sample2.tsv" ;
+	km-dev:hasInputColumns "[[{\"columnName\":\"Category\"}],[{\"columnName\":\"decodedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"TokenIdxs\"}],[{\"columnName\":\"HitId\"}],[{\"columnName\":\"EncodedTokens\"}],[{\"columnName\":\"annotatedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"SentenceId\"}],[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"WorkerId\"}]]" ;
+	km-dev:hasOutputColumns "[[{\"columnName\":\"decodedTokensJoined\"}],[{\"columnName\":\"annotatedTokensJoined\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"annotationClass\"}],[{\"columnName\":\"annotatedTokenIdxs\"}],[{\"columnName\":\"HitId\"}],[{\"columnName\":\"annotationSetUri\"}],[{\"columnName\":\"sentenceUri\"}],[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"WorkerId\"}]]" ;
+	km-dev:hasModelLabel "consolidatedResult (15).tsv" ;
 	km-dev:hasBaseURI "http://localhost:8080/source/" ;
 	km-dev:hasWorksheetHistory """[
     {
@@ -580,7 +580,7 @@ _:node19kl9lhpex1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]},{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]},{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             },
             {
@@ -1754,253 +1754,627 @@ _:node19kl9lhpex1 a km-dev:R2RMLMapping ;
             }
         ],
         \"commandName\": \"ChangeInternalNodeLinksCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"decodedTokensJoined\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/allTokens\",
+                    \"DomainLabel\": \"mturk:Sentence1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"decodedTokensJoined\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/allTokens\",
+                    \"DomainLabel\": \"mturk:Sentence1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [
+                    {\"columnName\": \"decodedTokens\"},
+                    {\"columnName\": \"Values\"}
+                ],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": true,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"UnassignSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"annotatedTokensJoined\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/annotatedTokens\",
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokensJoined\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [
+                    {\"columnName\": \"annotatedTokens\"},
+                    {\"columnName\": \"Values\"}
+                ],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": true,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"UnassignSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"annotatedTokensJoined\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"annotatedTokenIdxs\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtExtractAnnotatedTokenIdxs(getValue(\\\"TokenIdxs\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"annotatedTokenIdxs\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"isPrimary\": true,
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/annotatedTokenIdxs\",
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
     }
 ]""" .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc a rr:TriplesMap .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 a rr:TriplesMap .
 
-_:node19kl9lhpex1 km-dev:hasTriplesMap km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc .
+_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex2 rr:tableName "tokenized-sample2.tsv" ;
+_:node19ko64fi5x2 rr:tableName "consolidatedResult (15).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasLogicalTable _:node19kl9lhpex2 .
+_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x2 .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc rr:logicalTable _:node19kl9lhpex2 ;
-	rr:subjectMap _:node19kl9lhpex3 .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:logicalTable _:node19ko64fi5x2 ;
+	rr:subjectMap _:node19ko64fi5x3 .
 
-_:node19kl9lhpex1 km-dev:hasSubjectMap _:node19kl9lhpex3 .
+_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x3 .
 
-_:node19kl9lhpex3 km-dev:isPartOfMapping _:node19kl9lhpex1 ;
+_:node19ko64fi5x3 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Annotation1" ;
 	rr:class mturk:Annotation ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:Annotation1" .
 
-km-dev:PredicateObjectMap_88dc07e7-6ad7-40f3-97a0-2a85df818222 rr:predicate mturk:annotatedTokens .
+km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 rr:predicate mturk:annotatedTokenIdxs .
 
-_:node19kl9lhpex4 rr:column "[\"annotatedTokens\",\"Values\"]" ;
+_:node19ko64fi5x4 rr:column "annotatedTokenIdxs" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap _:node19kl9lhpex4 .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x4 .
 
-km-dev:PredicateObjectMap_88dc07e7-6ad7-40f3-97a0-2a85df818222 rr:objectMap _:node19kl9lhpex4 .
+km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 rr:objectMap _:node19ko64fi5x4 .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc rr:predicateObjectMap km-dev:PredicateObjectMap_88dc07e7-6ad7-40f3-97a0-2a85df818222 .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 .
 
-km-dev:PredicateObjectMap_88dc07e7-6ad7-40f3-97a0-2a85df818222 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_88dc07e7-6ad7-40f3-97a0-2a85df818222 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 .
 
-km-dev:PredicateObjectMap_eb72b423-15a2-4b09-b37e-1b2549cd5f09 rr:predicate mturk:assignmentId .
+km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba rr:predicate mturk:annotatedTokens .
 
-_:node19kl9lhpex5 rr:column "AssignmentId" ;
+_:node19ko64fi5x5 rr:column "annotatedTokensJoined" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap _:node19kl9lhpex5 .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x5 .
 
-km-dev:PredicateObjectMap_eb72b423-15a2-4b09-b37e-1b2549cd5f09 rr:objectMap _:node19kl9lhpex5 .
+km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba rr:objectMap _:node19ko64fi5x5 .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc rr:predicateObjectMap km-dev:PredicateObjectMap_eb72b423-15a2-4b09-b37e-1b2549cd5f09 .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba .
 
-km-dev:PredicateObjectMap_eb72b423-15a2-4b09-b37e-1b2549cd5f09 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_eb72b423-15a2-4b09-b37e-1b2549cd5f09 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba .
 
-km-dev:PredicateObjectMap_8f9573d6-b5fa-4d8f-9d89-1c9c4c0d91d4 rr:predicate mturk:hitId .
+km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 rr:predicate mturk:assignmentId .
 
-_:node19kl9lhpex6 rr:column "HitId" ;
+_:node19ko64fi5x6 rr:column "AssignmentId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap _:node19kl9lhpex6 .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x6 .
 
-km-dev:PredicateObjectMap_8f9573d6-b5fa-4d8f-9d89-1c9c4c0d91d4 rr:objectMap _:node19kl9lhpex6 .
+km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 rr:objectMap _:node19ko64fi5x6 .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc rr:predicateObjectMap km-dev:PredicateObjectMap_8f9573d6-b5fa-4d8f-9d89-1c9c4c0d91d4 .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 .
 
-km-dev:PredicateObjectMap_8f9573d6-b5fa-4d8f-9d89-1c9c4c0d91d4 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_8f9573d6-b5fa-4d8f-9d89-1c9c4c0d91d4 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 .
 
-km-dev:PredicateObjectMap_1a77e98f-6bfb-4406-a2dc-80a610568206 rr:predicate mturk:worker .
+km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 rr:predicate mturk:hitId .
 
-km-dev:RefObjectMap_0d5c1017-0dbc-42f6-9063-bb38da449a6b a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_ca3a08e3-d229-4d10-9d5f-f71af25d9b71 ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+_:node19ko64fi5x7 rr:column "HitId" ;
+	a rr:ObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap km-dev:RefObjectMap_0d5c1017-0dbc-42f6-9063-bb38da449a6b .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x7 .
 
-km-dev:PredicateObjectMap_1a77e98f-6bfb-4406-a2dc-80a610568206 rr:objectMap km-dev:RefObjectMap_0d5c1017-0dbc-42f6-9063-bb38da449a6b .
+km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 rr:objectMap _:node19ko64fi5x7 .
 
-km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc rr:predicateObjectMap km-dev:PredicateObjectMap_1a77e98f-6bfb-4406-a2dc-80a610568206 .
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 .
 
-km-dev:PredicateObjectMap_1a77e98f-6bfb-4406-a2dc-80a610568206 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_1a77e98f-6bfb-4406-a2dc-80a610568206 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 .
 
-km-dev:TriplesMap_ca3a08e3-d229-4d10-9d5f-f71af25d9b71 a rr:TriplesMap .
+km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 rr:predicate mturk:worker .
 
-_:node19kl9lhpex1 km-dev:hasTriplesMap km-dev:TriplesMap_ca3a08e3-d229-4d10-9d5f-f71af25d9b71 .
+km-dev:RefObjectMap_ec4ec120-e58a-4fff-9ead-c140dc74e3d0 a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-km-dev:TriplesMap_ca3a08e3-d229-4d10-9d5f-f71af25d9b71 km-dev:isPartOfMapping _:node19kl9lhpex1 .
+_:node19ko64fi5x1 km-dev:hasObjectMap km-dev:RefObjectMap_ec4ec120-e58a-4fff-9ead-c140dc74e3d0 .
 
-_:node19kl9lhpex7 rr:tableName "tokenized-sample2.tsv" ;
+km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 rr:objectMap km-dev:RefObjectMap_ec4ec120-e58a-4fff-9ead-c140dc74e3d0 .
+
+km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 .
+
+km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 .
+
+km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 a rr:TriplesMap .
+
+_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 .
+
+km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 km-dev:isPartOfMapping _:node19ko64fi5x1 .
+
+_:node19ko64fi5x8 rr:tableName "consolidatedResult (15).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasLogicalTable _:node19kl9lhpex7 .
+_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x8 .
 
-km-dev:TriplesMap_ca3a08e3-d229-4d10-9d5f-f71af25d9b71 rr:logicalTable _:node19kl9lhpex7 ;
-	rr:subjectMap _:node19kl9lhpex8 .
+km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 rr:logicalTable _:node19ko64fi5x8 ;
+	rr:subjectMap _:node19ko64fi5x9 .
 
-_:node19kl9lhpex1 km-dev:hasSubjectMap _:node19kl9lhpex8 .
+_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x9 .
 
-_:node19kl9lhpex8 km-dev:isPartOfMapping _:node19kl9lhpex1 ;
+_:node19ko64fi5x9 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Worker1" ;
 	rr:class mturk:Worker ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:Worker1" .
 
-km-dev:PredicateObjectMap_6042eb98-d84f-49d7-93b2-3de1d17eadce rr:predicate mturk:workerId .
+km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc rr:predicate mturk:workerId .
 
-_:node19kl9lhpex9 rr:column "WorkerId" ;
+_:node19ko64fi5x10 rr:column "WorkerId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap _:node19kl9lhpex9 .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x10 .
 
-km-dev:PredicateObjectMap_6042eb98-d84f-49d7-93b2-3de1d17eadce rr:objectMap _:node19kl9lhpex9 .
+km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc rr:objectMap _:node19ko64fi5x10 .
 
-km-dev:TriplesMap_ca3a08e3-d229-4d10-9d5f-f71af25d9b71 rr:predicateObjectMap km-dev:PredicateObjectMap_6042eb98-d84f-49d7-93b2-3de1d17eadce .
+km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 rr:predicateObjectMap km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc .
 
-km-dev:PredicateObjectMap_6042eb98-d84f-49d7-93b2-3de1d17eadce a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_6042eb98-d84f-49d7-93b2-3de1d17eadce .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc .
 
-km-dev:TriplesMap_7403245b-b61e-4f99-b005-e7ff3f7306b3 a rr:TriplesMap .
+km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a a rr:TriplesMap .
 
-_:node19kl9lhpex1 km-dev:hasTriplesMap km-dev:TriplesMap_7403245b-b61e-4f99-b005-e7ff3f7306b3 .
+_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a .
 
-km-dev:TriplesMap_7403245b-b61e-4f99-b005-e7ff3f7306b3 km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex10 rr:tableName "tokenized-sample2.tsv" ;
+_:node19ko64fi5x11 rr:tableName "consolidatedResult (15).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasLogicalTable _:node19kl9lhpex10 .
+_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x11 .
 
-km-dev:TriplesMap_7403245b-b61e-4f99-b005-e7ff3f7306b3 rr:logicalTable _:node19kl9lhpex10 ;
-	rr:subjectMap _:node19kl9lhpex11 .
+km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a rr:logicalTable _:node19ko64fi5x11 ;
+	rr:subjectMap _:node19ko64fi5x12 .
 
-_:node19kl9lhpex1 km-dev:hasSubjectMap _:node19kl9lhpex11 .
+_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x12 .
 
-_:node19kl9lhpex11 km-dev:isPartOfMapping _:node19kl9lhpex1 ;
+_:node19ko64fi5x12 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/AnnotationSet1" ;
 	rr:class mturk:AnnotationSet ;
 	rr:template "{annotationSetUri}" .
 
-km-dev:PredicateObjectMap_90b35f3c-0291-420c-92d1-55601a450302 rr:predicate "{annotationClass}" .
+km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 rr:predicate "{annotationClass}" .
 
-km-dev:RefObjectMap_4a9c2898-702f-4079-9551-4e070b41e5cb a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_80ad4809-7dde-4ac8-b0d4-8b32be7a71cc ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:RefObjectMap_a3fb6790-70d3-4921-bea7-c3558f10cd0b a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap km-dev:RefObjectMap_4a9c2898-702f-4079-9551-4e070b41e5cb .
+_:node19ko64fi5x1 km-dev:hasObjectMap km-dev:RefObjectMap_a3fb6790-70d3-4921-bea7-c3558f10cd0b .
 
-km-dev:PredicateObjectMap_90b35f3c-0291-420c-92d1-55601a450302 rr:objectMap km-dev:RefObjectMap_4a9c2898-702f-4079-9551-4e070b41e5cb .
+km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 rr:objectMap km-dev:RefObjectMap_a3fb6790-70d3-4921-bea7-c3558f10cd0b .
 
-km-dev:TriplesMap_7403245b-b61e-4f99-b005-e7ff3f7306b3 rr:predicateObjectMap km-dev:PredicateObjectMap_90b35f3c-0291-420c-92d1-55601a450302 .
+km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a rr:predicateObjectMap km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 .
 
-km-dev:PredicateObjectMap_90b35f3c-0291-420c-92d1-55601a450302 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_90b35f3c-0291-420c-92d1-55601a450302 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 .
 
-km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a a rr:TriplesMap .
+km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b a rr:TriplesMap .
 
-_:node19kl9lhpex1 km-dev:hasTriplesMap km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a .
+_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b .
 
-km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex12 rr:tableName "tokenized-sample2.tsv" ;
+_:node19ko64fi5x13 rr:tableName "consolidatedResult (15).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasLogicalTable _:node19kl9lhpex12 .
+_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x13 .
 
-km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a rr:logicalTable _:node19kl9lhpex12 ;
-	rr:subjectMap _:node19kl9lhpex13 .
+km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:logicalTable _:node19ko64fi5x13 ;
+	rr:subjectMap _:node19ko64fi5x14 .
 
-_:node19kl9lhpex1 km-dev:hasSubjectMap _:node19kl9lhpex13 .
+_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x14 .
 
-_:node19kl9lhpex13 km-dev:isPartOfMapping _:node19kl9lhpex1 ;
+_:node19ko64fi5x14 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Sentence1" ;
 	rr:class mturk:Sentence ;
 	rr:template "{sentenceUri}" ;
 	a km-dev:steinerTreeRootNode .
 
-km-dev:PredicateObjectMap_db899c0f-ccaa-46e3-8184-19849565604d rr:predicate mturk:allTokens .
+km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 rr:predicate mturk:allTokens .
 
-_:node19kl9lhpex14 rr:column "[\"decodedTokens\",\"Values\"]" ;
+_:node19ko64fi5x15 rr:column "decodedTokensJoined" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap _:node19kl9lhpex14 .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x15 .
 
-km-dev:PredicateObjectMap_db899c0f-ccaa-46e3-8184-19849565604d rr:objectMap _:node19kl9lhpex14 .
+km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 rr:objectMap _:node19ko64fi5x15 .
 
-km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a rr:predicateObjectMap km-dev:PredicateObjectMap_db899c0f-ccaa-46e3-8184-19849565604d .
+km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:predicateObjectMap km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 .
 
-km-dev:PredicateObjectMap_db899c0f-ccaa-46e3-8184-19849565604d a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_db899c0f-ccaa-46e3-8184-19849565604d .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 .
 
-km-dev:PredicateObjectMap_210a93c6-29a5-4ad6-9f7d-eb61f095f3e1 rr:predicate mturk:annotationSet .
+km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf rr:predicate mturk:annotationSet .
 
-km-dev:RefObjectMap_c242350c-1444-4a56-9393-e4900cc08f17 a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_7403245b-b61e-4f99-b005-e7ff3f7306b3 ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:RefObjectMap_1ec8b8e1-5679-4370-8d45-d64c2cbd5c5f a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap km-dev:RefObjectMap_c242350c-1444-4a56-9393-e4900cc08f17 .
+_:node19ko64fi5x1 km-dev:hasObjectMap km-dev:RefObjectMap_1ec8b8e1-5679-4370-8d45-d64c2cbd5c5f .
 
-km-dev:PredicateObjectMap_210a93c6-29a5-4ad6-9f7d-eb61f095f3e1 rr:objectMap km-dev:RefObjectMap_c242350c-1444-4a56-9393-e4900cc08f17 .
+km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf rr:objectMap km-dev:RefObjectMap_1ec8b8e1-5679-4370-8d45-d64c2cbd5c5f .
 
-km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a rr:predicateObjectMap km-dev:PredicateObjectMap_210a93c6-29a5-4ad6-9f7d-eb61f095f3e1 .
+km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:predicateObjectMap km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf .
 
-km-dev:PredicateObjectMap_210a93c6-29a5-4ad6-9f7d-eb61f095f3e1 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_210a93c6-29a5-4ad6-9f7d-eb61f095f3e1 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf .
 
-km-dev:PredicateObjectMap_f29b3d7f-423e-4cd2-a187-c32f07672048 rr:predicate mturk:text .
+km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 rr:predicate mturk:text .
 
-_:node19kl9lhpex15 rr:column "Text" ;
+_:node19ko64fi5x16 rr:column "Text" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasObjectMap _:node19kl9lhpex15 .
+_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x16 .
 
-km-dev:PredicateObjectMap_f29b3d7f-423e-4cd2-a187-c32f07672048 rr:objectMap _:node19kl9lhpex15 .
+km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 rr:objectMap _:node19ko64fi5x16 .
 
-km-dev:TriplesMap_981a333f-a8c7-4450-b434-6e24568c146a rr:predicateObjectMap km-dev:PredicateObjectMap_f29b3d7f-423e-4cd2-a187-c32f07672048 .
+km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:predicateObjectMap km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 .
 
-km-dev:PredicateObjectMap_f29b3d7f-423e-4cd2-a187-c32f07672048 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19kl9lhpex1 .
+km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko64fi5x1 .
 
-_:node19kl9lhpex1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_f29b3d7f-423e-4cd2-a187-c32f07672048 .
+_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 .
