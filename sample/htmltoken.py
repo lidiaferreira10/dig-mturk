@@ -20,6 +20,9 @@ class HTMLTokenizer(HTMLParser):
         HTMLParser.reset(self)
     def handle_data(self, data):
         if data:
+            ### This is where the text tokenization resides
+            ### Word-consitutent based tokenization is naive, but probably good enough for simple texts
+            ### Other strategies (e.g., nltk.sent_tokenize) are possible
             self.buffer.extend(re.findall(r"\w+|[^\w\s]", data, re.UNICODE))
     def handle_starttag(self, tag, attrs):
         self.buffer.append("<%s" % tag + "".join([''' %s="%s"''' % attr for attr in attrs]) + ">")
