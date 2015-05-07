@@ -6,21 +6,21 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix km-dev: <http://isi.edu/integration/karma/dev#> .
 
-_:node19ko64fi5x1 a km-dev:R2RMLMapping ;
-	km-dev:sourceName "consolidatedResult (15).tsv" ;
-	km-dev:modelPublicationTime "1431035854405"^^xsd:long ;
+_:node19ko9jf6jx1 a km-dev:R2RMLMapping ;
+	km-dev:sourceName "consolidatedResult (16).tsv" ;
+	km-dev:modelPublicationTime "1431039491284"^^xsd:long ;
 	km-dev:modelVersion "1.7" ;
-	km-dev:hasInputColumns "[[{\"columnName\":\"Category\"}],[{\"columnName\":\"decodedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"TokenIdxs\"}],[{\"columnName\":\"HitId\"}],[{\"columnName\":\"EncodedTokens\"}],[{\"columnName\":\"annotatedTokens\"},{\"columnName\":\"Values\"}],[{\"columnName\":\"SentenceId\"}],[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"WorkerId\"}]]" ;
-	km-dev:hasOutputColumns "[[{\"columnName\":\"decodedTokensJoined\"}],[{\"columnName\":\"annotatedTokensJoined\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"annotationClass\"}],[{\"columnName\":\"annotatedTokenIdxs\"}],[{\"columnName\":\"HitId\"}],[{\"columnName\":\"annotationSetUri\"}],[{\"columnName\":\"sentenceUri\"}],[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"WorkerId\"}]]" ;
-	km-dev:hasModelLabel "consolidatedResult (15).tsv" ;
+	km-dev:hasInputColumns "[[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"SentenceId\"}],[{\"columnName\":\"Category\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"EncodedTokens\"}],[{\"columnName\":\"TokenIdxs\"}],[{\"columnName\":\"HitId\"}],[{\"columnName\":\"WorkerId\"}]]" ;
+	km-dev:hasOutputColumns "[[{\"columnName\":\"AnnotatedTokenIdxs\"}],[{\"columnName\":\"AnnotationClass\"}],[{\"columnName\":\"SentenceUri\"}],[{\"columnName\":\"AssignmentId\"}],[{\"columnName\":\"AnnotatedTokensTsv\"}],[{\"columnName\":\"SentenceId\"}],[{\"columnName\":\"Text\"}],[{\"columnName\":\"AnnotationSetUri\"}],[{\"columnName\":\"HitId\"}],[{\"columnName\":\"WorkerId\"}],[{\"columnName\":\"DecodedTokensTsv\"}]]" ;
+	km-dev:hasModelLabel "tokenized" ;
 	km-dev:hasBaseURI "http://localhost:8080/source/" ;
 	km-dev:hasWorksheetHistory """[
     {
-        \"tags\": [\"Modeling\"],
+        \"tags\": [\"Transformation\"],
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"HitId\"}],
+                \"value\": [{\"columnName\": \"SentenceId\"}],
                 \"type\": \"hNodeId\"
             },
             {
@@ -34,38 +34,343 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
                 \"type\": \"other\"
             },
             {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [{
-                    \"isPrimary\": true,
-                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/hitId\",
-                    \"DomainLabel\": \"mturk:Annotation1 (add)\",
-                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1 (add)\",
-                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
-                }],
+                \"name\": \"newColumnName\",
+                \"value\": \"SentenceId\",
                 \"type\": \"other\"
             },
             {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtSentenceUri(getValue(\\\"SentenceId\\\"))\\n\",
                 \"type\": \"other\"
             },
             {
-                \"name\": \"rdfLiteralType\",
+                \"name\": \"errorDefaultValue\",
                 \"value\": \"\",
                 \"type\": \"other\"
             },
             {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
                 \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceId\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceId\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
-        \"commandName\": \"SetSemanticTypeCommand\"
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"SentenceId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"SentenceUri\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtSentenceUri(getValue(\\\"SentenceId\\\"))\\n\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"SentenceUri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"AnnotationSetUri\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtAnnotationSetUri(getValue(\\\"SentenceUri\\\"))\\n\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotationSetUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"Category\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"AnnotationClass\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtAnnotationClass(getValue(\\\"Category\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Category\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotationClass\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"EncodedTokens\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"DecodedTokensTsv\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtDecodeTokens(getValue(\\\"EncodedTokens\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"EncodedTokens\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"DecodedTokensTsv\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"TokenIdxs\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"AnnotatedTokensTsv\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtExtractAnnotatedTokens(getValue(\\\"TokenIdxs\\\"), getValue(\\\"DecodedTokensTsv\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]},{\\\"value\\\":[{\\\"columnName\\\":\\\"DecodedTokensTsv\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotatedTokensTsv\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"TokenIdxs\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newColumnName\",
+                \"value\": \"AnnotatedTokenIdxs\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"transformationCode\",
+                \"value\": \"return mtExtractAnnotatedTokenIdxs(getValue(\\\"TokenIdxs\\\"))\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"errorDefaultValue\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"isJSONOutput\",
+                \"value\": \"false\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotatedTokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SubmitPythonTransformationCommand\"
     },
     {
         \"tags\": [\"Modeling\"],
@@ -88,8 +393,8 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             {
                 \"name\": \"SemanticTypesArray\",
                 \"value\": [{
-                    \"isPrimary\": true,
                     \"FullType\": \"http://dig.isi.edu/ontology/mturk/workerId\",
+                    \"isPrimary\": true,
                     \"DomainLabel\": \"mturk:Worker1 (add)\",
                     \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Worker1 (add)\",
                     \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Worker\"
@@ -124,6 +429,58 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"HitId\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/hitId\",
+                    \"isPrimary\": true,
+                    \"DomainLabel\": \"mturk:Annotation1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1 (add)\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"HitId\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
                 \"value\": [{\"columnName\": \"AssignmentId\"}],
                 \"type\": \"hNodeId\"
             },
@@ -140,8 +497,8 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             {
                 \"name\": \"SemanticTypesArray\",
                 \"value\": [{
-                    \"isPrimary\": true,
                     \"FullType\": \"http://dig.isi.edu/ontology/mturk/assignmentId\",
+                    \"isPrimary\": true,
                     \"DomainLabel\": \"mturk:Annotation1\",
                     \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
                     \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
@@ -191,7 +548,7 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"alignmentId\",
-                \"value\": \"WSP31:WS1AL\",
+                \"value\": \"WSP1:WS1534AL\",
                 \"type\": \"other\"
             },
             {
@@ -199,8 +556,8 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
                 \"value\": [{
                     \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/Worker\",
                     \"edgeId\": \"http://dig.isi.edu/ontology/mturk/worker\",
-                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Worker1\",
                     \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Worker1\",
                     \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/Annotation1\"
                 }],
                 \"type\": \"other\"
@@ -219,62 +576,11 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
         \"commandName\": \"ChangeInternalNodeLinksCommand\"
     },
     {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"SentenceId\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColumnName\",
-                \"value\": \"sentenceUri\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"transformationCode\",
-                \"value\": \"return mtSentenceUri(getValue(\\\"SentenceId\\\"))\\n\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"errorDefaultValue\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"isJSONOutput\",
-                \"value\": \"false\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceId\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SubmitPythonTransformationCommand\"
-    },
-    {
         \"tags\": [\"Modeling\"],
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"sentenceUri\"}],
+                \"value\": [{\"columnName\": \"SentenceUri\"}],
                 \"type\": \"hNodeId\"
             },
             {
@@ -325,12 +631,12 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceUri\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"SentenceUri\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
@@ -389,111 +695,11 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
         \"commandName\": \"SetSemanticTypeCommand\"
     },
     {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"EncodedTokens\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColumnName\",
-                \"value\": \"decodedTokensJoined\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"transformationCode\",
-                \"value\": \"return mtDecodeTokens(getValue(\\\"EncodedTokens\\\"))\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"errorDefaultValue\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"isJSONOutput\",
-                \"value\": \"false\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"EncodedTokens\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SubmitPythonTransformationCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"decodedTokensJoined\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"delimiter\",
-                \"value\": \"tab\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColName\",
-                \"value\": \"decodedTokens\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newHNodeId\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SplitValuesCommand\"
-    },
-    {
         \"tags\": [\"Modeling\"],
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
-                \"value\": [
-                    {\"columnName\": \"decodedTokens\"},
-                    {\"columnName\": \"Values\"}
-                ],
+                \"value\": [{\"columnName\": \"DecodedTokensTsv\"}],
                 \"type\": \"hNodeId\"
             },
             {
@@ -509,8 +715,8 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             {
                 \"name\": \"SemanticTypesArray\",
                 \"value\": [{
-                    \"isPrimary\": true,
                     \"FullType\": \"http://dig.isi.edu/ontology/mturk/allTokens\",
+                    \"isPrimary\": true,
                     \"DomainLabel\": \"mturk:Sentence1\",
                     \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
                     \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
@@ -529,123 +735,23 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"DecodedTokensTsv\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"DecodedTokensTsv\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
         \"commandName\": \"SetSemanticTypeCommand\"
     },
     {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"TokenIdxs\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColumnName\",
-                \"value\": \"annotatedTokensJoined\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"transformationCode\",
-                \"value\": \"return mtExtractAnnotatedTokens(getValue(\\\"TokenIdxs\\\"), getValue(\\\"decodedTokensJoined\\\"))\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"errorDefaultValue\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"isJSONOutput\",
-                \"value\": \"false\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]},{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SubmitPythonTransformationCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"delimiter\",
-                \"value\": \"tab\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColName\",
-                \"value\": \"annotatedTokens\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newHNodeId\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SplitValuesCommand\"
-    },
-    {
         \"tags\": [\"Modeling\"],
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
-                \"value\": [
-                    {\"columnName\": \"annotatedTokens\"},
-                    {\"columnName\": \"Values\"}
-                ],
+                \"value\": [{\"columnName\": \"AnnotatedTokensTsv\"}],
                 \"type\": \"hNodeId\"
             },
             {
@@ -661,8 +767,8 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             {
                 \"name\": \"SemanticTypesArray\",
                 \"value\": [{
-                    \"isPrimary\": true,
                     \"FullType\": \"http://dig.isi.edu/ontology/mturk/annotatedTokens\",
+                    \"isPrimary\": true,
                     \"DomainLabel\": \"mturk:Annotation1\",
                     \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
                     \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
@@ -681,16 +787,135 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotatedTokensTsv\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotatedTokensTsv\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
         \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"AnnotatedTokenIdxs\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/annotatedTokenIdxs\",
+                    \"isPrimary\": true,
+                    \"DomainLabel\": \"mturk:Annotation1\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotatedTokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotatedTokenIdxs\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetSemanticTypeCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"hNodeId\",
+                \"value\": [{\"columnName\": \"AnnotationSetUri\"}],
+                \"type\": \"hNodeId\"
+            },
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyName\",
+                \"value\": \"isUriOfClass\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyUri\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"metaPropertyId\",
+                \"value\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1 (add)\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"SemanticTypesArray\",
+                \"value\": [{
+                    \"FullType\": \"http://isi.edu/integration/karma/dev#classLink\",
+                    \"isPrimary\": true,
+                    \"DomainLabel\": \"mturk:AnnotationSet1 (add)\",
+                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"trainAndShowUpdates\",
+                \"value\": false,
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"rdfLiteralType\",
+                \"value\": \"\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotationSetUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotationSetUri\\\"}]}]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"SetMetaPropertyCommand\"
     },
     {
         \"tags\": [\"Modeling\"],
@@ -712,17 +937,64 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"alignmentId\",
-                \"value\": \"WSP31:WS1AL\",
+                \"value\": \"WSP1:WS1534AL\",
                 \"type\": \"other\"
             },
             {
                 \"name\": \"newEdges\",
                 \"value\": [{
-                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
-                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
+                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\",
+                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
+                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
                     \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
-                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1 (add)\",
-                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\"
+                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
+                }],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"ChangeInternalNodeLinksCommand\"
+    },
+    {
+        \"tags\": [\"Modeling\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"initialEdges\",
+                \"value\": [],
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"alignmentId\",
+                \"value\": \"WSP1:WS1534AL\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"newEdges\",
+                \"value\": [{
+                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\",
+                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
+                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
+                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
+                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/Sentence1\"
                 }],
                 \"type\": \"other\"
             },
@@ -743,11 +1015,6 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
         \"tags\": [\"Transformation\"],
         \"inputParameters\": [
             {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"Category\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
                 \"name\": \"worksheetId\",
                 \"value\": \"W\",
                 \"type\": \"worksheetId\"
@@ -758,75 +1025,106 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
                 \"type\": \"other\"
             },
             {
-                \"name\": \"newColumnName\",
-                \"value\": \"annotationClass\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"transformationCode\",
-                \"value\": \"return mtAnnotationClass(getValue(\\\"Category\\\"))\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"errorDefaultValue\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"isJSONOutput\",
-                \"value\": \"false\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"Category\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SubmitPythonTransformationCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"initialEdges\",
-                \"value\": [{
-                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
-                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
-                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\"
-                }],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"alignmentId\",
-                \"value\": \"WSP31:WS1AL\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newEdges\",
-                \"value\": [{
-                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\",
-                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotation\",
-                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
-                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1 (add)\",
-                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\"
-                }],
-                \"type\": \"other\"
+                \"name\": \"orderedColumns\",
+                \"value\": [
+                    {
+                        \"id\": [{\"columnName\": \"HitId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"HitId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"WorkerId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"WorkerId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AssignmentId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AssignmentId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"TokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokensTsv\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceId\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"SentenceId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"SentenceUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationSetUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotationSetUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Offset\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Offset\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"HighlightedText\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"HighlightedText\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Category\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Category\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationClass\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"AnnotationClass\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Text\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"Text\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"EncodedTokens\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"DecodedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"DecodedTokensTsv\"
+                    }
+                ],
+                \"type\": \"orderedColumns\"
             },
             {
                 \"name\": \"inputColumns\",
@@ -839,14 +1137,398 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
                 \"type\": \"hNodeIdList\"
             }
         ],
-        \"commandName\": \"ChangeInternalNodeLinksCommand\"
+        \"commandName\": \"OrganizeColumnsCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"orderedColumns\",
+                \"value\": [
+                    {
+                        \"id\": [{\"columnName\": \"HitId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"HitId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"WorkerId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"WorkerId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AssignmentId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AssignmentId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"TokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokensTsv\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceId\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"SentenceId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationSetUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotationSetUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"SentenceUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Offset\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Offset\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"HighlightedText\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"HighlightedText\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Category\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Category\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationClass\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"AnnotationClass\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Text\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"Text\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"EncodedTokens\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"DecodedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"DecodedTokensTsv\"
+                    }
+                ],
+                \"type\": \"orderedColumns\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"OrganizeColumnsCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"orderedColumns\",
+                \"value\": [
+                    {
+                        \"id\": [{\"columnName\": \"WorkerId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"WorkerId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"HitId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"HitId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AssignmentId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AssignmentId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"TokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokensTsv\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceId\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"SentenceId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationSetUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotationSetUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"SentenceUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Offset\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Offset\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"HighlightedText\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"HighlightedText\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Category\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Category\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationClass\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"AnnotationClass\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Text\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"Text\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"EncodedTokens\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"DecodedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"DecodedTokensTsv\"
+                    }
+                ],
+                \"type\": \"orderedColumns\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"OrganizeColumnsCommand\"
+    },
+    {
+        \"tags\": [\"Transformation\"],
+        \"inputParameters\": [
+            {
+                \"name\": \"worksheetId\",
+                \"value\": \"W\",
+                \"type\": \"worksheetId\"
+            },
+            {
+                \"name\": \"selectionName\",
+                \"value\": \"DEFAULT_TEST\",
+                \"type\": \"other\"
+            },
+            {
+                \"name\": \"orderedColumns\",
+                \"value\": [
+                    {
+                        \"id\": [{\"columnName\": \"WorkerId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"WorkerId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"HitId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"HitId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AssignmentId\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AssignmentId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"TokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokenIdxs\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokenIdxs\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotatedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotatedTokensTsv\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationClass\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"AnnotationClass\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceId\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"SentenceId\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"AnnotationSetUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"AnnotationSetUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"SentenceUri\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"SentenceUri\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Offset\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Offset\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"HighlightedText\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"HighlightedText\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Category\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"Category\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"Text\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"Text\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
+                        \"visible\": true,
+                        \"hideable\": true,
+                        \"name\": \"EncodedTokens\"
+                    },
+                    {
+                        \"id\": [{\"columnName\": \"DecodedTokensTsv\"}],
+                        \"visible\": true,
+                        \"hideable\": false,
+                        \"name\": \"DecodedTokensTsv\"
+                    }
+                ],
+                \"type\": \"orderedColumns\"
+            },
+            {
+                \"name\": \"inputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            },
+            {
+                \"name\": \"outputColumns\",
+                \"value\": \"[]\",
+                \"type\": \"hNodeIdList\"
+            }
+        ],
+        \"commandName\": \"OrganizeColumnsCommand\"
     },
     {
         \"tags\": [\"Modeling\"],
         \"inputParameters\": [
             {
                 \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotationClass\"}],
+                \"value\": [{\"columnName\": \"AnnotationClass\"}],
                 \"type\": \"hNodeId\"
             },
             {
@@ -899,816 +1581,18 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
             },
             {
                 \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotationClass\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             },
             {
                 \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationClass\\\"}]}]\",
+                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"AnnotationClass\\\"}]}]\",
                 \"type\": \"hNodeIdList\"
             }
         ],
         \"commandName\": \"SetMetaPropertyCommand\"
     },
     {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"sentenceUri\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColumnName\",
-                \"value\": \"annotationSetUri\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"transformationCode\",
-                \"value\": \"return mtAnnotationSetUri(getValue(\\\"sentenceUri\\\"))\\n\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"errorDefaultValue\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"isJSONOutput\",
-                \"value\": \"false\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"sentenceUri\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationSetUri\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SubmitPythonTransformationCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotationSetUri\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"metaPropertyName\",
-                \"value\": \"isUriOfClass\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"metaPropertyUri\",
-                \"value\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"metaPropertyId\",
-                \"value\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [{
-                    \"isPrimary\": true,
-                    \"FullType\": \"http://isi.edu/integration/karma/dev#classLink\",
-                    \"DomainLabel\": \"mturk:AnnotationSet1\",
-                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\"
-                }],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationSetUri\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotationSetUri\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SetMetaPropertyCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"orderedColumns\",
-                \"value\": [
-                    {
-                        \"id\": [{\"columnName\": \"HitId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"HitId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"WorkerId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"WorkerId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"AssignmentId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"AssignmentId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"SentenceId\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"SentenceId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"sentenceUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"sentenceUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationSetUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationSetUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationClass\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationClass\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Offset\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Offset\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HighlightedText\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"HighlightedText\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Category\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Category\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Text\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"Text\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"EncodedTokens\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"decodedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"TokenIdxs\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"annotatedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"decodedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotatedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    }
-                ],
-                \"type\": \"orderedColumns\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"OrganizeColumnsCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"orderedColumns\",
-                \"value\": [
-                    {
-                        \"id\": [{\"columnName\": \"HitId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"HitId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"WorkerId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"WorkerId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"AssignmentId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"AssignmentId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"SentenceId\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"SentenceId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"sentenceUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"sentenceUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationSetUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationSetUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationClass\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationClass\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Offset\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Offset\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HighlightedText\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"HighlightedText\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Category\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Category\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Text\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"Text\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"EncodedTokens\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"decodedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"decodedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"TokenIdxs\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"annotatedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotatedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    }
-                ],
-                \"type\": \"orderedColumns\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"OrganizeColumnsCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"orderedColumns\",
-                \"value\": [
-                    {
-                        \"id\": [{\"columnName\": \"HitId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"HitId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"WorkerId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"WorkerId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"AssignmentId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"AssignmentId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"SentenceId\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"SentenceId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationSetUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationSetUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationClass\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationClass\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Offset\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Offset\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HighlightedText\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"HighlightedText\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Category\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Category\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Text\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"Text\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"sentenceUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"sentenceUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"EncodedTokens\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"decodedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"decodedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"TokenIdxs\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"annotatedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotatedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    }
-                ],
-                \"type\": \"orderedColumns\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"OrganizeColumnsCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"orderedColumns\",
-                \"value\": [
-                    {
-                        \"id\": [{\"columnName\": \"WorkerId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"WorkerId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"SentenceId\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"SentenceId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationSetUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationSetUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationClass\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationClass\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HitId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"HitId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"AssignmentId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"AssignmentId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Offset\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Offset\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HighlightedText\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"HighlightedText\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Category\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Category\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Text\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"Text\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"sentenceUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"sentenceUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"EncodedTokens\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"decodedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"decodedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"TokenIdxs\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"annotatedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotatedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    }
-                ],
-                \"type\": \"orderedColumns\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"OrganizeColumnsCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"orderedColumns\",
-                \"value\": [
-                    {
-                        \"id\": [{\"columnName\": \"SentenceId\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"SentenceId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationSetUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationSetUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotationClass\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotationClass\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HitId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"HitId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"AssignmentId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"AssignmentId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"WorkerId\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"WorkerId\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Offset\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Offset\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"HighlightedText\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"HighlightedText\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Category\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"Category\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"Text\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"Text\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"sentenceUri\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"sentenceUri\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"EncodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"EncodedTokens\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"decodedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"decodedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"decodedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"TokenIdxs\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"TokenIdxs\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                        \"visible\": true,
-                        \"hideable\": true,
-                        \"name\": \"annotatedTokensJoined\"
-                    },
-                    {
-                        \"id\": [{\"columnName\": \"annotatedTokens\"}],
-                        \"visible\": true,
-                        \"hideable\": false,
-                        \"name\": \"annotatedTokens\",
-                        \"children\": \"[{\\\"id\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}],\\\"visible\\\":true,\\\"hideable\\\":false,\\\"name\\\":\\\"Values\\\"}]\"
-                    }
-                ],
-                \"type\": \"orderedColumns\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"OrganizeColumnsCommand\"
-    },
-    {
         \"tags\": [\"Modeling\"],
         \"inputParameters\": [
             {
@@ -1722,24 +1606,13 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
                 \"type\": \"other\"
             },
             {
-                \"name\": \"initialEdges\",
-                \"value\": [],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"alignmentId\",
-                \"value\": \"WSP35:WS1AL\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newEdges\",
-                \"value\": [{
-                    \"edgeTargetUri\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet\",
-                    \"edgeId\": \"http://dig.isi.edu/ontology/mturk/annotationSet\",
-                    \"edgeTargetId\": \"http://dig.isi.edu/ontology/mturk/AnnotationSet1\",
-                    \"edgeSourceId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                    \"edgeSourceUri\": \"http://dig.isi.edu/ontology/mturk/Sentence1\"
-                }],
+                \"name\": \"properties\",
+                \"value\": {
+                    \"hasServiceProperties\": false,
+                    \"hasPrefix\": false,
+                    \"graphLabel\": \"tokenized\",
+                    \"hasBaseURI\": false
+                },
                 \"type\": \"other\"
             },
             {
@@ -1753,628 +1626,271 @@ _:node19ko64fi5x1 a km-dev:R2RMLMapping ;
                 \"type\": \"hNodeIdList\"
             }
         ],
-        \"commandName\": \"ChangeInternalNodeLinksCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"decodedTokensJoined\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [{
-                    \"isPrimary\": true,
-                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/allTokens\",
-                    \"DomainLabel\": \"mturk:Sentence1\",
-                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
-                }],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SetSemanticTypeCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"decodedTokensJoined\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [{
-                    \"isPrimary\": true,
-                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/allTokens\",
-                    \"DomainLabel\": \"mturk:Sentence1\",
-                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Sentence1\",
-                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Sentence\"
-                }],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SetSemanticTypeCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [
-                    {\"columnName\": \"decodedTokens\"},
-                    {\"columnName\": \"Values\"}
-                ],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": true,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"decodedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"UnassignSemanticTypeCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [{
-                    \"isPrimary\": true,
-                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/annotatedTokens\",
-                    \"DomainLabel\": \"mturk:Annotation1\",
-                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
-                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
-                }],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokensJoined\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SetSemanticTypeCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [
-                    {\"columnName\": \"annotatedTokens\"},
-                    {\"columnName\": \"Values\"}
-                ],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": true,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokens\\\"},{\\\"columnName\\\":\\\"Values\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"UnassignSemanticTypeCommand\"
-    },
-    {
-        \"tags\": [\"Transformation\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotatedTokensJoined\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"newColumnName\",
-                \"value\": \"annotatedTokenIdxs\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"transformationCode\",
-                \"value\": \"return mtExtractAnnotatedTokenIdxs(getValue(\\\"TokenIdxs\\\"))\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"errorDefaultValue\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"isJSONOutput\",
-                \"value\": \"false\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"TokenIdxs\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokenIdxs\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SubmitPythonTransformationCommand\"
-    },
-    {
-        \"tags\": [\"Modeling\"],
-        \"inputParameters\": [
-            {
-                \"name\": \"hNodeId\",
-                \"value\": [{\"columnName\": \"annotatedTokenIdxs\"}],
-                \"type\": \"hNodeId\"
-            },
-            {
-                \"name\": \"worksheetId\",
-                \"value\": \"W\",
-                \"type\": \"worksheetId\"
-            },
-            {
-                \"name\": \"selectionName\",
-                \"value\": \"DEFAULT_TEST\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"SemanticTypesArray\",
-                \"value\": [{
-                    \"isPrimary\": true,
-                    \"FullType\": \"http://dig.isi.edu/ontology/mturk/annotatedTokenIdxs\",
-                    \"DomainLabel\": \"mturk:Annotation1\",
-                    \"DomainId\": \"http://dig.isi.edu/ontology/mturk/Annotation1\",
-                    \"DomainUri\": \"http://dig.isi.edu/ontology/mturk/Annotation\"
-                }],
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"trainAndShowUpdates\",
-                \"value\": false,
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"rdfLiteralType\",
-                \"value\": \"\",
-                \"type\": \"other\"
-            },
-            {
-                \"name\": \"inputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokenIdxs\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            },
-            {
-                \"name\": \"outputColumns\",
-                \"value\": \"[{\\\"value\\\":[{\\\"columnName\\\":\\\"annotatedTokenIdxs\\\"}]}]\",
-                \"type\": \"hNodeIdList\"
-            }
-        ],
-        \"commandName\": \"SetSemanticTypeCommand\"
+        \"commandName\": \"SetWorksheetPropertiesCommand\"
     }
 ]""" .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 a rr:TriplesMap .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 a rr:TriplesMap .
 
-_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 .
+_:node19ko9jf6jx1 km-dev:hasTriplesMap km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x2 rr:tableName "consolidatedResult (15).tsv" ;
+_:node19ko9jf6jx2 rr:tableName "consolidatedResult (16).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x2 .
+_:node19ko9jf6jx1 km-dev:hasLogicalTable _:node19ko9jf6jx2 .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:logicalTable _:node19ko64fi5x2 ;
-	rr:subjectMap _:node19ko64fi5x3 .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 rr:logicalTable _:node19ko9jf6jx2 ;
+	rr:subjectMap _:node19ko9jf6jx3 .
 
-_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x3 .
+_:node19ko9jf6jx1 km-dev:hasSubjectMap _:node19ko9jf6jx3 .
 
-_:node19ko64fi5x3 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
+_:node19ko9jf6jx3 km-dev:isPartOfMapping _:node19ko9jf6jx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Annotation1" ;
 	rr:class mturk:Annotation ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:Annotation1" .
 
-km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 rr:predicate mturk:annotatedTokenIdxs .
+km-dev:PredicateObjectMap_b39ddfe3-1f62-4279-a17f-dbd3b5022a71 rr:predicate mturk:annotatedTokenIdxs .
 
-_:node19ko64fi5x4 rr:column "annotatedTokenIdxs" ;
+_:node19ko9jf6jx4 rr:column "AnnotatedTokenIdxs" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x4 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx4 .
 
-km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 rr:objectMap _:node19ko64fi5x4 .
+km-dev:PredicateObjectMap_b39ddfe3-1f62-4279-a17f-dbd3b5022a71 rr:objectMap _:node19ko9jf6jx4 .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 rr:predicateObjectMap km-dev:PredicateObjectMap_b39ddfe3-1f62-4279-a17f-dbd3b5022a71 .
 
-km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_b39ddfe3-1f62-4279-a17f-dbd3b5022a71 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_d5e71e16-ad17-4752-b6f5-041acdd6b9a7 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_b39ddfe3-1f62-4279-a17f-dbd3b5022a71 .
 
-km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba rr:predicate mturk:annotatedTokens .
+km-dev:PredicateObjectMap_bf54b6f3-adbc-40f0-b88c-d919a24066cb rr:predicate mturk:annotatedTokens .
 
-_:node19ko64fi5x5 rr:column "annotatedTokensJoined" ;
+_:node19ko9jf6jx5 rr:column "AnnotatedTokensTsv" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x5 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx5 .
 
-km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba rr:objectMap _:node19ko64fi5x5 .
+km-dev:PredicateObjectMap_bf54b6f3-adbc-40f0-b88c-d919a24066cb rr:objectMap _:node19ko9jf6jx5 .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 rr:predicateObjectMap km-dev:PredicateObjectMap_bf54b6f3-adbc-40f0-b88c-d919a24066cb .
 
-km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_bf54b6f3-adbc-40f0-b88c-d919a24066cb a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_c9d9c01e-ba55-4d7c-8008-ea88bd8836ba .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_bf54b6f3-adbc-40f0-b88c-d919a24066cb .
 
-km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 rr:predicate mturk:assignmentId .
+km-dev:PredicateObjectMap_de8fec64-a914-4b7d-8d36-5b86059333cb rr:predicate mturk:assignmentId .
 
-_:node19ko64fi5x6 rr:column "AssignmentId" ;
+_:node19ko9jf6jx6 rr:column "AssignmentId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x6 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx6 .
 
-km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 rr:objectMap _:node19ko64fi5x6 .
+km-dev:PredicateObjectMap_de8fec64-a914-4b7d-8d36-5b86059333cb rr:objectMap _:node19ko9jf6jx6 .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 rr:predicateObjectMap km-dev:PredicateObjectMap_de8fec64-a914-4b7d-8d36-5b86059333cb .
 
-km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_de8fec64-a914-4b7d-8d36-5b86059333cb a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_97f1f4a1-ee09-4371-bcc1-6bd5c859e185 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_de8fec64-a914-4b7d-8d36-5b86059333cb .
 
-km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 rr:predicate mturk:hitId .
+km-dev:PredicateObjectMap_d9276323-5632-433e-b019-29fd359b3b26 rr:predicate mturk:hitId .
 
-_:node19ko64fi5x7 rr:column "HitId" ;
+_:node19ko9jf6jx7 rr:column "HitId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x7 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx7 .
 
-km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 rr:objectMap _:node19ko64fi5x7 .
+km-dev:PredicateObjectMap_d9276323-5632-433e-b019-29fd359b3b26 rr:objectMap _:node19ko9jf6jx7 .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 rr:predicateObjectMap km-dev:PredicateObjectMap_d9276323-5632-433e-b019-29fd359b3b26 .
 
-km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_d9276323-5632-433e-b019-29fd359b3b26 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_f2136361-d908-49f5-9375-850767c595e6 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_d9276323-5632-433e-b019-29fd359b3b26 .
 
-km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 rr:predicate mturk:worker .
+km-dev:PredicateObjectMap_a7a8611e-5e0a-412f-a428-fc07551336d5 rr:predicate mturk:worker .
 
-km-dev:RefObjectMap_ec4ec120-e58a-4fff-9ead-c140dc74e3d0 a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:RefObjectMap_3ba53ba0-b277-4215-b85c-2aec56f57ece a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_cc960b34-49f0-4759-9d2b-ce2d39b389b1 ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap km-dev:RefObjectMap_ec4ec120-e58a-4fff-9ead-c140dc74e3d0 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap km-dev:RefObjectMap_3ba53ba0-b277-4215-b85c-2aec56f57ece .
 
-km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 rr:objectMap km-dev:RefObjectMap_ec4ec120-e58a-4fff-9ead-c140dc74e3d0 .
+km-dev:PredicateObjectMap_a7a8611e-5e0a-412f-a428-fc07551336d5 rr:objectMap km-dev:RefObjectMap_3ba53ba0-b277-4215-b85c-2aec56f57ece .
 
-km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 rr:predicateObjectMap km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 .
+km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 rr:predicateObjectMap km-dev:PredicateObjectMap_a7a8611e-5e0a-412f-a428-fc07551336d5 .
 
-km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_a7a8611e-5e0a-412f-a428-fc07551336d5 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_8ac7fff4-11c4-4444-a256-184241620339 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a7a8611e-5e0a-412f-a428-fc07551336d5 .
 
-km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 a rr:TriplesMap .
+km-dev:TriplesMap_cc960b34-49f0-4759-9d2b-ce2d39b389b1 a rr:TriplesMap .
 
-_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 .
+_:node19ko9jf6jx1 km-dev:hasTriplesMap km-dev:TriplesMap_cc960b34-49f0-4759-9d2b-ce2d39b389b1 .
 
-km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:TriplesMap_cc960b34-49f0-4759-9d2b-ce2d39b389b1 km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x8 rr:tableName "consolidatedResult (15).tsv" ;
+_:node19ko9jf6jx8 rr:tableName "consolidatedResult (16).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x8 .
+_:node19ko9jf6jx1 km-dev:hasLogicalTable _:node19ko9jf6jx8 .
 
-km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 rr:logicalTable _:node19ko64fi5x8 ;
-	rr:subjectMap _:node19ko64fi5x9 .
+km-dev:TriplesMap_cc960b34-49f0-4759-9d2b-ce2d39b389b1 rr:logicalTable _:node19ko9jf6jx8 ;
+	rr:subjectMap _:node19ko9jf6jx9 .
 
-_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x9 .
+_:node19ko9jf6jx1 km-dev:hasSubjectMap _:node19ko9jf6jx9 .
 
-_:node19ko64fi5x9 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
+_:node19ko9jf6jx9 km-dev:isPartOfMapping _:node19ko9jf6jx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Worker1" ;
 	rr:class mturk:Worker ;
 	rr:termType rr:BlankNode ;
 	km-dev:namePrefix "mturk:Worker1" .
 
-km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc rr:predicate mturk:workerId .
+km-dev:PredicateObjectMap_460005d2-3f09-4787-bd3a-b875dbbf7596 rr:predicate mturk:workerId .
 
-_:node19ko64fi5x10 rr:column "WorkerId" ;
+_:node19ko9jf6jx10 rr:column "WorkerId" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x10 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx10 .
 
-km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc rr:objectMap _:node19ko64fi5x10 .
+km-dev:PredicateObjectMap_460005d2-3f09-4787-bd3a-b875dbbf7596 rr:objectMap _:node19ko9jf6jx10 .
 
-km-dev:TriplesMap_e8aa62a6-406c-4663-9201-7ffb31b97f62 rr:predicateObjectMap km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc .
+km-dev:TriplesMap_cc960b34-49f0-4759-9d2b-ce2d39b389b1 rr:predicateObjectMap km-dev:PredicateObjectMap_460005d2-3f09-4787-bd3a-b875dbbf7596 .
 
-km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_460005d2-3f09-4787-bd3a-b875dbbf7596 a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_18b95f34-6adc-403f-9e15-8f19038b5ddc .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_460005d2-3f09-4787-bd3a-b875dbbf7596 .
 
-km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a a rr:TriplesMap .
+km-dev:TriplesMap_f395b610-dd7d-41ed-b9e2-60256a2291df a rr:TriplesMap .
 
-_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a .
+_:node19ko9jf6jx1 km-dev:hasTriplesMap km-dev:TriplesMap_f395b610-dd7d-41ed-b9e2-60256a2291df .
 
-km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:TriplesMap_f395b610-dd7d-41ed-b9e2-60256a2291df km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x11 rr:tableName "consolidatedResult (15).tsv" ;
+_:node19ko9jf6jx11 rr:tableName "consolidatedResult (16).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x11 .
+_:node19ko9jf6jx1 km-dev:hasLogicalTable _:node19ko9jf6jx11 .
 
-km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a rr:logicalTable _:node19ko64fi5x11 ;
-	rr:subjectMap _:node19ko64fi5x12 .
+km-dev:TriplesMap_f395b610-dd7d-41ed-b9e2-60256a2291df rr:logicalTable _:node19ko9jf6jx11 ;
+	rr:subjectMap _:node19ko9jf6jx12 .
 
-_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x12 .
+_:node19ko9jf6jx1 km-dev:hasSubjectMap _:node19ko9jf6jx12 .
 
-_:node19ko64fi5x12 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
+_:node19ko9jf6jx12 km-dev:isPartOfMapping _:node19ko9jf6jx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/AnnotationSet1" ;
 	rr:class mturk:AnnotationSet ;
-	rr:template "{annotationSetUri}" .
+	rr:template "{AnnotationSetUri}" .
 
-km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 rr:predicate "{annotationClass}" .
+km-dev:PredicateObjectMap_6fb9c36d-c3bf-40f7-993d-f6ae5463949f rr:predicate "{AnnotationClass}" .
 
-km-dev:RefObjectMap_a3fb6790-70d3-4921-bea7-c3558f10cd0b a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_6408cbec-8179-4fd5-8a02-29fb043fb6c4 ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:RefObjectMap_c6de8f8f-0869-42c6-9b9f-6f618831e132 a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_91c370e6-2349-43e7-a9b6-82810488e9d8 ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap km-dev:RefObjectMap_a3fb6790-70d3-4921-bea7-c3558f10cd0b .
+_:node19ko9jf6jx1 km-dev:hasObjectMap km-dev:RefObjectMap_c6de8f8f-0869-42c6-9b9f-6f618831e132 .
 
-km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 rr:objectMap km-dev:RefObjectMap_a3fb6790-70d3-4921-bea7-c3558f10cd0b .
+km-dev:PredicateObjectMap_6fb9c36d-c3bf-40f7-993d-f6ae5463949f rr:objectMap km-dev:RefObjectMap_c6de8f8f-0869-42c6-9b9f-6f618831e132 .
 
-km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a rr:predicateObjectMap km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 .
+km-dev:TriplesMap_f395b610-dd7d-41ed-b9e2-60256a2291df rr:predicateObjectMap km-dev:PredicateObjectMap_6fb9c36d-c3bf-40f7-993d-f6ae5463949f .
 
-km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_6fb9c36d-c3bf-40f7-993d-f6ae5463949f a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_a0980b33-1ccc-4e1b-bd40-0852c46ffab5 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_6fb9c36d-c3bf-40f7-993d-f6ae5463949f .
 
-km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b a rr:TriplesMap .
+km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 a rr:TriplesMap .
 
-_:node19ko64fi5x1 km-dev:hasTriplesMap km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b .
+_:node19ko9jf6jx1 km-dev:hasTriplesMap km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 .
 
-km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x13 rr:tableName "consolidatedResult (15).tsv" ;
+_:node19ko9jf6jx13 rr:tableName "consolidatedResult (16).tsv" ;
 	a rr:LogicalTable ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasLogicalTable _:node19ko64fi5x13 .
+_:node19ko9jf6jx1 km-dev:hasLogicalTable _:node19ko9jf6jx13 .
 
-km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:logicalTable _:node19ko64fi5x13 ;
-	rr:subjectMap _:node19ko64fi5x14 .
+km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 rr:logicalTable _:node19ko9jf6jx13 ;
+	rr:subjectMap _:node19ko9jf6jx14 .
 
-_:node19ko64fi5x1 km-dev:hasSubjectMap _:node19ko64fi5x14 .
+_:node19ko9jf6jx1 km-dev:hasSubjectMap _:node19ko9jf6jx14 .
 
-_:node19ko64fi5x14 km-dev:isPartOfMapping _:node19ko64fi5x1 ;
+_:node19ko9jf6jx14 km-dev:isPartOfMapping _:node19ko9jf6jx1 ;
 	a rr:SubjectMap ;
 	km-dev:alignmentNodeId "http://dig.isi.edu/ontology/mturk/Sentence1" ;
 	rr:class mturk:Sentence ;
-	rr:template "{sentenceUri}" ;
+	rr:template "{SentenceUri}" ;
 	a km-dev:steinerTreeRootNode .
 
-km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 rr:predicate mturk:allTokens .
+km-dev:PredicateObjectMap_e8738062-8636-48ee-92b4-dee3a5703d7d rr:predicate mturk:allTokens .
 
-_:node19ko64fi5x15 rr:column "decodedTokensJoined" ;
+_:node19ko9jf6jx15 rr:column "DecodedTokensTsv" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x15 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx15 .
 
-km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 rr:objectMap _:node19ko64fi5x15 .
+km-dev:PredicateObjectMap_e8738062-8636-48ee-92b4-dee3a5703d7d rr:objectMap _:node19ko9jf6jx15 .
 
-km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:predicateObjectMap km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 .
+km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 rr:predicateObjectMap km-dev:PredicateObjectMap_e8738062-8636-48ee-92b4-dee3a5703d7d .
 
-km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_e8738062-8636-48ee-92b4-dee3a5703d7d a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_e51178b4-40bd-4db2-b00c-9324b59da805 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_e8738062-8636-48ee-92b4-dee3a5703d7d .
 
-km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf rr:predicate mturk:annotationSet .
+km-dev:PredicateObjectMap_ed4ed679-7a76-46fe-8dd7-06b1b021118c rr:predicate mturk:annotationSet .
 
-km-dev:RefObjectMap_1ec8b8e1-5679-4370-8d45-d64c2cbd5c5f a rr:RefObjectMap , rr:ObjectMap ;
-	rr:parentTriplesMap km-dev:TriplesMap_2eb3e8b1-32da-4f6c-8a2e-2f689b94e23a ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:RefObjectMap_1296b98e-2913-4b49-b2a7-e621c10167ac a rr:RefObjectMap , rr:ObjectMap ;
+	rr:parentTriplesMap km-dev:TriplesMap_f395b610-dd7d-41ed-b9e2-60256a2291df ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap km-dev:RefObjectMap_1ec8b8e1-5679-4370-8d45-d64c2cbd5c5f .
+_:node19ko9jf6jx1 km-dev:hasObjectMap km-dev:RefObjectMap_1296b98e-2913-4b49-b2a7-e621c10167ac .
 
-km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf rr:objectMap km-dev:RefObjectMap_1ec8b8e1-5679-4370-8d45-d64c2cbd5c5f .
+km-dev:PredicateObjectMap_ed4ed679-7a76-46fe-8dd7-06b1b021118c rr:objectMap km-dev:RefObjectMap_1296b98e-2913-4b49-b2a7-e621c10167ac .
 
-km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:predicateObjectMap km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf .
+km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 rr:predicateObjectMap km-dev:PredicateObjectMap_ed4ed679-7a76-46fe-8dd7-06b1b021118c .
 
-km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_ed4ed679-7a76-46fe-8dd7-06b1b021118c a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_4e1fcdcd-931a-41eb-817e-e0fdd068bbbf .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_ed4ed679-7a76-46fe-8dd7-06b1b021118c .
 
-km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 rr:predicate mturk:text .
+km-dev:PredicateObjectMap_4cbbe581-f6f8-48b4-b1d4-6c0ff195b34a rr:predicate mturk:text .
 
-_:node19ko64fi5x16 rr:column "Text" ;
+_:node19ko9jf6jx16 rr:column "Text" ;
 	a rr:ObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasObjectMap _:node19ko64fi5x16 .
+_:node19ko9jf6jx1 km-dev:hasObjectMap _:node19ko9jf6jx16 .
 
-km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 rr:objectMap _:node19ko64fi5x16 .
+km-dev:PredicateObjectMap_4cbbe581-f6f8-48b4-b1d4-6c0ff195b34a rr:objectMap _:node19ko9jf6jx16 .
 
-km-dev:TriplesMap_cfd11c91-518f-479f-8640-6f7b412df19b rr:predicateObjectMap km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 .
+km-dev:TriplesMap_c4944100-bb05-492e-bc85-4266f2e5fb78 rr:predicateObjectMap km-dev:PredicateObjectMap_4cbbe581-f6f8-48b4-b1d4-6c0ff195b34a .
 
-km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 a rr:PredicateObjectMap ;
-	km-dev:isPartOfMapping _:node19ko64fi5x1 .
+km-dev:PredicateObjectMap_4cbbe581-f6f8-48b4-b1d4-6c0ff195b34a a rr:PredicateObjectMap ;
+	km-dev:isPartOfMapping _:node19ko9jf6jx1 .
 
-_:node19ko64fi5x1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_02988e71-eea3-4394-91ed-82ba4153a835 .
+_:node19ko9jf6jx1 km-dev:hasPredicateObjectMap km-dev:PredicateObjectMap_4cbbe581-f6f8-48b4-b1d4-6c0ff195b34a .
