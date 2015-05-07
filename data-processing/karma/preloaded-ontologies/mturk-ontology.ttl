@@ -89,7 +89,12 @@ mturk:worker rdf:type owl:ObjectProperty ;
 
 mturk:annotatedTokens rdf:type owl:DatatypeProperty ;
 	rdfs:domain mturk:Annotation ;
-	rdfs:comment "The marked-up tokens for this annotation"
+	rdfs:comment "The marked-up tokens (tab-separated) for this annotation"
+	.
+
+mturk:annotatedTokenIdxs rdf:type owl:DatatypeProperty ;
+	rdfs:domain mturk:Annotation ;
+	rdfs:comment "The 0-based indexes of marked-up tokens (tab-separated) for this annotation"
 	.
 
 #########################################################
