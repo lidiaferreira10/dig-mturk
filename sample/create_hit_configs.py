@@ -266,7 +266,9 @@ def renderSentenceJson(experiment, sentenceRecords):
     for d in sentenceRecords:
         sentences.append({"id": d["id"],
                           "sentence": " ".join(d["tokens"]),
-                          "tokens": base64.b64encode(json.dumps(d["tokens"]))})
+                          # simple encoding mechanism: tab-separated unicodes, base64 encoded
+                          "tokens": base64.b64encode(u"\t".join([unicode(tok) for tok in d["tokens"]]))
+                          })
     return json.dumps(sentences, indent=4)
 
 TOKENCOUNT=60
