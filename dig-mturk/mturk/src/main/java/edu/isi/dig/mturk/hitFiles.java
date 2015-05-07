@@ -274,6 +274,7 @@ public class hitFiles {
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css\">";
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css\">";
 			htmlheader += "</head><body categories= \"" + categories + "\">";
+			htmlheader += "<span style=\"background-color: white; color:white\">" + this.bucketName + "</span>";
 			htmlheader += "<div class=\"container\"><div class=\"\">";
 
 			htmlheader += "<div class=\"page-header\"><h1>" + title + "</h1></div>";
