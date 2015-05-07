@@ -170,14 +170,15 @@ public class hitFiles {
 				while (sentIter.hasNext()) {
 					JSONObject innerObj = (JSONObject) sentIter.next();
 					sentences.put(innerObj.get("id").toString(),
-							innerObj.get("sentence").toString());
-					tokens.put(innerObj.get("id").toString(),innerObj.get("tokens").toString());
+						      innerObj.get("sentence").toString());
+					tokens.put(innerObj.get("id").toString(),
+						   innerObj.get("tokens").toString());
 				}
 
 				filename = calculateSHA(jsonObject);
 				createFolder(filename);
 				generateHTML(title, instructions, category, sentences, tokens,
-						filename, scratch_categories);
+					     filename, scratch_categories);
 				createInputFile(sentences, filename);
 				createPropertiesFile(jsonObject, filename, sentences);
 				createQuestionFile(filename, S3FolderName);
@@ -265,18 +266,17 @@ public class hitFiles {
 		try {
 
 			String htmlheader = "<html><head>";
-			htmlheader += " <meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
+			htmlheader += "<meta charset=\"utf-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">";
 			htmlheader += "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js\"></script>";
 			htmlheader += "<script src = \"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.js\"> </script>";
 			htmlheader += "<script src = \"https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js\"> </script>";
-			htmlheader += " <link rel=\"stylesheet\" type=\"text/css\" href=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/bootstrap_assets.css\">";
+			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/bootstrap_assets.css\">";
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css\">";
 			htmlheader += "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://s3-us-west-2.amazonaws.com/aisoftwareresearch/ner_html/ner.css\">";
 			htmlheader += "</head><body categories= \"" + categories + "\">";
 			htmlheader += "<div class=\"container\"><div class=\"\">";
 
-			htmlheader += "<div class=\"page-header\">	<h1>" + title
-					+ "</h1>	</div>";
+			htmlheader += "<div class=\"page-header\"><h1>" + title + "</h1></div>";
 			htmlheader += instructions;
 			/*
 			 * form submit URL should point to MTurk sandbox / MTurk URL. Sanbox
@@ -331,7 +331,7 @@ public class hitFiles {
 				+ linenum + "</h1></div>";
 		panelHTML += "<div class=\"panel-body\" id=\"container_" + linenum
 				+ "\">	<div class=\"sentence\"  elastic-search-id= \""
-				+ elasticSearchID + "\" tokens=\""+ tokens+"\" id=\"sentence_" + linenum + "\"> "
+				+ elasticSearchID + "\" tokens=\""+ tokens+"\" id=\"sentence_" + linenum + "\">"
 				+ sentence + "</div> </div>";
 		/* panel footer - shld list all the categories */
 		String[] categories = category.split(",");

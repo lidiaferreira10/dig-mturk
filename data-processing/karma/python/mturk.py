@@ -30,7 +30,7 @@ def mtDecodeTokens(encodedTokens):
 
 def mtExtractAnnotatedTokens(tokenIds, joinedTokens):
     """Beware of fencepost error here"""
-    ids = [-1+int(i) for i in tokenIds.split(',') if (i and i>0)]
+    ids = [int(i) for i in tokenIds.split(',') if (i and i>0)]
     tokens = joinedTokens.split(safeSeparatorCharacter)
     annotated = [tokens[i] for i in ids]
     return safeSeparatorCharacter.join(annotated)
