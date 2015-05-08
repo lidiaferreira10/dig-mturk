@@ -3,7 +3,7 @@
 # 7 May 2015
 
 """Typical usage:
-python adjudicate.py dummy.json
+python simplify.py dummy.json
 
 utility arguments:
 -h/--help: help
@@ -27,9 +27,15 @@ from util import echo, canonList
 
 def outpath(inpath):
     h,t = os.path.split(inpath)
-    return os.path.join(h,"output_" + t)
+    return os.path.join(h,"simplified_output_" + t)
 
-class Adjudicator(object):
+def dictToTuple(d):
+    return tuple(sorted(d.items()))
+
+def tupleToDict(t):
+    dict(t)
+
+class Simplifier(object):
     def __init__(self, pathname, verbose=False):
         self.pathname = pathname
         self.verbose = verbose
@@ -38,7 +44,7 @@ class Adjudicator(object):
         with io.open(self.pathname, 'r', encoding='UTF-8') as f:
             self.inputJson = json.load(f)
 
-    def acceptable(self, required, observed):
+    def acceptable(self, possible, observed):
         # this is the adjudication threshold
         return observed >= 2
 
@@ -46,7 +52,10 @@ class Adjudicator(object):
         self.outputJson = []
         for inputSentence in self.inputJson:
             # for one sentence
-            outputSentence = copy.copy(inputSentence)
+            outputSentence = {}
+            outputSentence["text"] = inputSentence["text"]
+            outputSentence["uri"] = inputSentence["uri"]
+            outputSentence["allTokens"] = inputSentence["allTokens"].split("\t")
             outputSentence["annotationSet"] = defaultdict(list)
             annotationSet = inputSentence["annotationSet"]
             # all annotations, regardless of user, indexed by the idxs
@@ -56,21 +65,24 @@ class Adjudicator(object):
                     continue
                 # deal with singleton list issue
                 for annotation in canonList(annotationValue):
-                    # these are the proper annotations
-                    print "An annotation for %s is %s" % (category, annotation)
                     idxs = annotation.get("annotatedTokenIdxs", None)
                     if idxs:
-                        byIdxs[idxs].append(annotation)
+                        start = int(idxs.split('\t')[0])
+                        annotatedTokens = annotation["annotatedTokens"].split("\t")
+                        byIdxs[idxs].append({"annotatedTokens": annotatedTokens, "start": start})
+                        pprint.pprint(byIdxs)
                     else:
                         print >> sys.stderr, "%s has no annotatedTokenIdxs" % annotation
                 # Now we have all annotations for this category for this sentence, organized by idx
                 # but we've lost the category?
                 adjudicated = []
-                for idxs,annotations in byIdxs.iteritems():
-                    requiredCount = 3
-                    observedCount = len(annotations)
-                    if self.acceptable(requiredCount, observedCount):
-                        adjudicated.extend(annotations)
+                for idxs,entries in byIdxs.iteritems():
+                    print "entries for %s are %s" % (idxs, entries)
+                    possibleCount = 3
+                    observedCount = len(entries)
+                    if self.acceptable(possibleCount, observedCount):
+                        # add only one copy
+                        adjudicated.append(entries[0])
                     else:
                         print >> sys.stderr, "Drop %s" % idxs
                 # no adjudicated contains those passing the threshold
@@ -96,7 +108,7 @@ def main(argv=None):
     inputJson = args.inputJson
     verbose = args.verbose
 
-    a = Adjudicator(inputJson, verbose=verbose)
+    a = Simplifier(inputJson, verbose=verbose)
     a.ingest()
     a.process()
     a.emit()
