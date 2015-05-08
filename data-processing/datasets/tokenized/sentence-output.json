@@ -47,17 +47,6 @@
 },
 {
     "@context": "http://localhost:8080/publish/JSON/WSP1WS1534-consolidatedResult (16)_tsv-context.json",
-    "text": "Name Bella Age 23 Height 5 ' 6 \" Weight 120 Breast Size 34 C Eye Color Blue Hair Color Brown Name Golden Age 33 Height 5 ' 5 \" Weight 125 Breast size 36 C Eye Color Hazel Hair Color Blond We love to have fun and no discrimination here . ( 910 ) 234 - 7445 . <a href=\"/more.php?article=142\"> ",
-    "a": "Sentence",
-    "allTokens": "Name\tBella\tAge\t23\tHeight\t5\t'\t6\t\"\tWeight\t120\tBreast\tSize\t34\tC\tEye\tColor\tBlue\tHair\tColor\tBrown\tName\tGolden\tAge\t33\tHeight\t5\t'\t5\t\"\tWeight\t125\tBreast\tsize\t36\tC\tEye\tColor\tHazel\tHair\tColor\tBlond\tWe\tlove\tto\thave\tfun\tand\tno\tdiscrimination\there\t.\t(\t910\t)\t234\t-\t7445\t.\t&lt;a href=\"/more.php?article=142\"&gt;",
-    "annotationSet": {
-        "a": "AnnotationSet",
-        "uri": "http://dig.isi.edu/sentence/D7F0F4464A7E15B47F838B9B1C47C582473C09C2/annotationset"
-    },
-    "uri": "http://dig.isi.edu/sentence/D7F0F4464A7E15B47F838B9B1C47C582473C09C2"
-},
-{
-    "@context": "http://localhost:8080/publish/JSON/WSP1WS1534-consolidatedResult (16)_tsv-context.json",
     "text": "Hey guys , We are ready 2 come see you . <br/> Jessica ( on top ) 24 , 5 ' 2 \" , 115lbs , blond / brown hair , hazel eyes . <br/> Britney ( midddle ) 25 , 5 ' 4 \" , 120lbs , blond hair , blue eyes . . . <br/> Sarah ( on ",
     "a": "Sentence",
     "allTokens": "Hey\tguys\t,\tWe\tare\tready\t2\tcome\tsee\tyou\t.\t&lt;br/&gt;\tJessica\t(\ton\ttop\t)\t24\t,\t5\t'\t2\t\"\t,\t115lbs\t,\tblond\t/\tbrown\thair\t,\thazel\teyes\t.\t&lt;br/&gt;\tBritney\t(\tmidddle\t)\t25\t,\t5\t'\t4\t\"\t,\t120lbs\t,\tblond\thair\t,\tblue\teyes\t.\t.\t.\t&lt;br/&gt;\tSarah\t(\ton",
@@ -160,14 +149,5 @@
         "uri": "http://dig.isi.edu/sentence/E627C7911C8986D7306BDCA5B44CC65389B41EF5/annotationset"
     },
     "uri": "http://dig.isi.edu/sentence/E627C7911C8986D7306BDCA5B44CC65389B41EF5"
-},
-{
-    "@context": "http://localhost:8080/publish/JSON/WSP1WS1534-consolidatedResult (16)_tsv-context.json",
-    "a": "Sentence",
-    "annotationSet": {
-        "a": "AnnotationSet",
-        "uri": "http://dig.isi.edu/sentence/BF959EC60FC276A20316C83FF9F32371D5B6FE57/annotationset"
-    },
-    "uri": "http://dig.isi.edu/sentence/BF959EC60FC276A20316C83FF9F32371D5B6FE57"
 }
 ]
