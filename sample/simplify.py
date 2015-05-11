@@ -35,6 +35,10 @@ def dictToTuple(d):
 def tupleToDict(t):
     dict(t)
 
+def asLabeledIntTuple(s):
+    label, ints = s
+    return (label, [int(i) for i in ints.split('\t')])
+
 class Simplifier(object):
     def __init__(self, pathname, verbose=False):
         self.pathname = pathname
@@ -48,6 +52,9 @@ class Simplifier(object):
         # this is the adjudication threshold
         return observed >= 2
 
+    def vprint(self, fmt, *args):
+        print >> sys.stderr, fmt  % tuple(args)
+
     def process(self):
         self.outputJson = []
         for inputSentence in self.inputJson:
@@ -58,39 +65,46 @@ class Simplifier(object):
             outputSentence["allTokens"] = inputSentence["allTokens"].split("\t")
             outputSentence["annotationSet"] = defaultdict(list)
             annotationSet = inputSentence["annotationSet"]
+            self.vprint("Sentence %s" % inputSentence["uri"])
             # all annotations, regardless of user, indexed by the idxs
             byIdxs = defaultdict(list)
             for category, annotationValue in inputSentence["annotationSet"].iteritems():
                 if category in [u'a', u'uri']:
                     continue
+                self.vprint("  %s" % category)
                 # deal with singleton list issue
                 for annotation in canonList(annotationValue):
                     idxs = annotation.get("annotatedTokenIdxs", None)
+                    self.vprint("    Idxs %s", idxs)                        
                     if idxs:
                         start = int(idxs.split('\t')[0])
                         annotatedTokens = annotation["annotatedTokens"].split("\t")
-                        byIdxs[idxs].append({"annotatedTokens": annotatedTokens, "start": start})
-                        pprint.pprint(byIdxs)
+                        byIdxs[(category, idxs)].append({"annotatedTokens": annotatedTokens, "start": start})
+                        # pprint.pprint(byIdxs)
                     else:
                         print >> sys.stderr, "%s has no annotatedTokenIdxs" % annotation
-                # Now we have all annotations for this category for this sentence, organized by idx
-                # but we've lost the category?
-                adjudicated = []
-                for idxs,entries in byIdxs.iteritems():
-                    print "entries for %s are %s" % (idxs, entries)
-                    possibleCount = 3
-                    observedCount = len(entries)
-                    if self.acceptable(possibleCount, observedCount):
-                        # add only one copy
-                        adjudicated.append(entries[0])
-                    else:
-                        print >> sys.stderr, "Drop %s" % idxs
-                # no adjudicated contains those passing the threshold
-                if adjudicated:
-                    outputSentence["annotationSet"][category] = adjudicated
+            # Now we have all annotations for all categories for this sentence, organized by (category, idxs)
+
+
+            adjudicated = {}
+            for k in sorted(byIdxs.keys(), key=asLabeledIntTuple):
+                entries = byIdxs[k]
+                (category, idxs) = k
+                # print "entries for %s are %s" % (idxs, entries)
+                possibleCount = 3
+                observedCount = len(entries)
+                if self.acceptable(possibleCount, observedCount):
+                    # add only one copy
+                    self.vprint("    Keep %s %s: %s/%s", category, idxs, observedCount, possibleCount)
+                    adjudicated[category] = entries[0]
                 else:
-                    # ignore this sentence
-                    pass
+                    self.vprint("    Drop %s %s: %s/%s", category, idxs, observedCount, possibleCount)
+            # no adjudicated contains those passing the threshold
+            for category,entry in adjudicated.iteritems():
+                outputSentence["annotationSet"][category] = entry
+            else:
+                # ignore this sentence
+                pass
             self.outputJson.append(outputSentence)
 
 
