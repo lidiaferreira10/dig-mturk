@@ -64,70 +64,75 @@ class Adjudicator(object):
 
     def vprint(self, fmt, *args):
         if self.verbose:
-            print >> sys.stderr, fmt  % tuple(args)
+            print >> sys.stderr, fmt % tuple(args)
 
     def process(self):
         self.outputJson = []
         for inputSentence in self.inputJson:
-            # for one sentence
-            outputSentence = {}
-            outputSentence["text"] = inputSentence["text"]
-            outputSentence["uri"] = inputSentence["uri"]
-            outputSentence["allTokens"] = inputSentence["allTokens"].split("\t")
-            outputSentence["annotationSet"] = defaultdict(list)
-            self.vprint("Sentence %s" % inputSentence["uri"])
-            self.vprint("Text: %s" % inputSentence["text"])
-            self.vprint("  Raw Annotations:")
-            annotationSet = inputSentence["annotationSet"]
-            # all annotations, regardless of user, indexed by the idxs
-            byIdxs = defaultdict(list)
-            for category, annotationValue in inputSentence["annotationSet"].iteritems():
-                if category in [u'a', u'uri']:
-                    continue
-                self.vprint("  %s" % category)
-                # deal with singleton list issue
-                for annotation in canonList(annotationValue):
-                    idxs = annotation.get("annotatedTokenIdxs", None)
-                    workerId = annotation["worker"]["workerId"]
-                    self.vprint("    %s: (%s) %s", workerId, annotation["annotatedTokens"].replace('\t', ' '), idxs.replace('\t', ' '))
-                    if idxs:
-                        start = int(idxs.split('\t')[0])
-                        annotatedTokens = annotation["annotatedTokens"].split("\t")
-                        byIdxs[(category, idxs)].append({"annotatedTokens": annotatedTokens, "start": start})
-                        # pprint.pprint(byIdxs)
-                    else:
-                        print >> sys.stderr, "%s has no annotatedTokenIdxs" % annotation
-            # Now we have all annotations for all categories for this sentence, organized by (category, idxs)
+            try:
+                # for one sentence
+                outputSentence = {}
+                outputSentence["text"] = inputSentence["text"]
+                outputSentence["uri"] = inputSentence["uri"]
+                outputSentence["allTokens"] = inputSentence["allTokens"].split("\t")
+                outputSentence["annotationSet"] = defaultdict(list)
+                self.vprint("Sentence %s" % inputSentence["uri"])
+                self.vprint("Text: %s" % inputSentence["text"])
+                self.vprint("  Raw Annotations:")
+                annotationSet = inputSentence["annotationSet"]
+                # all annotations, regardless of user, indexed by the idxs
+                byIdxs = defaultdict(list)
+                for category, annotationValue in inputSentence["annotationSet"].iteritems():
+                    if category in [u'a', u'uri']:
+                        continue
+                    self.vprint("  %s" % category)
+                    # deal with singleton list issue
+                    for annotation in canonList(annotationValue):
+                        idxs = annotation.get("annotatedTokenIdxs", "")
+                        workerId = annotation["worker"]["workerId"]
+                        self.vprint("    %s: (%s) %s", workerId, annotation.get("annotatedTokens", "").replace('\t', ' '), idxs.replace('\t', ' '))
+                        if idxs:
+                            start = int(idxs.split('\t')[0])
+                            annotatedTokens = annotation["annotatedTokens"].split("\t")
+                            byIdxs[(category, idxs)].append({"annotatedTokens": annotatedTokens, "start": start})
+                            # pprint.pprint(byIdxs)
+                        else:
+                            print >> sys.stderr, "ERROR: %s has no annotatedTokenIdxs" % annotation
+                # Now we have all annotations for all categories for this sentence, organized by (category, idxs)
 
-            self.vprint("  Adjudications:")
-            adjudicated = defaultdict(list)
-            for k in sorted(byIdxs.keys(), key=asLabeledIntTuple):
-                self.totalLabelCount += 1
-                entries = byIdxs[k]
-                (category, idxs) = k
-                # print "entries for %s are %s" % (idxs, entries)
-                possibleCount = 3
-                observedCount = len(entries)
-                entry = entries[0]
-                if self.acceptable(possibleCount, observedCount):
-                    # add only one copy
-                    self.vprint("    KEEP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
-                    adjudicated[category].append(entries[0])
-                    self.totalAnnotationCount += observedCount
-                    self.usedAnnotationCount += observedCount
-                    self.usedLabelCount[observedCount] += 1
+                self.vprint("  Adjudications:")
+                adjudicated = defaultdict(list)
+                for k in sorted(byIdxs.keys(), key=asLabeledIntTuple):
+                    self.totalLabelCount += 1
+                    entries = byIdxs[k]
+                    (category, idxs) = k
+                    # print "entries for %s are %s" % (idxs, entries)
+                    possibleCount = 3
+                    observedCount = len(entries)
+                    if observedCount not in [1,2,3]:
+                        raise ValueError("Unexpected count number %s of annotations for category %s, idxs %r" % (observedCount, category, idxs))
+                    entry = entries[0]
+                    if self.acceptable(possibleCount, observedCount):
+                        # add only one copy
+                        self.vprint("    KEEP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
+                        adjudicated[category].append(entries[0])
+                        self.totalAnnotationCount += observedCount
+                        self.usedAnnotationCount += observedCount
+                        self.usedLabelCount[observedCount] += 1
+                    else:
+                        self.vprint("    DROP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
+                        self.totalAnnotationCount += observedCount
+                        self.droppedLabelCount[workerId] += 1
+                        self.droppedAnnotationCount[workerId] += observedCount
+                # no adjudicated contains those passing the threshold
+                for category,entries in adjudicated.iteritems():
+                    outputSentence["annotationSet"][category].extend(entries)
                 else:
-                    self.vprint("    DROP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
-                    self.totalAnnotationCount += observedCount
-                    self.droppedLabelCount[workerId] += 1
-                    self.droppedAnnotationCount[workerId] += observedCount
-            # no adjudicated contains those passing the threshold
-            for category,entries in adjudicated.iteritems():
-                outputSentence["annotationSet"][category].extend(entries)
-            else:
-                # ignore this sentence
-                pass
-            self.outputJson.append(outputSentence)
+                    # ignore this sentence
+                    pass
+                self.outputJson.append(outputSentence)
+            except Exception as e:
+                print >> sys.stderr, "Uncaught [%s] on input sentence [%r]" % (e, inputSentence)
 
     def report(self):
         if self.summary:
