@@ -3,7 +3,7 @@
 # 7 May 2015
 
 """Typical usage:
-python simplify.py dummy.json
+python adjudicate.py dummy.json
 
 utility arguments:
 -h/--help: help
@@ -40,7 +40,7 @@ def asLabeledIntTuple(s):
     label, ints = s
     return (label, [int(i) for i in ints.split('\t')])
 
-class Simplifier(object):
+class Adjudicator(object):
     def __init__(self, pathname, verbose=False, summary=False):
         self.pathname = pathname
         self.verbose = verbose
@@ -153,7 +153,7 @@ def main(argv=None):
     verbose = args.verbose
     summary = args.summary
 
-    a = Simplifier(inputJson, verbose=verbose, summary=summary)
+    a = Adjudicator(inputJson, verbose=verbose, summary=summary)
     a.ingest()
     a.process()
     a.emit()
