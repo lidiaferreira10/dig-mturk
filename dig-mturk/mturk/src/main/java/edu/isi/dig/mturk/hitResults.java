@@ -209,7 +209,7 @@ public class hitResults {
 				in_reader.close();
 				input_buffer.close();
 				/* Reset the content for each success file */
-				fileContent = "HitId\tWorkerId\tAssignmentId\tSentenceId\tOffset\tHighlightedText\tCategory\tText\tEncodedTokens\tTokenIdxs\n";
+				fileContent = "HitId\t WorkerId\tAssignmentId\tSentenceId\tOffset\tHightlighted Text\tCategory\tText\tEncoded Text\n";
 				service.getResults(input, new BatchItemCallback() {
 					public void processItemResult(Object itemId,
 							boolean succeeded, Object result,
@@ -248,7 +248,9 @@ public class hitResults {
 									 * checkbox / radio button it can be trimmed
 									 * before writing to file
 									 */
+									System.out.println(answer);
 									String trimValue = answer.split("\t")[0];
+									
 									fileContent += hitid
 											+ "\t"
 											+ workerId
@@ -256,7 +258,7 @@ public class hitResults {
 											+ assignmentid
 											+ "\t"
 											+ answer.substring(
-													trimValue.length()).trim()
+													trimValue.length())
 											+ "\n";
 								}
 							}
@@ -266,6 +268,7 @@ public class hitResults {
 					}
 
 				});
+				fileContent += "\n";
 				if (fileContent.length() > 0) {
 					String keyName = currFileName + "/" + currFileName + ".tsv";
 					InputStream inputStream = new ByteArrayInputStream(
@@ -275,7 +278,7 @@ public class hitResults {
 					 * Set content length. Else stream contents will be buffered
 					 * in memory and could result in out of memory errors.
 					 */
-					metadata.setContentLength(fileContent.length());
+					//metadata.setContentLength(fileContent.length());
 					PutObjectRequest request = new PutObjectRequest(bucketName,
 							keyName, inputStream, metadata);
 					s3client.putObject(request);
