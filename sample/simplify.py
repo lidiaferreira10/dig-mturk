@@ -8,6 +8,7 @@ python simplify.py dummy.json
 utility arguments:
 -h/--help: help
 -v/--verbose: verbose debug output
+-s/--summary: print summary
 """
 
 import sys, os
@@ -18,8 +19,8 @@ except:
 
 import argparse
 import io
-from collections import defaultdict
-import copy
+from collections import defaultdict, Counter
+# import copy
 import pprint
 
 import util
@@ -40,17 +41,18 @@ def asLabeledIntTuple(s):
     return (label, [int(i) for i in ints.split('\t')])
 
 class Simplifier(object):
-    def __init__(self, pathname, verbose=False):
+    def __init__(self, pathname, verbose=False, summary=False):
         self.pathname = pathname
         self.verbose = verbose
+        self.summary = summary
 
         # solely for statistics/reporting 
         self.totalLabelCount = 0
         self.usedLabelCount = {2: 0, 3: 0}
-        self.droppedLabelCount = 0
+        self.droppedLabelCount = Counter()
         self.totalAnnotationCount = 0
         self.usedAnnotationCount = 0
-        self.droppedAnnotationCount = 0
+        self.droppedAnnotationCount = Counter()
 
     def ingest(self):
         with io.open(self.pathname, 'r', encoding='UTF-8') as f:
@@ -73,6 +75,9 @@ class Simplifier(object):
             outputSentence["uri"] = inputSentence["uri"]
             outputSentence["allTokens"] = inputSentence["allTokens"].split("\t")
             outputSentence["annotationSet"] = defaultdict(list)
+            self.vprint("Sentence %s" % inputSentence["uri"])
+            self.vprint("Text: %s" % inputSentence["text"])
+            self.vprint("  Raw Annotations:")
             annotationSet = inputSentence["annotationSet"]
             # all annotations, regardless of user, indexed by the idxs
             byIdxs = defaultdict(list)
@@ -83,8 +88,8 @@ class Simplifier(object):
                 # deal with singleton list issue
                 for annotation in canonList(annotationValue):
                     idxs = annotation.get("annotatedTokenIdxs", None)
-                    self.vprint("xyzzy annotation %s" % idxs)
-                    self.vprint("    Idxs %s", idxs)                        
+                    workerId = annotation["worker"]["workerId"]
+                    self.vprint("    %s: (%s) %s", workerId, annotation["annotatedTokens"].replace('\t', ' '), idxs.replace('\t', ' '))
                     if idxs:
                         start = int(idxs.split('\t')[0])
                         annotatedTokens = annotation["annotatedTokens"].split("\t")
@@ -94,8 +99,8 @@ class Simplifier(object):
                         print >> sys.stderr, "%s has no annotatedTokenIdxs" % annotation
             # Now we have all annotations for all categories for this sentence, organized by (category, idxs)
 
-
-            adjudicated = {}
+            self.vprint("  Adjudications:")
+            adjudicated = defaultdict(list)
             for k in sorted(byIdxs.keys(), key=asLabeledIntTuple):
                 self.totalLabelCount += 1
                 entries = byIdxs[k]
@@ -103,34 +108,35 @@ class Simplifier(object):
                 # print "entries for %s are %s" % (idxs, entries)
                 possibleCount = 3
                 observedCount = len(entries)
+                entry = entries[0]
                 if self.acceptable(possibleCount, observedCount):
                     # add only one copy
-                    self.vprint("    Keep %s %s: %s/%s", category, idxs, observedCount, possibleCount)
-                    adjudicated[category] = entries[0]
+                    self.vprint("    KEEP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
+                    adjudicated[category].append(entries[0])
                     self.totalAnnotationCount += observedCount
                     self.usedAnnotationCount += observedCount
                     self.usedLabelCount[observedCount] += 1
                 else:
-                    self.vprint("    Drop %s %s: %s/%s", category, idxs, observedCount, possibleCount)
+                    self.vprint("    DROP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
                     self.totalAnnotationCount += observedCount
-                    self.droppedLabelCount += 1
-                    self.droppedAnnotationCount += observedCount
+                    self.droppedLabelCount[workerId] += 1
+                    self.droppedAnnotationCount[workerId] += observedCount
             # no adjudicated contains those passing the threshold
-            for category,entry in adjudicated.iteritems():
-                outputSentence["annotationSet"][category] = entry
+            for category,entries in adjudicated.iteritems():
+                outputSentence["annotationSet"][category].extend(entries)
             else:
                 # ignore this sentence
                 pass
             self.outputJson.append(outputSentence)
 
     def report(self):
-        if self.verbose:
-            print >> sys.stderr, "%d labels were seen, not including 'No Annotations'" % self.totalLabelCount
-            print >> sys.stderr, "  %d were accepted at 3/3, %d accepted at 2/3. %d rejected" % (self.usedLabelCount[3], self.usedLabelCount[2], self.droppedLabelCount)
-            print [self.totalAnnotationCount, self.usedAnnotationCount, self.droppedAnnotationCount]
-            print [self.totalLabelCount, self.usedLabelCount, self.droppedLabelCount]
-
-
+        if self.summary:
+            print >> sys.stderr, "%d labels seen, not including 'No Annotations'" % self.totalLabelCount
+            print >> sys.stderr, "  %d accepted (%d at 3/3, %d at 2/3)." % (sum(self.usedLabelCount.values()), self.usedLabelCount[3], self.usedLabelCount[2])
+            print >> sys.stderr, "  %d rejected: " % (sum(self.droppedLabelCount.values())),
+            print >> sys.stderr,  ",  ".join(['%s: %d' % (workerId, droppedCount) 
+                                              for workerId,droppedCount
+                                              in sorted(self.droppedLabelCount.iteritems())])
     def emit(self):
         with io.open(outpath(self.pathname), 'w', encoding='utf-8') as f:
             f.write(unicode(json.dumps(self.outputJson, ensure_ascii=False, indent=4)))
@@ -140,12 +146,14 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("inputJson", help='input json file')
     parser.add_argument('-v','--verbose', required=False, help='verbose', action='store_true')
+    parser.add_argument('-s','--summary', required=False, help='print final summary to stederr', action='store_true')
     args=parser.parse_args()
 
     inputJson = args.inputJson
     verbose = args.verbose
+    summary = args.summary
 
-    a = Simplifier(inputJson, verbose=verbose)
+    a = Simplifier(inputJson, verbose=verbose, summary=summary)
     a.ingest()
     a.process()
     a.emit()
