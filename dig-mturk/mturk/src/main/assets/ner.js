@@ -8,7 +8,9 @@ var HTML_CONTENT = "__HTMLMARKUP__";
 
 $(document).ready(function() {
 	$('[data-toggle="tooltip"]').tooltip();
-
+	/* Reset all form fields on load*/
+	$("#mturk_form").each(function() { this.reset() });
+	
 	document.getElementById('assignmentId').value = gup('assignmentId');
 
 	categories = $('body').attr('categories').split(',');
@@ -19,28 +21,30 @@ $(document).ready(function() {
 		    var words = curr_sent.text().split(' ');
 		    curr_sent.empty();
 		    var spl_chars;
-        var offset = 0
+			var offset = 0;		
+			var idx = 0;
 	    $.each(words, function(i, word) {
 		    if (word == HTML_CONTENT) {
-			curr_sent.append($("<span offset=" + offset + ">").text('\ufffd'));
+			curr_sent.append($("<span offset=" + offset + " idx=" + idx + ">").text('\ufffd'));
 			offset += 1;
 			curr_sent.append($("<span offset=" + offset + ">").text(" "));
 			offset += 1;
 		    } else if (!/^[a-zA-Z0-9]*$/.test(word)) {
 			var spl_chars = word.substring(word.match(/([^A-Za-z])/i).index, word.length);
 			word = word.substring(0, word.match(/([^A-Za-z])/i).index)
-			curr_sent.append($("<span offset=" + offset + ">").text(word));
+			curr_sent.append($("<span offset=" + offset + " idx=" + idx + ">").text(word));
 			offset += word.length;
 			curr_sent.append($("<span offset=" + offset + ">").text(spl_chars));
 			offset += spl_chars.length;
 			curr_sent.append($("<span offset=" + offset + ">").text(" "));
 			offset += 1;
 		    } else {
-			curr_sent.append($("<span offset=" + offset + ">").text(word));
+			curr_sent.append($("<span offset=" + offset + " idx=" + idx + ">").text(word));
 			offset += word.length;
 			curr_sent.append($("<span offset=" + offset + ">").text(" "));
 			offset += 1;
 		    }
+			idx += 1;
 		});
 		});
 
@@ -60,7 +64,7 @@ $(document).ready(function() {
 					}
 				    });
 			    } else {
-				errors[currSent] = "If nothing to highlight select \"No Annotation\"";
+				errors[currSent] = "If nothing to highlight select \"No Annotations\"";
 
 			    }
 			}
@@ -75,7 +79,7 @@ $(document).ready(function() {
 		    }
 		    modalHTML += "</ul> </div>";
 		    $("#modal_box .modal-body").html(modalHTML);
-		    $("#modal_box").modal({show: true, keyboard:true, backdrop:'static'});
+		    $("#modal_box").modal({show: true, keyboard: true, backdrop: 'static'});
 		} else {
 		    /*// submit to our server
 		      $.ajax({
@@ -107,7 +111,7 @@ $(document).ready(function() {
 		var sentContainer = ($(this).closest(".panel-primary")).find(".sentence");
 		var encodedText = $(sentContainer).attr("tokens");
 		var sentText = $(sentContainer).text();
-		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\t" + encodedText + "\n");
+		$(this).val(elasticSearchId + "\t" + 0 + "\t" + " " + "\t" + "no annotations" + "\t" + sentText + "\t" + encodedText + "\t" + -1 + "\n");
 	}
 	    function highlightSelection() {
 	    var elasticSearchId = $(this).attr("elastic-search-id");
@@ -180,19 +184,22 @@ $(document).ready(function() {
 			$(this).addClass(class_to_add);
 		    }
 		});
+		var token_idxs = []
 	    $(this).find('span[class=' + class_to_add + ']').each(function() {
 		    text += $(this).text();
+			token_idxs.push( $(this).attr('idx'));
 		});
-	    char_offset = $($(this).find('span[class=' + class_to_add + ']:first')[0]).attr('offset')
+	    char_offset = $($(this).find('span[class=' + class_to_add + ']:first')[0]).attr('offset');
+		token_idxs_str = token_idxs.join([separator = ',']);
 		window.getSelection().removeAllRanges();
 	
 		/* Check if the selected content has at least one character*/
 		if (text.replace(/^\s+|\s/g, '').length > 0) {
 			if ($($('#' + parent_id).parent().find('[type=checkbox]')).is(':checked')) {
 			$($('#' + parent_id).parent().find('[type=checkbox]')).attr('checked', false);
-			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset);
+			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset, token_idxs_str);
 			} else {
-			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset);
+			createTagRow(parent_id, elasticSearchId, sentText, encodedText, class_to_add, text, char_offset, token_idxs_str);
 			}
 		}
 		/* if the selected content has no characters then remove the highlights applied in the sentence*/
@@ -266,7 +273,7 @@ $(document).ready(function() {
 	    return result;
 	}
 	
-	function createTagRow(fieldset_id, elasticSearchId, sentText, encodedText, class_identifier, text, char_offset) {
+	function createTagRow(fieldset_id, elasticSearchId, sentText, encodedText, class_identifier, text, char_offset, token_idx) {
             var fieldset = document.getElementById(fieldset_id);
             var name = class_identifier;
             name = name.replace(/ /g, '');
@@ -313,7 +320,7 @@ $(document).ready(function() {
 				type: "radio",
 				    name: fieldset_id + name,
 				    value: elasticSearchId + "\t" + char_offset + "\t" + text + "\t" +
-				    value + "\t" + sentText + "\t" + encodedText+"\n",
+				     value + "\t" + sentText + "\t" + encodedText + "\t" + token_idx + "\n",
 				    }).appendTo(label).after(value);
 
 			radio_container.appendChild(label);
@@ -338,7 +345,7 @@ $(document).ready(function() {
 				$('#' + fieldset_id + '>div[id=' + name + ']').find("input[type=radio]").each(function() {
 					var labelText = $(this).parent().text();
 					$(this).val(elasticSearchId + "\t" + char_offset + "\t" + text + "\t" +
-				    labelText + "\t" + sentText + "\t" + encodedText+"\n");
+				    labelText + "\t" + sentText + "\t" + encodedText + "\t" + token_idx +"\n");
 				});
             }
         }
