@@ -64,7 +64,10 @@ class Adjudicator(object):
 
     def vprint(self, fmt, *args):
         if self.verbose:
-            print >> sys.stderr, fmt % tuple(args)
+            if args:
+                print >> sys.stderr, fmt % tuple(args)
+            else:
+                print >> sys.stderr, fmt
 
     def process(self):
         self.outputJson = []
