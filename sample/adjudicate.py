@@ -28,7 +28,7 @@ from util import echo, canonList
 
 def outpath(inpath):
     h,t = os.path.split(inpath)
-    return os.path.join(h,"simplified_output_" + t)
+    return os.path.join(h,"adjudicated_" + t)
 
 def dictToTuple(d):
     return tuple(sorted(d.items()))
