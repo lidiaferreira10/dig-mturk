@@ -56,11 +56,12 @@ class Adjudicator(object):
                     continue
                 # deal with singleton list issue
                 for annotation in canonList(annotationValue):
-                    # these are the proper annotations
-                    print "An annotation for %s is %s" % (category, annotation)
+                    entry = {}
                     idxs = annotation.get("annotatedTokenIdxs", None)
                     if idxs:
-                        byIdxs[idxs].append(annotation)
+                        entry["start"] = idxs.split(',')[0]
+                        entry["annotatedTokens"] = annotation["annotatedTokens"]
+                        byIdxs[idxs].append(entry)
                     else:
                         print >> sys.stderr, "%s has no annotatedTokenIdxs" % annotation
                 # Now we have all annotations for this category for this sentence, organized by idx
