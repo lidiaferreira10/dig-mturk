@@ -258,7 +258,7 @@ public class hitResults {
 											+ assignmentid
 											+ "\t"
 											+ answer.substring(
-													trimValue.length())
+													   trimValue.length()).trim()
 											+ "\n";
 								}
 							}
