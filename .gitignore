@@ -17,3 +17,6 @@ data-processing/karma/semantic-type-files
 *.pyc
 *~
 *.pdf
+
+sample/attic
+sample/attic/*
