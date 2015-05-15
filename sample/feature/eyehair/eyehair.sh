@@ -1,12 +1,12 @@
 #!/bin/sh
 
-SIZE=${1:-200}
+SIZE=${1:-2000}
 
-curl -k -o eye-hair_${SIZE}.json -XGET 'https://darpamemex:darpamemex@esc.memexproxy.com/dig-latest/_search' -d '{"fields": ["hasBodyPart.text.english"], 
+curl -k -o eyehair_${SIZE}.json -XGET 'https://darpamemex:darpamemex@esc.memexproxy.com/dig-latest/_search' -d '{"fields": ["hasBodyPart.text.english"], 
   "query": {
     "function_score" : {
-      "query": {"simple_query_string": {"query": "eye~ blue green brown hazel hair blond~ brunette chestnut ginger",
+      "query": {"simple_query_string": {"query": "eye~ blue green brown hazel hair blond~ brunette chestnut ginger redhead",
                                         "default_operator": "OR"}},
       "random_score" : {}
     }
-}, "size": 200 }'
+}, "size": 2000 }'
