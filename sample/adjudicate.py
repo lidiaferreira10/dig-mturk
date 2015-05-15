@@ -53,6 +53,7 @@ class Adjudicator(object):
         self.totalAnnotationCount = 0
         self.usedAnnotationCount = 0
         self.droppedAnnotationCount = Counter()
+        self.byWorker = defaultdict(lambda : {1: 0, 2: 0, 3: 0})
 
     def ingest(self):
         with io.open(self.pathname, 'r', encoding='UTF-8') as f:
@@ -82,7 +83,7 @@ class Adjudicator(object):
                 self.vprint("Sentence %s" % inputSentence["uri"])
                 self.vprint("Text: %s" % inputSentence["text"])
                 self.vprint("  Raw Annotations:")
-                annotationSet = inputSentence["annotationSet"]
+                # annotationSet = inputSentence["annotationSet"]
                 # all annotations, regardless of user, indexed by the idxs
                 byIdxs = defaultdict(list)
                 for category, annotationValue in inputSentence["annotationSet"].iteritems():
@@ -97,7 +98,9 @@ class Adjudicator(object):
                         if idxs:
                             start = int(idxs.split('\t')[0])
                             annotatedTokens = annotation["annotatedTokens"].split("\t")
-                            byIdxs[(category, idxs)].append({"annotatedTokens": annotatedTokens, "start": start})
+                            byIdxs[(category, idxs)].append({"annotatedTokens": annotatedTokens, 
+                                                             "start": start,
+                                                             "workerId": workerId})
                             # pprint.pprint(byIdxs)
                         else:
                             print >> sys.stderr, "ERROR: %s has no annotatedTokenIdxs" % annotation
@@ -114,19 +117,25 @@ class Adjudicator(object):
                     observedCount = len(entries)
                     if observedCount not in [1,2,3]:
                         raise ValueError("Unexpected count number %s of annotations for category %s, idxs %r" % (observedCount, category, idxs))
+                    # record stats for all cases [1,2,3]
+                    for entry in entries:
+                        workerId = entry["workerId"]
+                        # how many times did this task get marked by any worker?
+                        self.byWorker[workerId][observedCount] += 1
                     entry = entries[0]
                     if self.acceptable(possibleCount, observedCount):
-                        # add only one copy
+                        # 2/3 or 3/3: add only one entry
                         self.vprint("    KEEP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
                         adjudicated[category].append(entries[0])
                         self.totalAnnotationCount += observedCount
                         self.usedAnnotationCount += observedCount
                         self.usedLabelCount[observedCount] += 1
                     else:
+                        # 1/3 ignore
                         self.vprint("    DROP @ %d/%d %s (%s) %s", observedCount, possibleCount, category, ' '.join(entry["annotatedTokens"]), idxs.replace('\t',' '))
                         self.totalAnnotationCount += observedCount
-                        self.droppedLabelCount[workerId] += 1
-                        self.droppedAnnotationCount[workerId] += observedCount
+                        #self.droppedLabelCount[workerId] += 1
+                        #self.droppedAnnotationCount[workerId] += observedCount
                 # no adjudicated contains those passing the threshold
                 for category,entries in adjudicated.iteritems():
                     outputSentence["annotationSet"][category].extend(entries)
@@ -145,6 +154,17 @@ class Adjudicator(object):
             print >> sys.stderr,  ",  ".join(['%s: %d' % (workerId, droppedCount) 
                                               for workerId,droppedCount
                                               in sorted(self.droppedLabelCount.iteritems())])
+
+            for workerId in sorted(self.byWorker.keys()):
+                print >> sys.stderr, "Worker %s:" % workerId
+                workerTotal = sum(self.byWorker[workerId].itervalues())
+                print >> sys.stderr, "  @3: %d,  @2: %d  @1: %d" % (self.byWorker[workerId][3],
+                                                                    self.byWorker[workerId][2],
+                                                                    self.byWorker[workerId][1]),
+                accept = (self.byWorker[workerId][3] + self.byWorker[workerId][2]) / float(workerTotal)
+                print >> sys.stderr, 'accept rate {accept:.2%}'.format(accept=accept)
+
+
     def emit(self):
         with io.open(outpath(self.pathname), 'w', encoding='utf-8') as f:
             f.write(unicode(json.dumps(self.outputJson, ensure_ascii=False, indent=4)))
