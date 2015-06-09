@@ -30,7 +30,7 @@ def mtDecodeTokens(encodedTokens):
     return base64.b64decode(encodedTokens)
 
 def validTokenIdx(thing):
-    "any inteeger >= 0; remove -1, empty strings"
+    "any integer >= 0; remove -1, empty strings"
     try:
         return int(thing)>=0
     except:
@@ -46,4 +46,9 @@ def mtExtractAnnotatedTokens(tokenIdxs, joinedTokens):
 def mtExtractAnnotatedTokenIdxs(tokenIdxs):
     idxs = [i for i in tokenIdxs.split(',') if validTokenIdx(i)]
     return safeSeparatorCharacter.join(idxs)
+
+# print mtExtractAnnotatedTokenIdxs("1,2,3")
+# print mtExtractAnnotatedTokenIdxs("0")
+# print mtExtractAnnotatedTokens("1,2,3", "alpha\tbeta\tgamma\tdelta")
+# print mtExtractAnnotatedTokens("0", "alpha\tbeta\tgamma\tdelta")
 
