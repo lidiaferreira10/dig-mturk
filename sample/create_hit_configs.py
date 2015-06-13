@@ -362,7 +362,7 @@ def create_hit_configs(elsjson,
             sio = StringIO.StringIO()
             sio.write(format.format(sentences=data,instructions=instructions))
             jdata = sio.getvalue()
-            # on for verbose do we dump the intermediate (post-substitution) JSON to tmp file
+            # only for verbose do we dump the intermediate (post-substitution) JSON to tmp file
             if verbose:
                 jfile = os.path.join(tempfile.gettempdir(), "jdata__%s__%04d.json" % (experiment, hitIndex))
                 with open(jfile, 'w') as f:
@@ -377,6 +377,8 @@ def create_hit_configs(elsjson,
                 b = c.get_bucket(BUCKETNAME)
                 expName = 'ner/%s' % (experiment)
                 keyName = 'ner/%s/%s' % (experiment, outpath)
+                if verbose:
+                    print >> sys.stderr, "writing to cloud bucket %s" % keyName
                 k = b.new_key(keyName)
                 k.set_contents_from_string(jdata)
                 k.set_canned_acl('public-read')
