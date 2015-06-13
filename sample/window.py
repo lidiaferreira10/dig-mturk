@@ -3,6 +3,9 @@
 # 4 March 2015
 
 import sys, os
+print >> sys.stderr, "Use create_hit_configs.py instead"
+sys.exit(1)
+
 try:
     import simplejson as json
 except:
