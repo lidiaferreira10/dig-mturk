@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<title>Qualification Test</title>
+	<!-- Label -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="jquery-2.1.4.min.js"></script>
+	<script src = "qualification_test.js"> </script>
+	<!-- Bootstrap -->
+	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"> </script> 
+	<link rel="stylesheet" type="text/css" href="bootstrap_assets.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="qualification_test.css">
+</head>
+
+<body categories= "Eye,Hair">
+	<div class="container">
+		<div class="">
+			<div class="page-header">	
+				<h1>Qualification Test - AI Software Research</h1>	
+			</div>
+
+			<div class="">
+				<h2>Label Description of Eyes and Hair in Free Text</h2>
+				<div class="lead">
+					<p class="lead">Your task is to mark up each sentence, so that they look like the <b>Example Sentence</b>. The categories to mark up appear below the sentence. You should answer <span class='text-danger'>ten sentences</span> correctly to receive the qualification to work on the HITs.</p>
+				</div>
+			<!--Collapse instructions -->
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseInstructions" aria-expanded="false" aria-controls="collapseInstructions">Click to see the Example Sentence
+			</button>
+			<div class="collapse" id="collapseInstructions">
+				<div class="well">
+			   		<!-- START Instructions -->
+					<div class="bs-callout bs-callout-warning">
+						<div class="panel panel-warning">
+							<div class="panel-heading"><h1 class="panel-title">Example of how to highlight eyes and hair</h1></div>
+							<div class="panel-body">
+								<p class="text-muted">Lorem <span class="highlight_8">blue eyes</span> ipsum dolor sit amet, <span class="highlight_6">beautiful long brown hair</span> consectetur adipiscing te graece utroque nusquam mea, mei. Odio <span class="highlight_10">blonde</span> nostrud mollit anim id est laborum <span class="highlight_11">brown eyes</span> posidonium. </p>
+								<div class="top-buffer row">
+									<div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_8">blue eyes</span></div>
+									<div class="col-xs-6 col-md-3">
+										<label class="radio-inline">
+											<input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1" checked="checked">Eyes
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="option1">Hair
+										</label>
+									</div>
+									<div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+									</div>
+								</div> <!-- row -->
+									<div class="top-buffer row">
+									<div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_6">beautiful long brown hair</span>
+									</div>
+
+									<div class="col-xs-6 col-md-3">
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="option1">Eyes
+									</label>
+
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="option1" checked="checked">Hair
+									</label>
+									</div>
+
+									<div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+									</div>
+
+									</div> <!-- row -->
+
+									<div class="top-buffer row">
+									<div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_10">blonde</span>
+									</div>
+
+									<div class="col-xs-6 col-md-3">
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions3" id="inlineRadio3" value="option1">Eyes
+									</label>
+
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions3" id="inlineRadio3" value="option1" checked="checked">Hair
+									</label>
+
+									</div>
+
+									<div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+									</div>
+
+									</div> <!-- row -->
+
+									<div class="top-buffer row">
+									<div class="col-xs-4 col-md-3"><span class="glyphicon glyphicon-triangle-right"></span><span class="highlight_11">brown eyes</span>
+									</div>
+
+									<div class="col-xs-6 col-md-3">
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions4" id="inlineRadio4" value="option1" checked="checked">Eyes
+									</label>
+									<label class="radio-inline">
+									<input type="radio" name="inlineRadioOptions4" id="inlineRadio4" value="option1">Hair
+									</label>
+									</div>
+									<div class="col-xs-1 col-md-1"><button class="deleteBtn glyphicon glyphicon-remove" name="deleteTag" disabled></button>
+									</div>
+									</div> <!-- row -->
+									<div class="top-buffer row">
+									<div class="col-xs-11 col-md-12 checkbox">
+									<label class="radio-inline">
+									<input type="checkbox" name="inlineRadioOptions5" id="inlineRadio5" value="option1">No annotations
+									</label>
+									</div>
+									</div> <!-- row -->
+									</div> <!--panel body-->
+									<div class="panel-footer">Markup the description of  
+									<span class="text-danger">Eyes and Hair</span>
+									</div>
+							</div>
+						</div>
+						<!--End structions -->
+					</div>
+				</div>
+			</div>
+	<!-- ##begin## -->
+	<div class="container">	
+		<form >
+			<input type="hidden" id="assignmentId" name="assignmentId" value="">
+			<h2>Mark Up the Following Sentences </h2>
+
+			<!-- progress bar -->
+			<p>Percentage of correctly marked up sentences:</p>
+			<div class="progress progress-striped active">
+				<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>
+			<!-- end bar-->
+			<!-- selection camp --> 
+			<div class="panel panel-primary" name="parent_container">
+				<div class="panel-heading">
+					<h2 class="panel-title" id="sentenceTitle_1"></h2>
+				</div>
+				<div class="panel-body" id="container_1">	
+					<div class="sentence" id="sentence_1">
+					
+					</div> 
+				</div>
+				<div class="checkbox custom_checkbox">
+					<label>
+						<input type="checkbox" name= "no_annotation_1" id="checkAnnotation" elastic-search-id= "http://dig.isi.edu/sentence/F04AA82CF3121240CD3EE5F43AAC36029FB6EC76">No annotations
+					</label>
+				</div>
+				<div class="panel-footer" id="footer_1">
+
+				</div>
+				<!-- Show the answer -->
+				<div id="collapseAnswer">
+				  	<p class="answer-collapse" id="showAnswer"></p>
+				</div> 
+			</div>
+			<!-- end selection camp -->
+		</form> 
+		<div class="row tasks">
+			<div class="btn_wrapper">	
+				<button name='check' class="btn btn-primary" id="buttonCheck">Check anwser</button>
+			</div>
+		</div> 
+
+		<button name='nextButton' class="btn btn-primary btn-right" type="button" value="Next Sentence" id="buttonNext">Next Sentence</button>
+		<!--modals-->
+		<div class="modal fade" id="modal_box">	
+			<div class="modal-dialog">	
+				<div class="modal-content">
+					<div class="modal-header alert alert-danger modal_title_custom">	
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>	
+						<h4 class="modal-title">Please complete annotations</h4>
+					</div>
+					<div class="modal-body" id="modal-body-text"></div>	
+					<div class="modal-footer">	
+						<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+		<div class="modal fade" id="modal_tenQuestions">	
+			<div class="modal-dialog">	
+				<div class="modal-content">
+					<div class="modal-header alert alert-success modal_title_custom">	
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>	
+						<h4 class="modal-title">Congratulations!</h4>
+					</div>
+					<div class="modal-body" id="modal-body-code">
+						<p>You have answered 10 questions correctly and are able to do the HIT.</p>
+						<p>Use the code bellow to access the HIT:</p>
+					</div>
+					<div class="modal-body" id="modal-body-text"></div>	
+					<div class="modal-body" id="modal-body-code">
+						<p>You will be redirected for the beginning of the test after click 'OK'.</p>
+					</div>
+					<div class="modal-footer">	
+						<button type="button" name="buttonReload" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+		<div class="modal fade" id="modal_failQuestions">	
+			<div class="modal-dialog">	
+				<div class="modal-content">
+					<div class="modal-header alert alert-danger modal_title_custom">	
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>	
+						<h4 class="modal-title">Try it again</h4>
+					</div>
+					<div class="modal-body">
+						<p>You are not qualified to do the HIT.</p>
+						<p>You can repeat this test any time.</p>
+						<p>You will be redirected for the beginning of the test after click 'OK.</p>
+					</div>
+					<div class="modal-body" id="modal-body-text"></div>	
+					<div class="modal-footer">	
+						<button type="button" name="buttonReload" class="btn btn-default" data-dismiss="modal" >OK</button>
+					</div> 
+				</div> 
+			</div> 
+		</div>
+		<div class="modal fade" id="modal_info">	
+			<div class="modal-dialog">	
+				<div class="modal-content">
+					<div class="modal-header alert alert-info modal_title_custom">	
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>	
+						<h4 class="modal-title">Info: how to select eyes and hair</h4>
+					</div>
+					<div class="modal-body">
+						<img src="image/info.png" class="info-img"></img>
+					</div>
+					<div class="modal-body" id="modal-body-text"></div>	
+					<div class="modal-footer">	
+						<button type="button" class="btn btn-default" data-dismiss="modal" >OK</button>
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+	</div> 
+</div>
+</body>
+</html>
