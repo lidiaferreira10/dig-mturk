@@ -5,10 +5,10 @@
     "hit_lifetime": "172800",
     "qualifications": [
       {{
-        "id": "",
-        "comparator": "",
-        "value": "",
-        "private": ""
+        "id": "3YIWKD8AEM1UJBVXOL68MDR9ZO30PH",
+        "comparator": "greaterthan",
+        "value": "0",
+        "private": "true"
       }}
     ],
     "description": "Label eyes, hair in free text",
@@ -17,8 +17,8 @@
     "num_assignments": "3",
     "reward": "0.10",
     "hit_sentences": {sentences},
-    "categories": [{{"label": "Eye color"}},
-{{"label": "Hair type"}}],
+    "categories": [{{"label": "Eyes"}},
+{{"label": "Hair"}}],
     "scratch_categories": [{{"label": "No annotations"}}]
   }}
 ]
