@@ -160,6 +160,7 @@ public class hitResults {
 		String content = "";
 		ArrayList<String> folderNames = new ArrayList<String>();
 		String mainBucket = "aisoftwareresearch";
+		String header = "HitId\tWorkerId\tAssignmentId\tSentenceId\tOffset\tHighlightedText\tCategory\tText\tEncodedTokens\tTokenIdxs\n";
 		try {
 
 			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
@@ -209,7 +210,7 @@ public class hitResults {
 				in_reader.close();
 				input_buffer.close();
 				/* Reset the content for each success file */
-				fileContent = "HitId\t WorkerId\tAssignmentId\tSentenceId\tOffset\tHightlighted Text\tCategory\tText\tEncoded Text\n";
+				fileContent = "";
 				service.getResults(input, new BatchItemCallback() {
 					public void processItemResult(Object itemId,
 							boolean succeeded, Object result,
@@ -248,7 +249,6 @@ public class hitResults {
 									 * checkbox / radio button it can be trimmed
 									 * before writing to file
 									 */
-									System.out.println(answer);
 									String trimValue = answer.split("\t")[0];
 									
 									fileContent += hitid
@@ -268,8 +268,8 @@ public class hitResults {
 					}
 
 				});
-				fileContent += "\n";
 				if (fileContent.length() > 0) {
+					fileContent = header + fileContent;
 					String keyName = currFileName + "/" + currFileName + ".tsv";
 					InputStream inputStream = new ByteArrayInputStream(
 							fileContent.getBytes());

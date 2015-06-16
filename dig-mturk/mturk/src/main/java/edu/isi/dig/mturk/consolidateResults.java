@@ -52,15 +52,17 @@ public class consolidateResults {
 							String[] keyParts = key.split("/");
 							if (keyParts.length == 1) {
 								resultFile = keyParts[0] + "/" + keyParts[0] + ".tsv";
-								S3Object in_object = s3client.getObject(new GetObjectRequest(
-										bucketName, resultFile));
-								InputStream in_objectData = in_object.getObjectContent();
-								BufferedReader in_reader = new BufferedReader(
-										new InputStreamReader(in_objectData));
-								//discard first line as it will be heading
-								content = in_reader.readLine();
-								while ((content = in_reader.readLine()) != null) {
-									result += content + "\n";
+								if (existsInS3(bucketName, resultFile)) {
+									S3Object in_object = s3client.getObject(new GetObjectRequest(
+											bucketName, resultFile));
+									InputStream in_objectData = in_object.getObjectContent();
+									BufferedReader in_reader = new BufferedReader(
+											new InputStreamReader(in_objectData));
+									//discard first line as it will be heading
+									content = in_reader.readLine();
+									while ((content = in_reader.readLine()) != null) {
+										result += content + "\n";
+									}
 								}
 							}
 						}
@@ -73,6 +75,15 @@ public class consolidateResults {
 			System.err.println(e.getMessage());
 		}
 	}
+	public boolean existsInS3(String bucketName, String file) {
+	    try {
+	    	s3client.getObject(new GetObjectRequest(
+					bucketName, file));
+	    } catch(AmazonServiceException e) {
+	        return false;
+	    }
+	    return true;
+	}
 	public void uploadFile(String filename, String fileType, String fileContent) {
 		String keyName = filename + "." + fileType;
 		try {
@@ -83,7 +94,7 @@ public class consolidateResults {
 			 * Set content length. Else stream contents will be buffered in
 			 * memory and could result in out of memory errors.
 			 */
-			metadata.setContentLength(fileContent.length());
+			//metadata.setContentLength(fileContent.length());
 			PutObjectRequest request = new PutObjectRequest(targetFolder,
 					keyName, inputStream, metadata);
 			s3client.putObject(request);
